@@ -32,7 +32,7 @@ Class IMG_Reflection {
    var $curl_timeout            = 5;       // curl timeout
 
    /*
-    *
+    * Class Constructor
     */
    function __construct($path_to_source = false,$load = false)
    {
