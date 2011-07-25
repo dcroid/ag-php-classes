@@ -57,7 +57,7 @@ Class IMG_Reflection {
     * @param  string $hex_background
     * @return void
     */
-   function setBackgoundColor($hex_background)
+   public function setBackgoundColor($hex_background)
    {
       $this->hex_background = $hex_background;
    }
@@ -68,7 +68,7 @@ Class IMG_Reflection {
     * @param  string $path_to_source
     * @return void
     */
-   function setPathToSource($path_to_source)
+   public function setPathToSource($path_to_source)
    {
       # get path information
       $this->path_info = pathinfo($path_to_source);
@@ -78,12 +78,12 @@ Class IMG_Reflection {
 
    /**
     *
-    * Set and create path to the Target directory
+    * Set path to the Target directory
     * @access public
     * @param  string $path_to_target
     * @return void
     */
-   function setPathToTarget($path_to_target = false)
+   public function setPathToTarget($path_to_target = false)
    {
       # set path
       if($path_to_target) { $this->path_to_target = $path_to_target; }
@@ -98,7 +98,7 @@ Class IMG_Reflection {
     * @param  string $path_to_temp
     * @return void
     */
-   function setPathToTemp($path_to_temp = false)
+   public function setPathToTemp($path_to_temp = false)
    {
       # set path
       if($path_to_temp) { $this->path_to_temp = $path_to_temp; }
@@ -113,7 +113,7 @@ Class IMG_Reflection {
     * @param  string $path
     * @return void
     */
-   function checkPath($path)
+   public function checkPath($path)
    {
       if (!file_exists($path)) {
          if (!mkdir($path, 0, true)) {
@@ -123,14 +123,13 @@ Class IMG_Reflection {
       }
    }
 
-
    /**
     *
     * Get Image Information
     * @access public
     * @return void
     */
-   function setImageInfo($path_to_source = false)
+   public function setImageInfo($path_to_source = false)
    {
       $source = ($path_to_source)?$path_to_source:$this->path_to_source;
       $this->image_info   = getimagesize($source);
@@ -141,25 +140,23 @@ Class IMG_Reflection {
    }
 
    /**
-    *
     * Get Image Information
     * @access public
     * @return array $image_info
     */
-   function getImageInfo()
+   public function getImageInfo()
    {
       return $this->image_info;
    }
 
    /**
-    *
     * Download Image from remote server
     * @access public
     * @param  string $path_to_source
     * @param  string $path_to_target
     * @return bool
     */
-   function downloadImage($path_to_source = false,$path_to_temp = false)
+   public function downloadImage($path_to_source = false,$path_to_temp = false)
    {
       if(!$path_to_source && !$this->path_to_source) {
          return false;
@@ -184,12 +181,11 @@ Class IMG_Reflection {
    }
 
    /**
-    *
     * Load Image Source
     * @access public
     * @return void
     */
-   function loadImageSource()
+   public function loadImageSource()
    {
       switch ($this->type)
       {
@@ -215,13 +211,12 @@ Class IMG_Reflection {
    }
 
    /**
-    *
     * Save Image To target directory
     * @access public
     * @param  string $path_to_temp
     * @return void
     */
-   function saveImage($path_to_target = false)
+   public function saveImage($path_to_target = false)
    {
       if(!$path_to_target && !$this->path_to_target) {
          return;
@@ -240,13 +235,12 @@ Class IMG_Reflection {
    }
 
    /**
-    *
     * Save Reflection To target directory
     * @access public
     * @param  string $path_to_temp
     * @return void
     */
-   function saveReflection($path_to_target = false)
+   public function saveReflection($path_to_target = false)
    {
       if(!$path_to_target && !$this->path_to_target) {
          return;
@@ -265,12 +259,11 @@ Class IMG_Reflection {
    }
 
    /**
-    *
-    * Enter description here ... showImage
+    * Show Reflection Image
     * @access public
     * @return return_type bare_field_name
     */
-   function showReflection()
+   public function showReflection()
    {
       header('content-type: image/png');
       imagepng($this->image_source);
@@ -278,12 +271,11 @@ Class IMG_Reflection {
    }
 
    /**
-    *
     * Enter description here ... showImage
     * @access public
     * @return return_type bare_field_name
     */
-   function showImage($only_reflection)
+   public function showImage($only_reflection)
    {
       $source = ($only_reflection)?$this->reflection_source:$this->image_source;
       header('content-type: '.$this->mime);
@@ -312,12 +304,11 @@ Class IMG_Reflection {
    }
 
    /**
-    *
     * Build Reflection
     * @access public
     * @return void
     */
-   function buildReflection()
+   public function buildReflection()
    {
       //	We'll store the final reflection in $output. $buffer is for internal use.
       $output = imagecreatetruecolor($this->width, $this->reflection_height);
@@ -337,12 +328,11 @@ Class IMG_Reflection {
 
 
    /**
-    *
     * Build Fade
     * @access public
     * @return return_type bare_field_name
     */
-   function buildFade()
+   public function buildFade()
    {
       $alpha_start = 75;
       $alpha_end = 0;
@@ -392,12 +382,17 @@ Class IMG_Reflection {
          $final_alpha = 127 - $alpha;
          //imagefilledrectangle($output, 0, $y, $width, $y, imagecolorallocatealpha($output,  $red, $green, $blue, $final_alpha));
          file_put_contents('colors.txt',$red.' '.$green.' '.$blue.' '.$final_alpha);
-         imagefilledrectangle($this->reflection_source, 0, $y, $this->width, $y, imagecolorallocatealpha($this->reflection_source, $red, $green, $blue, $final_alpha));
+         $fade = imagecolorallocatealpha($this->reflection_source, $red, $green, $blue, $final_alpha);
+         imagefilledrectangle($this->reflection_source, 0, $y, $this->width, $y, $fade);
       }
    }
 
-
-   function buildImageWithReflection()
+   /**
+    * Build Image with Reflection
+    * @access public
+    * @return void
+    */
+   public function buildImageWithReflection()
    {
       if(!$this->reflection_source) { $this->buildReflection(); }
       $finaloutput = imagecreatetruecolor($this->width, $this->height+$this->reflection_height);
@@ -405,5 +400,7 @@ Class IMG_Reflection {
       imagecopy($finaloutput, $this->reflection_source, 0, $this->height, 0, 0, $this->width, $this->reflection_height);
       $this->image_source = $finaloutput;
    }
+   
 }
+
 ?>
