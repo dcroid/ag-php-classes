@@ -1,10 +1,10 @@
 <?php
 /**
- * @revision      $Id:$
+ * @revision      $Id$
  * @created       Apr 22, 2011
- * @category      category
- * @package       package
- * @version       version
+ * @category      Images
+ * @package       Reflection
+ * @version       1.0.0a
  * @copyright     Copyright Alexey Gordeyev IK © 2009-2011 - All rights reserved.
  * @license       GPLv2
  * @author        Alexey Gordeyev IK <aleksej@gordejev.lv>
