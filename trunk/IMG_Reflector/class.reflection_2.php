@@ -14,8 +14,8 @@
 Class IMG_Reflection {
 
    var $path_to_source          = null;    // The full input image path
-   var $path_to_target          = 'img/';    // Path to the output image dir
-   var $path_to_temp            = 'tmp/'; // The temporary image path
+   var $path_to_target          = 'img/';  // Path to the output image dir
+   var $path_to_temp            = 'tmp/';  // The temporary image path
    var $image_name              = null;    // The image name
    var $target_image_prefix     = 'ref_';  // The prefix of the image with reflection
    var $image_source            = null;    // The input image source
@@ -132,10 +132,13 @@ Class IMG_Reflection {
    public function setImageInfo($path_to_source = false)
    {
       $source = ($path_to_source)?$path_to_source:$this->path_to_source;
+      # read information from image file
       $this->image_info   = getimagesize($source);
+      # set image dimensions
       $this->width  = $this->image_info[0];
       $this->height = $this->image_info[1];
       $this->type   = $this->image_info[2];
+      # get image mime type
       $this->mime   = $this->image_info['mime'];
    }
 
@@ -162,19 +165,28 @@ Class IMG_Reflection {
          return false;
       }
       else {
+         # set path to image source
          $this->setPathToSource($path_to_source);
+         # set path to temporary folder
          $this->setPathToTemp($path_to_temp);
+         # cURL initialization
          $ch = curl_init();
          curl_setopt($ch,CURLOPT_URL,$path_to_source);
          curl_setopt($ch,CURLOPT_FAILONERROR, 1);
          curl_setopt($ch,CURLOPT_FOLLOWLOCATION, 1);
          curl_setopt($ch,CURLOPT_AUTOREFERER, 1);
          curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+         # set cURL connection timeout
          curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$this->curl_timeout);
+         # execute cURL
          $this->image_source = curl_exec($ch);
+         # write image to temporary folder
          file_put_contents($this->path_to_temp.$this->image_name,$this->image_source);
+         # set new path to source
          $this->setPathToSource($this->path_to_temp.$this->image_name);
+         # read information from image source
          $this->setImageInfo();
+         # close cURL
          curl_close($ch);
          return true;
       }
