@@ -16,7 +16,6 @@
 Class ImagesHelper
 {
    /**
-    *
     * Convert color from hex to rgb
     * @access public
     * @param  string $color
@@ -75,23 +74,25 @@ Class ImagesHelper
    public static function createimagefromsource($image_source)
    {
       $image = false;
-      $image_type = self::getimageinfo($image_source,'type');
+      if(file_exists($image_source)) {
+         $image_type = self::getimageinfo($image_source,'type');
 
-      if($image_type) {
-         switch ($image_type)
-         {
-            case 1:
-               # GIF
-               $image = imagecreatefromgif($image_source);
-               break;
-            case 2:
-               # JPG
-               $image = imagecreatefromjpeg($image_source);
-               break;
-            case 3:
-               # PNG
-               $image = imagecreatefrompng($image_source);
-               break;
+         if($image_type) {
+            switch ($image_type)
+            {
+               case 1:
+                  # GIF
+                  $image = imagecreatefromgif($image_source);
+                  break;
+               case 2:
+                  # JPG
+                  $image = imagecreatefromjpeg($image_source);
+                  break;
+               case 3:
+                  # PNG
+                  $image = imagecreatefrompng($image_source);
+                  break;
+            }
          }
       }
       return $image;
@@ -233,7 +234,7 @@ Class ImagesHelper
    {
       return self::getimageinfo($image_source,'mime');
    }
-    
+
    /**
     * Clear image filename
     * @access public
@@ -289,9 +290,9 @@ Class ImagesHelper
       $width_dest  = round($width_src/$ratio);
       $height_dest = round($height_src/$ratio);
 
-      $image_destination = imagecreatetruecolor($width_dest,$height_dest);
-      imagecopyresized($image_destination, $image_source, 0, 0, 0, 0, $width_dest, $height_dest, $width_src, $height_src);
-      return $image_destination;
+      $destination_image = imagecreatetruecolor($width_dest,$height_dest);
+      imagecopyresized($destination_image, $image_source, 0, 0, 0, 0, $width_dest, $height_dest, $width_src, $height_src);
+      return $destination_image;
    }
 
    /**
@@ -324,10 +325,48 @@ Class ImagesHelper
       $width_src    = self::width($image_source);
       $height_src   = self::height($image_source);
       $width_dest   = round($width_src * $ratio/100);
-      $height_dest  = round($height_src * $ratio/100);      
+      $height_dest  = round($height_src * $ratio/100);
       return self::resize($image_source,$width_dest,$height_dest);
    }
-    
+
+   /**
+    * Build quadrate image
+    * @access public
+    * @param  string $image_source
+    * @param unknown_type $ratio
+    * @return string
+    */
+   public static function quadrate($image_source,$ratio,$dimension='px')
+   {
+      $width_src    = self::width($image_source);
+      $height_src   = self::height($image_source);
+      $image_source = self::createimagefromsource($image_source);
+      if($dimension == 'px') {
+         $width_dest   = $ratio;
+      } else {
+         $width_dest   = round($width_src * $ratio/100);
+      }
+
+      $destination_image = imagecreatetruecolor($width_dest,$width_dest);
+
+      if ($width_src>$height_src) {
+         imagecopyresized($destination_image,$image_source, 0, 0,
+         round((max($width_src,$height_src)-min($width_src,$height_src))/2),
+         0, $width_dest, $width_dest, min($width_src,$height_src), min($width_src,$height_src));
+      }
+
+      if ($width_src<$height_src) {
+         imagecopyresized($destination_image,$image_source, 0, 0, 0, 0, $width_dest, $width_dest,
+         min($width_src,$height_src), min($width_src,$height_src));
+      }
+
+      if ($width_src==$height_src) {
+         imagecopyresized($destination_image,$image_source, 0, 0, 0, 0, $width_dest, $width_dest, $width_src, $width_src);
+      }
+
+      return $destination_image;
+   }
+
    /**
     * Build image reflection
     * @access public
@@ -383,6 +422,39 @@ Class ImagesHelper
       imagecopy($finaloutput,$reflection_source, 0, $width_src, 0, 0, $width_src, $reflection_height);
 
       return $finaloutput;
+   }
+
+   /**
+    * Rotate image
+    * @access public
+    * @param  string $image_source
+    * @param  int    $degrees
+    * @return string $rotated_image
+    */
+   public static function rotate($image_source,$degrees,$bg_color='',$transparent=true)
+   {
+      $rgb_color = false;
+      if($bg_color) {
+         if(is_array($bg_color)) {
+            $rgb_color = $bg_color;
+         } elseif($bg_color != '') {
+            $rgb_color = self::hextorgb($bg_color);
+         }
+      }
+
+      $image_source = self::createimagefromsource($image_source);
+      $allocated_bg_color = false;
+      if(is_array($rgb_color)) {
+         $allocated_bg_color = imagecolorallocate($image_source, $rgb_color[0], $rgb_color[1], $rgb_color[2]);
+      }
+      $final_bg_color = ($allocated_bg_color)?$allocated_bg_color:0;
+      $rotated_image = imagerotate($image_source, $degrees, $final_bg_color, 0);
+      // $rgb_color
+      if($transparent) {
+         imagecolortransparent($rotated_image, $final_bg_color);
+      }
+
+      return $rotated_image;
    }
 
 }
