@@ -23,11 +23,11 @@ $new_image    = 'test.png';
 # get full information from image 
 $image_info = ImagesHelper::getimageinfo($image_source);
 # get image width
-$width = ImagesHelper::getimageinfo($image_source,'width');
+$width      = ImagesHelper::getimageinfo($image_source,'width');
 # get image height
-$height = ImagesHelper::getimageinfo($image_source,'height');
+$height     = ImagesHelper::getimageinfo($image_source,'height');
 # get image mime/type
-$mime = ImagesHelper::getimageinfo($image_source,'mime');
+$mime       = ImagesHelper::getimageinfo($image_source,'mime');
 
 # Conver image to grayscale
 if($grayscale_image = ImagesHelper::colortograyscale($image_source)) {
@@ -38,10 +38,22 @@ if($grayscale_image = ImagesHelper::colortograyscale($image_source)) {
 # Conver image to negative
 if($negative_image  = ImagesHelper::imagetonegative($image_source)) {
    # save image negative in to file as png
-   ImagesHelper::saveimage($negative_image, $image_source,'bw_','png');
+   ImagesHelper::saveimage($negative_image, $image_source,'ng_','png');
 }
 
-// ImagesHelper::showimage($grayscale_image,'png',100);
+# Resize image example 1
+$new_width = 50; // new image width
+if($resized_image  = ImagesHelper::resizeimage($image_source,$new_width)) {
+   # save thumblain image in to file as jpg
+   ImagesHelper::saveimage($resized_image, $image_source,'thumb_','jpg');   
+}
 
+# Resize image example 2
+$resize_to = 'height';
+$new_value = 30; // new value
+if($resized_image  = ImagesHelper::resizeimage($image_source,$new_value,$resize_to)) {
+   # save thumblain image in to file as jpg
+   ImagesHelper::saveimage($resized_image, $image_source,'thumb_','gif');   
+}
 
 ?>
