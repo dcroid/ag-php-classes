@@ -199,7 +199,7 @@ Class ImagesHelper
    }
 
    /**
-    * Clear image name
+    * Clear image filename
     * @access public
     * @param  string $filename
     * @return string $imagename
