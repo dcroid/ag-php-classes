@@ -3,7 +3,7 @@
  * @revision      $Id$
  * @created       Apr 22, 2011
  * @package       Images
- * @subpackage	  Basic
+ * @subpackage	  Helper
  * @category      Utillites
  * @version       1.0.0
  * @desc          Basic manipulation with image and uttilites class
@@ -13,7 +13,7 @@
  * @link          http://www.agjoomla.com/classes/
  */
 
-Class Images_Basic
+Class ImagesHelper
 {
    /**
     *
