@@ -125,7 +125,7 @@ Class ImagesHelper
       header('content-type: '.$type);
       header('Content-Length: ' . strlen($image));
       $type = str_replace('mime/','',$type);
-      
+
       switch ($type)
       {
          case 'gif':
@@ -152,13 +152,13 @@ Class ImagesHelper
     * @param  string $prefix
     * @param  string $type
     * @param  int    $quality
-    * @return void
+    * @return string
     */
    public static function saveimage($image,$destination,$prefix='new_',$type='png',$quality=100)
    {
       $type = strtolower($type);
       # build new image name
-      if($prefix) {
+      if($prefix || $type) {
          $destination = self::buildimagename($destination,$prefix,$type);
       }
 
@@ -178,7 +178,8 @@ Class ImagesHelper
          default:
             echo 'Unsupported image file format.';
       }
-      imagedestroy($image);
+      // imagedestroy($image);
+      return $destination;
    }
 
    /**
@@ -247,6 +248,32 @@ Class ImagesHelper
       $new_filename .= $prefix.$path_parts['filename'];
       $new_filename .= '.'.$type;
       return $new_filename;
+   }
+
+   /**
+    * Resize image
+    * @access public
+    * @param  string $image_source
+    * @param  int    $ratio
+    * @return string
+    */
+   public static function resizeimage($image_source,$new_size,$dimension = "width")
+   {
+      $width_src    = self::getimageinfo($image_source,'width');
+      $height_src   = self::getimageinfo($image_source,'height');
+      $image_source = self::createimagefromsource($image_source);
+      if($dimension == 'width') {
+         $ratio = $width_src/$new_size;
+      } else {
+         $ratio = $height_src/$new_size;
+      }
+      $width_dest  = round($width_src/$ratio);
+      $height_dest = round($height_src/$ratio);
+
+      $image_destination = imagecreatetruecolor($width_dest,$height_dest);
+      imagecopyresized($image_destination, $image_source, 0, 0, 0, 0, $width_dest, $height_dest, $width_src, $height_src);
+
+      return $image_destination;
    }
 
 }
