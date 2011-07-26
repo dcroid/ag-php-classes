@@ -125,8 +125,10 @@ Class ImagesHelper
    public static function showimage($image,$type='png',$quality=100)
    {
       $type = strtolower($type);
-      header('content-type: image/'.$type);
+      header('content-type: '.$type);
       header('Content-Length: ' . strlen($image));
+      $type = str_replace('mime/','',$type);
+      
       switch ($type)
       {
          case 'gif':
