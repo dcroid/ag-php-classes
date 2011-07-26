@@ -17,7 +17,7 @@ ini_set('display_errors', '1');
 
 require_once 'class.images.helper.php';
 
-$image_source = './images/test.png';
+$image_source = './images/test.jpg';
 $new_image    = 'test.png';
 
 # get full information from image 
@@ -57,7 +57,7 @@ if($negative_image  = ImagesHelper::imagetonegative($image_source)) {
 }
 
 # Resize image example 1
-$new_width = 50; // new image width
+$new_width = 50; // new image width px
 if($resized_image  = ImagesHelper::resizeimage($image_source,$new_width)) {
    # save thumblain image in to file as jpg
    ImagesHelper::saveimage($resized_image, $image_source,'thumb_','jpg');   
@@ -65,30 +65,35 @@ if($resized_image  = ImagesHelper::resizeimage($image_source,$new_width)) {
 
 # Resize image example 2
 $resize_to = 'height';
-$new_value = 30; // new height value
+$new_value = 30; // new height value px
 if($resized_image  = ImagesHelper::resizeimage($image_source,$new_value,$resize_to)) {
    # save thumblain image in to file as jpg
    ImagesHelper::saveimage($resized_image, $image_source,'thumb_','gif');   
 }
 
 # Resize image example 3
-$width = 90;
-$height = 30;
+$width  = 90; # px
+$height = 30; # px
 if($fix_resized_image  = ImagesHelper::resize($image_source,$width,$height)) {
    # save resized image with fixed size in to file as jpg
    ImagesHelper::saveimage($fix_resized_image, $image_source,'fix_','gif');   
 }
 
 # Scale image
-$ratio = 70;
+$ratio = 70; # % 
 if($scaled_image  = ImagesHelper::scale($image_source,$ratio)) {
    # save scaled image in to file as jpg
    ImagesHelper::saveimage($scaled_image, $image_source,'sca_','gif');   
 }
 
+if($quadrate_image  = ImagesHelper::quadrate($image_source,$ratio)) { 
+   # save scaled image in to file as jpg
+   ImagesHelper::saveimage($quadrate_image, $image_source,'qua_','gif'); 
+}
 
 # build reflection 
-if($image_reflection  = ImagesHelper::buildreflection($image_source,25)) {
+$reflection_height = 25; # % 
+if($image_reflection  = ImagesHelper::buildreflection($image_source,$reflection_height)) {
    # save reflection image in to file as gif
    ImagesHelper::saveimage($image_reflection, $image_source,'ref_','gif');  
 }
@@ -99,5 +104,19 @@ if($image_with_reflection  = ImagesHelper::buildimagewithreflection($image_sourc
    ImagesHelper::saveimage($image_with_reflection, $image_source,'wref_','png');   
 }
 
+# rotate image example 1 with transparent background
+$degrees = 55;
+if($rotated_image  = ImagesHelper::rotate($image_source,$degrees)) {
+   # save rotated image in to file as png
+   ImagesHelper::saveimage($rotated_image, $image_source,'rtdt_','png');    
+}
+
+# rotate image example 2 with filled background 
+$bg_color = '#7E58BF';
+$transparent = false;
+if($rotated_image  = ImagesHelper::rotate($image_source,$degrees,$bg_color,$transparent)) {
+   # save rotated image in to file as png
+   ImagesHelper::saveimage($rotated_image, $image_source,'rtdf_','png');    
+}
 
 ?>
