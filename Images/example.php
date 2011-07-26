@@ -22,12 +22,22 @@ $new_image    = 'test.png';
 
 # get full information from image 
 $image_info = ImagesHelper::getimageinfo($image_source);
+
 # get image width
 $width      = ImagesHelper::getimageinfo($image_source,'width');
+# or
+$width      = ImagesHelper::width($image_source);
+
 # get image height
 $height     = ImagesHelper::getimageinfo($image_source,'height');
+# or 
+$height     = ImagesHelper::height($image_source);
+
 # get image mime/type
 $mime       = ImagesHelper::getimageinfo($image_source,'mime');
+# or
+$mime       = ImagesHelper::mime($image_source);
+
 
 # Convert hex color to rgb
 $hex_color = '#cccccc';
@@ -55,10 +65,39 @@ if($resized_image  = ImagesHelper::resizeimage($image_source,$new_width)) {
 
 # Resize image example 2
 $resize_to = 'height';
-$new_value = 30; // new value
+$new_value = 30; // new height value
 if($resized_image  = ImagesHelper::resizeimage($image_source,$new_value,$resize_to)) {
    # save thumblain image in to file as jpg
    ImagesHelper::saveimage($resized_image, $image_source,'thumb_','gif');   
 }
+
+# Resize image example 3
+$width = 90;
+$height = 30;
+if($fix_resized_image  = ImagesHelper::resize($image_source,$width,$height)) {
+   # save resized image with fixed size in to file as jpg
+   ImagesHelper::saveimage($fix_resized_image, $image_source,'fix_','gif');   
+}
+
+# Scale image
+$ratio = 70;
+if($scaled_image  = ImagesHelper::scale($image_source,$ratio)) {
+   # save scaled image in to file as jpg
+   ImagesHelper::saveimage($scaled_image, $image_source,'sca_','gif');   
+}
+
+
+# build reflection 
+if($image_reflection  = ImagesHelper::buildreflection($image_source,25)) {
+   # save reflection image in to file as gif
+   ImagesHelper::saveimage($image_reflection, $image_source,'ref_','gif');  
+}
+
+# build image with reflection
+if($image_with_reflection  = ImagesHelper::buildimagewithreflection($image_source)) {
+   # save resulted image in to file as png
+   ImagesHelper::saveimage($image_with_reflection, $image_source,'wref_','png');   
+}
+
 
 ?>

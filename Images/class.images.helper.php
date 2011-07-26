@@ -98,20 +98,6 @@ Class ImagesHelper
    }
 
    /**
-    *
-    * Save image to local file
-    * @access public
-    * @param  string $image
-    * @param  string $destination
-    * @param  string $type
-    * @return mixed
-    */
-   public static function saveimagetofile($image,$destination,$type=false)
-   {
-
-   }
-
-   /**
     * Show image to browser
     * @access public
     * @param  string $image
@@ -216,6 +202,39 @@ Class ImagesHelper
    }
 
    /**
+    * Get image width
+    * @access public
+    * @param  string $image_source
+    * @return int
+    */
+   public static function width($image_source)
+   {
+      return self::getimageinfo($image_source,'width');
+   }
+
+   /**
+    * Get image height
+    * @access public
+    * @param  string $image_source
+    * @return int
+    */
+   public static function height($image_source)
+   {
+      return self::getimageinfo($image_source,'height');
+   }
+
+   /**
+    * Get image mime/type
+    * @access public
+    * @param  string $image_source
+    * @return int
+    */
+   public static function mime($image_source)
+   {
+      return self::getimageinfo($image_source,'mime');
+   }
+    
+   /**
     * Clear image filename
     * @access public
     * @param  string $filename
@@ -251,7 +270,7 @@ Class ImagesHelper
    }
 
    /**
-    * Resize image
+    * Proportional resize image
     * @access public
     * @param  string $image_source
     * @param  int    $ratio
@@ -259,8 +278,8 @@ Class ImagesHelper
     */
    public static function resizeimage($image_source,$new_size,$dimension = "width")
    {
-      $width_src    = self::getimageinfo($image_source,'width');
-      $height_src   = self::getimageinfo($image_source,'height');
+      $width_src    = self::width($image_source);
+      $height_src   = self::height($image_source);
       $image_source = self::createimagefromsource($image_source);
       if($dimension == 'width') {
          $ratio = $width_src/$new_size;
@@ -272,8 +291,98 @@ Class ImagesHelper
 
       $image_destination = imagecreatetruecolor($width_dest,$height_dest);
       imagecopyresized($image_destination, $image_source, 0, 0, 0, 0, $width_dest, $height_dest, $width_src, $height_src);
-
       return $image_destination;
+   }
+
+   /**
+    * Resize image to fixed dimensions
+    * @access public
+    * @param  string $image_source
+    * @param  int    $width
+    * @param  int    $height
+    * @return string $new_image
+    */
+   public static function resize($image_source,$width,$height)
+   {
+      $width_src    = self::width($image_source);
+      $height_src   = self::height($image_source);
+      $image_source = self::createimagefromsource($image_source);
+      $new_image = imagecreatetruecolor($width, $height);
+      imagecopyresampled($new_image, $image_source, 0, 0, 0, 0, $width, $height, $width_src, $height_src);
+      return $new_image;
+   }
+
+   /**
+    * Scale image size
+    * @access public
+    * @param  string $image_source
+    * @param  int    $ratio
+    * @return string
+    */
+   public static function scale($image_source,$ratio)
+   {
+      $width_src    = self::width($image_source);
+      $height_src   = self::height($image_source);
+      $width_dest   = round($width_src * $ratio/100);
+      $height_dest  = round($height_src * $ratio/100);      
+      return self::resize($image_source,$width_dest,$height_dest);
+   }
+    
+   /**
+    * Build image reflection
+    * @access public
+    * @param  string $image_source
+    * @param  double $reflection_height
+    * @return string $buffer
+    */
+   public static function buildreflection($image_source,$ratio=30)
+   {
+      $width_src    = self::width($image_source);
+      $height_src   = self::height($image_source);
+      $image_source = self::createimagefromsource($image_source);
+
+      # calculate reflection height
+      $reflection_height = round($height_src * ($ratio/100));
+
+      #	We'll store the final reflection in $output. $buffer is for internal use.
+      $output = imagecreatetruecolor($width_src, $reflection_height);
+      $buffer = imagecreatetruecolor($width_src, $reflection_height);
+
+      #	Copy the bottom-most part of the source image into the output
+      imagecopy($output, $image_source, 0, 0, 0, $height_src - $reflection_height,$width_src, $reflection_height);
+
+      #	Rotate and flip it (strip flip method)
+      for ($y = 0; $y < $reflection_height; $y++)
+      {
+         imagecopy($buffer, $output, 0, $y, 0, $reflection_height - $y - 1, $width_src, 1);
+      }
+      imagedestroy($output);
+      return $buffer;
+   }
+
+   /**
+    * Build Image with Reflection
+    * @access public
+    * @return void
+    */
+   public static function buildimagewithreflection($image_source,$reflection_source=false,$ratio=30)
+   {
+      $width_src    = self::width($image_source);
+      $height_src   = self::height($image_source);
+       
+      if(!$reflection_source) {
+         $reflection_source = self::buildreflection($image_source,$ratio);
+      }
+      $image_source = self::createimagefromsource($image_source);
+
+      # calculate reflection height
+      $reflection_height = round($height_src * ($ratio/100));
+
+      $finaloutput = imagecreatetruecolor($width_src, $height_src + $reflection_height);
+      imagecopy($finaloutput,$image_source, 0, 0, 0, 0, $width_src, $height_src);
+      imagecopy($finaloutput,$reflection_source, 0, $width_src, 0, 0, $width_src, $reflection_height);
+
+      return $finaloutput;
    }
 
 }
