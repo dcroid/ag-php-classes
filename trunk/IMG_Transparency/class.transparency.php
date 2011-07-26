@@ -20,7 +20,7 @@ class IMG_Transparency {
    var $new_image_name;
    var $save_to_folder;
 
-   function make_transparent()
+   function buildtransparent()
    {
       $info = GetImageSize($this->source_image);
       $width = $info[0];
@@ -118,7 +118,7 @@ class IMG_Transparency {
       return array('result' => $process, 'new_file_path' => $save_path);
    }
 
-   function new_image_name($filename)
+   function setnewimagename($filename)
    {
       $string = trim($filename);
       $string = strtolower($string);
