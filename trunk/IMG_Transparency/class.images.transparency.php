@@ -1,9 +1,10 @@
 <?php
 /**
- * @revision      $Id:$
+ * @revision      $Id$
  * @created       Apr 22, 2011
- * @category      Images
- * @package       Transparency
+ * @package       Images
+ * @subpackage	  Transparency
+ * @category      Utillites
  * @version       1.0.0
  * @desc          Image Transparency Class
  * @copyright     Copyright Alexey Gordeyev IK � 2009-2011 - All rights reserved.
@@ -13,7 +14,7 @@
  */
 
 
-class IMG_Transparency {
+class Images_Transparency {
 
    var $source_image;
    var $pct;
