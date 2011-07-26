@@ -42,7 +42,7 @@ Class ImagesHelper
    public static function colortograyscale($image_source)
    {
       $image = false;
-      if(!file_exists($image_source)) {
+      if(file_exists($image_source)) {
          $image = self::createimagefromsource($image_source);
          imagefilter($image,IMG_FILTER_GRAYSCALE);
       }
@@ -58,7 +58,7 @@ Class ImagesHelper
    public static function imagetonegative($image_source)
    {
       $image = false;
-      if(!file_exists($image_source)) {
+      if(file_exists($image_source)) {
          $image = self::createimagefromsource($image_source);
          imagefilter($image,IMG_FILTER_NEGATE);
       }
@@ -92,9 +92,6 @@ Class ImagesHelper
                # PNG
                $image = imagecreatefrompng($image_source);
                break;
-            default:
-               # Uncnown format
-               $image = false;
          }
       }
       return $image;
@@ -159,11 +156,11 @@ Class ImagesHelper
     */
    public static function saveimage($image,$destination,$prefix='new_',$type='png',$quality=100)
    {
+      $type = strtolower($type);
       # build new image name
       if($prefix) {
-         $destination = self::buildimagename($destination,$prefix);
+         $destination = self::buildimagename($destination,$prefix,$type);
       }
-      $type = strtolower($type);
 
       switch ($type)
       {
@@ -175,7 +172,8 @@ Class ImagesHelper
             imagejpeg($image, $destination,$quality);
             break;
          case 'png':
-            imagepng($image,$destination,$quality);
+            // ,$quality echo $quality;
+            imagepng($image,$destination);
             break;
          default:
             echo 'Unsupported image file format.';
@@ -241,13 +239,13 @@ Class ImagesHelper
     * @param  string $prefix
     * @return string $new_filename
     */
-   public static function buildimagename($old_filename,$prefix)
+   public static function buildimagename($old_filename,$prefix,$type)
    {
       $path_parts = pathinfo($old_filename);
-      $slash = strstr(PHP_OS,'WIN') ? '\/' : '/';
+      $slash = '/';
       $new_filename  = $path_parts['dirname'].$slash;
-      $new_filename .= $prefix.$path_parts['basename'];
-      $new_filename .= '.'.$path_parts['extension'];
+      $new_filename .= $prefix.$path_parts['filename'];
+      $new_filename .= '.'.$type;
       return $new_filename;
    }
 
