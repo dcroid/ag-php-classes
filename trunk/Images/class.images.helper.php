@@ -6,8 +6,8 @@
  * @subpackage	  Helper
  * @category      Utillites
  * @version       1.0.0
- * @desc          Basic manipulation with image and uttilites class
- * @copyright     Copyright Alexey Gordeyev IK (c) 2009-2011 - All rights reserved.
+ * @desc          Basic manipulation with image
+ * @copyright     Copyright Alexey Gordeyev IK © 2009-2011 - All rights reserved.
  * @license       GPLv2
  * @author        Alexey Gordeyev IK <aleksej@gordejev.lv>
  * @link          http://www.agjoomla.com/classes/
@@ -45,6 +45,22 @@ Class ImagesHelper
       if(!file_exists($image_source)) {
          $image = self::createimagefromsource($image_source);
          imagefilter($image,IMG_FILTER_GRAYSCALE);
+      }
+      return $image;
+   }
+
+   /**
+    * Conver image to negative
+    * @access public
+    * @param  string $image_source
+    * @return string $image
+    */
+   public static function imagetonegative($image_source)
+   {
+      $image = false;
+      if(!file_exists($image_source)) {
+         $image = self::createimagefromsource($image_source);
+         imagefilter($image,IMG_FILTER_NEGATE);
       }
       return $image;
    }
@@ -164,7 +180,7 @@ Class ImagesHelper
       }
       imagedestroy($image);
    }
-    
+
    /**
     * Get basic information from Image source
     * @access public
@@ -232,7 +248,7 @@ Class ImagesHelper
       $new_filename .= '.'.$path_parts['extension'];
       return $new_filename;
    }
-    
+
 }
 
 
