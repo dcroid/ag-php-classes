@@ -1,7 +1,7 @@
 <?php
 /**
  * @revision      $Id$
- * @created       Apr 22, 2011
+ * @created       Jul 22, 2011
  * @package       Images
  * @subpackage	  Helper
  * @category      Utillites
@@ -110,6 +110,7 @@ Class ImagesHelper
    {
       $type = strtolower($type);
       header('content-type: image/'.$type);
+      header('Content-Length: ' . strlen($image));
       switch ($type)
       {
          case 'gif':
@@ -121,6 +122,42 @@ Class ImagesHelper
             break;
          case 'png':
             imagepng($image);
+            break;
+         default:
+            echo 'Unsupported image file format.';
+      }
+      imagedestroy($image);
+   }
+
+   /**
+    * Save image in to file
+    * @access public
+    * @param  string $image
+    * @param  string $destination
+    * @param  string $prefix
+    * @param  string $type
+    * @param  int    $quality
+    * @return void
+    */
+   public static function saveimage($image,$destination,$prefix='new_',$type='png',$quality=100)
+   {
+      # build new image name
+      if($prefix) {
+         $destination = self::buildimagename($destination,$prefix);
+      }
+      $type = strtolower($type);
+
+      switch ($type)
+      {
+         case 'gif':
+            imagegif($image,$destination);
+            break;
+         case 'jpg':
+         case 'jpeg':
+            imagejpeg($image, $destination,$quality);
+            break;
+         case 'png':
+            imagepng($image,$destination,$quality);
             break;
          default:
             echo 'Unsupported image file format.';
@@ -161,8 +198,41 @@ Class ImagesHelper
       } else { return false; }
    }
 
+   /**
+    * Clear image name
+    * @access public
+    * @param  string $filename
+    * @return string $imagename
+    */
+   public static function clearimagename($filename)
+   {
+      $imagename = trim($filename);
+      $imagename = strtolower($string);
+      $imagename = trim(ereg_replace("[^ A-Za-z0-9_]", " ", $imagename));
+      $imagename = ereg_replace("[ \t\n\r]+", "_", $imagename);
+      $imagename = str_replace(" ", '_', $imagename);
+      $imagename = ereg_replace("[ _]+", "_", $imagename);
 
+      return $imagename;
+   }
 
+   /**
+    * Build new image filename name with prefix
+    * @access public
+    * @param  string $old_filename
+    * @param  string $prefix
+    * @return string $new_filename
+    */
+   public static function buildimagename($old_filename,$prefix)
+   {
+      $path_parts = pathinfo($old_filename);
+      $slash = strstr(PHP_OS,'WIN') ? '\/' : '/';
+      $new_filename  = $path_parts['dirname'].$slash;
+      $new_filename .= $prefix.$path_parts['basename'];
+      $new_filename .= '.'.$path_parts['extension'];
+      return $new_filename;
+   }
+    
 }
 
 
