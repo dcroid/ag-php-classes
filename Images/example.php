@@ -29,6 +29,11 @@ $height     = ImagesHelper::getimageinfo($image_source,'height');
 # get image mime/type
 $mime       = ImagesHelper::getimageinfo($image_source,'mime');
 
+# Convert hex color to rgb
+$hex_color = '#cccccc';
+$rgb_color = ImagesHelper::hextorgb($hex_color);
+// var_dump($rgb_color);
+
 # Conver image to grayscale
 if($grayscale_image = ImagesHelper::colortograyscale($image_source)) {
    # save grayscale image in to file as gif
