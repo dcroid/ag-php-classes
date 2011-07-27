@@ -122,14 +122,14 @@ if($rotated_image  = ImagesHelper::rotate($image_source,$degrees,$bg_color,$tran
 # build text watemark
 $text = 'agjoomla';
 $font = './fonts/ithornet.ttf';
-if($watermarked_image  = ImagesHelper::buildwatermarktext( $image_source, $text, $font)) {
+if($watermarked_image  = ImagesHelper::buildtextwatermark( $image_source, $text, $font)) {
    # save watermarked image in to file in jpg format
    ImagesHelper::saveimage($watermarked_image, $image_source,'wtmt_','jpg'); 
 }
 
 # build image watemark
 $watermark_img = './images/wtm.png';
-if($watermarked_image  = ImagesHelper::buildwatermarkfromimage($image_source, $watermark_img)) {
+if($watermarked_image  = ImagesHelper::buildimagewatermark($image_source, $watermark_img)) {
    # save watermarked image in to file in gif format
    ImagesHelper::saveimage($watermarked_image, $image_source,'wtmi_','gif');    
 }

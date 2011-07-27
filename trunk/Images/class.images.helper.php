@@ -473,7 +473,7 @@ Class ImagesHelper
     * @param  imt    $alpha_level  - watemark text alpha level (default = 100)
     * @return object               - the resulting image
     */
-   function buildwatermarktext( $image_source, $text, $font, $color = '#fff', $alpha_level = 100 )
+   function buildtextwatermark( $image_source, $text, $font, $color = '#fff', $alpha_level = 100 )
    {
       $width_src    = self::width($image_source);
       $height_src   = self::height($image_source);
@@ -503,7 +503,7 @@ Class ImagesHelper
     * @param  int    $y             - watemark coordinates on the y-axis (default = 5)
     * @return object                - the resulting image
     */
-   function buildwatermarkfromimage($image_source, $watermark_img, $alpha_level = 100, $x = 5, $y = 5)
+   function buildimagewatermark($image_source, $watermark_img, $alpha_level = 100, $x = 5, $y = 5)
    {
       $watermark_width  = self::width($watermark_img);
       $watermark_height = self::height($watermark_img);
