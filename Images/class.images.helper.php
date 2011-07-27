@@ -493,7 +493,7 @@ Class ImagesHelper
    }
 
    /**
-    * Build watermark from image
+    * Build watermarked image from another image
     * @access public
     * @param  string $image_source  - path to image source
     * @param  string $watermark_img - path to watemark image source
