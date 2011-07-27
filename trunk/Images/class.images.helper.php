@@ -99,6 +99,25 @@ Class ImagesHelper
    }
 
    /**
+    * Convert image to another format
+    * @access public
+    * @param  string $image_source - path to image source
+    * @param  string $format       - new image format
+    * @param  string $prefix       -
+    * @param  string $new_filename - new image filename
+    * @return string               - full path to destination
+    */
+   public static function convert($image_source,$format = 'png',$prefix = '',$new_filename = false)
+   {
+      $new_filename = $image_source;
+      $image = self::createimagefromsource($image_source);
+      if($new_filename) {
+         $destination = $new_filename;
+      }
+      return self::saveimage($image,$destination,$prefix,$format);
+   }
+
+   /**
     * Output image in to browser
     * @access public
     * @param  object $image   - source image as object
@@ -403,69 +422,54 @@ Class ImagesHelper
    }
 
    /**
-    * Build faded reflection
-    * @access public
-    * @param unknown_type $image_source
-    * @param unknown_type $bg_color
-    * @param unknown_type $ratio
-    * @param unknown_type $transparent
-    * @return return_type bare_field_name
-    */
-   public static function buildfadedreflection($image_source,$bg_color = "#fff",$ratio = 30,$transparent = true)
-   {
-      $faded_reflection = self::buildreflection($image_source,$ratio);
-      $rgb_color = self::hextorgb($bg_color);
-
-      if(is_array($rgb_color)) {
-         $allocated_bg_color = imagecolorallocate($faded_reflection, $rgb_color[0], $rgb_color[1], $rgb_color[2]);
-      }
-      $final_bg_color = ($allocated_bg_color)?$allocated_bg_color:0;
-
-      if($transparent) {
-         imagecolortransparent($faded_reflection, $final_bg_color);
-      }
-
-      return $faded_reflection;
-   }
-
-
-
-   /**
-    * Build Image with Reflection
+    * Build image with reflection
     * @access public
     * @param  string $image_source      - path to image source
-    * @param  mixed  $reflection_source - path to reflection image source (default = false)
-    * @param  int    $ratio             - reflection height in % of the main image
+    * @param  int    $ratio             - reflection ratio %
     * @return object                    - the resulting image
     */
-   public static function buildimagewithreflection($image_source,$reflection_source=false,$ratio=30)
+   function buildimagewithreflection($image_source,$ratio = 30)
    {
       $width_src    = self::width($image_source);
       $height_src   = self::height($image_source);
-       
-      if(!$reflection_source) {
-         $reflection_source = self::buildreflection($image_source,$ratio);
-      }
       $image_source = self::createimagefromsource($image_source);
 
       # calculate reflection height
       $reflection_height = round($height_src * ($ratio/100));
 
-      $finaloutput = imagecreatetruecolor($width_src, $height_src + $reflection_height);
-      imagecopy($finaloutput,$image_source, 0, 0, 0, 0, $width_src, $height_src);
-      imagecopy($finaloutput,$reflection_source, 0, $height_src, 0, 0, $width_src, $reflection_height);
+      $reflected = imagecreatetruecolor($width_src,$height_src+$reflection_height);
+      imagealphablending($reflected, false);
+      imagesavealpha($reflected, true);
 
-      return $finaloutput;
+      imagecopy($reflected, $image_source, 0, 0, 0, 0, $width_src, $height_src);
+
+      $alpha_step = 80 / $reflection_height;
+      for ($y = 1; $y <= $reflection_height; $y++) {
+         for ($x = 0; $x < $width_src; $x++) {
+            # copy pixel from x / $src_height - y to x / $src_height + y
+            $rgb_color = imagecolorat($image_source, $x, $height_src - $y);
+
+            $alpha = ($rgb_color & 0x7F000000) >> 24;
+            $alpha =  max($alpha, 47 + ($y * $alpha_step));
+            $rgb_color = imagecolorsforindex($image_source, $rgb_color);
+            $rgb_color = imagecolorallocatealpha($reflected, $rgb_color['red'], $rgb_color['green'], $rgb_color['blue'], $alpha);
+            imagesetpixel($reflected, $x, $height_src + $y - 1, $rgb_color);
+         }
+      }
+
+      return $reflected;
    }
 
    public static function fade($image_source,$alpha_start,$alpha_end,$bg_color = "#fff")
    {
+      if ($alpha_start < 1 || $alpha_start > 127) { $alpha_start = 80; }
+   	  if ($alpha_end < 1 || $alpha_end > 0)	{ $alpha_end = 0; }
       $alpha_length = abs($alpha_start - $alpha_end);
       $rgb_color    = self::hextorgb($bg_color);
       $width_src    = self::width($image_source);
       $height_src   = self::height($image_source);
-      $finaloutput = self::createimagefromsource($image_source);
-      imagelayereffect($finaloutput, IMG_EFFECT_OVERLAY);
+      $faded        = self::createimagefromsource($image_source);
+      imagelayereffect($faded, IMG_EFFECT_OVERLAY);
 
       for ($y = 0; $y <= $height_src; $y++)
       {
@@ -480,13 +484,13 @@ Class ImagesHelper
          }
          # Rejig it because of the way in which the image effect overlay works
          $final_alpha = 127 - $alpha;
-         $allocated_color = imagecolorallocatealpha($finaloutput, $rgb_color[0], $rgb_color[1], $rgb_color[2], $final_alpha);
-         imagefilledrectangle($finaloutput, 0, $y, $width_src, $y, $allocated_color);
+         $allocated_color = imagecolorallocatealpha($faded, $rgb_color[0], $rgb_color[1], $rgb_color[2], $final_alpha);
+         imagefilledrectangle($faded, 0, $y, $width_src, $y, $allocated_color);
       }
-      return $finaloutput;
+      return $faded;
    }
-    
-    
+
+
    /**
     * Rotate image
     * @access public
@@ -563,19 +567,66 @@ Class ImagesHelper
     * @param  int    $y             - watemark coordinates on the y-axis (default = 5)
     * @return object                - the resulting image
     */
-   public static function buildimagewatermark($image_source, $watermark_img, $alpha_level = 100, $x = 5, $y = 5)
+   public static function buildimagewatermark($image_source, $watermark_img, $position = 'random', $alpha_level = 100, $x = 5, $y = 5)
    {
       $watermark_width  = self::width($watermark_img);
       $watermark_height = self::height($watermark_img);
-      $watermark_img = self::createimagefromsource($watermark_img);
+      $watermark_img    = self::createimagefromsource($watermark_img);
 
-      $width_src    = self::width($image_source);
-      $height_src   = self::height($image_source);
-      $image_source = self::createimagefromsource($image_source);
+      $width_src        = self::width($image_source);
+      $height_src       = self::height($image_source);
+      $image_source     = self::createimagefromsource($image_source);
 
       $dest_x = $width_src - $watermark_width - $x;
       $dest_y = $height_src - $watermark_height - $y;
       imagecopymerge($image_source, $watermark_img, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height, $alpha_level);
+      /*
+       if ($position == 'random') {
+       $position = rand(1,8);
+       }
+       switch ($position) {
+       case 'top-right':
+       case 'right-top':
+       case 1:
+       imagecopy($dst_image, $src_image, ($dest_x-$src_w), 0, 0, 0, $src_w, $src_h);
+       break;
+       case 'top-left':
+       case 'left-top':
+       case 2:
+       imagecopy($dst_image, $src_image, 0, 0, 0, 0, $src_w, $src_h);
+       break;
+       case 'bottom-right':
+       case 'right-bottom':
+       case 3:
+       imagecopy($dst_image, $src_image, ($dest_x-$src_w), ($dst_h-$src_h), 0, 0, $src_w, $src_h);
+       break;
+       case 'bottom-left':
+       case 'left-bottom':
+       case 4:
+       imagecopy($dst_image, $src_image, 0 , ($dst_h-$src_h), 0, 0, $src_w, $src_h);
+       break;
+       case 'center':
+       case 5:
+       imagecopy($dst_image, $src_image, (($dest_x/2)-($src_w/2)), (($dst_h/2)-($src_h/2)), 0, 0, $src_w, $src_h);
+       break;
+       case 'top':
+       case 6:
+       imagecopy($dst_image, $src_image, (($dest_x/2)-($src_w/2)), 0, 0, 0, $src_w, $src_h);
+       break;
+       case 'bottom':
+       case 7:
+       imagecopy($dst_image, $src_image, (($dest_x/2)-($src_w/2)), ($dst_h-$src_h), 0, 0, $src_w, $src_h);
+       break;
+       case 'left':
+       case 8:
+       imagecopy($dst_image, $src_image, 0, (($dst_h/2)-($src_h/2)), 0, 0, $src_w, $src_h);
+       break;
+       case 'right':
+       case 9:
+       imagecopy($dst_image, $src_image, ($dest_x-$src_w), (($dst_h/2)-($src_h/2)), 0, 0, $src_w, $src_h);
+       break;
+       }
+       */
 
       return $image_source;
    }
