@@ -568,84 +568,59 @@ Class ImagesHelper
    /**
     * Draws the gradient
     * @access public
-    * @param  string $im
+    * @param  string $image_source
     * @param  string $direction
     * @param  string $start
     * @param  string $end
-    * @return object
+    * @return object                - the resulting image
     */
-   function fill($im,$direction,$start,$end,$step = 0) {
+   function fill($image_source,$direction,$start,$end,$step = 0)
+   {
+      list($r1,$g1,$b1) = self::hex2rgb($end);
+      list($r2,$g2,$b2) = self::hex2rgb($start);
+      $width            = self::width($image_source);
+      $height           = self::height($image_source);
+      $im               = self::createimagefromsource($image_source);
+      $center_x         = $width/2;
+      $center_y         = $height/2;
+      /*
+       $width = imagesx($im);
+       $height = imagesy($im);
+       */
 
       switch($direction) {
          case 'horizontal':
+         case 'vertical':
             $line_numbers = imagesx($im);
             $line_width = imagesy($im);
             list($r1,$g1,$b1) = self::hex2rgb($start);
             list($r2,$g2,$b2) = self::hex2rgb($end);
             break;
-         case 'vertical':
-            $line_numbers = imagesy($im);
-            $line_width = imagesx($im);
-            list($r1,$g1,$b1) = self::hex2rgb($start);
-            list($r2,$g2,$b2) = self::hex2rgb($end);
-            break;
          case 'ellipse':
-            $width = imagesx($im);
-            $height = imagesy($im);
             $rh=$height>$width?1:$width/$height;
             $rw=$width>$height?1:$height/$width;
             $line_numbers = min($width,$height);
-            $center_x = $width/2;
-            $center_y = $height/2;
-            list($r1,$g1,$b1) = self::hex2rgb($end);
-            list($r2,$g2,$b2) = self::hex2rgb($start);
             imagefill($im, 0, 0, imagecolorallocate( $im, $r1, $g1, $b1 ));
             break;
          case 'ellipse2':
-            $width = imagesx($im);
-            $height = imagesy($im);
             $rh=$height>$width?1:$width/$height;
             $rw=$width>$height?1:$height/$width;
             $line_numbers = sqrt(pow($width,2)+pow($height,2));
-            $center_x = $width/2;
-            $center_y = $height/2;
-            list($r1,$g1,$b1) = self::hex2rgb($end);
-            list($r2,$g2,$b2) = self::hex2rgb($start);
             break;
          case 'circle':
-            $width = imagesx($im);
-            $height = imagesy($im);
             $line_numbers = sqrt(pow($width,2)+pow($height,2));
-            $center_x = $width/2;
-            $center_y = $height/2;
             $rh = $rw = 1;
-            list($r1,$g1,$b1) = self::hex2rgb($end);
-            list($r2,$g2,$b2) = self::hex2rgb($start);
             break;
          case 'circle2':
-            $width = imagesx($im);
-            $height = imagesy($im);
             $line_numbers = min($width,$height);
-            $center_x = $width/2;
-            $center_y = $height/2;
             $rh = $rw = 1;
-            list($r1,$g1,$b1) = self::hex2rgb($end);
-            list($r2,$g2,$b2) = self::hex2rgb($start);
             imagefill($im, 0, 0, imagecolorallocate( $im, $r1, $g1, $b1 ));
             break;
          case 'square':
          case 'rectangle':
-            $width = imagesx($im);
-            $height = imagesy($im);
             $line_numbers = max($width,$height)/2;
-            list($r1,$g1,$b1) = self::hex2rgb($end);
-            list($r2,$g2,$b2) = self::hex2rgb($start);
             break;
          case 'diamond':
-            list($r1,$g1,$b1) = self::hex2rgb($end);
-            list($r2,$g2,$b2) = self::hex2rgb($start);
-            $width = imagesx($im);
-            $height = imagesy($im);
             $rh=$height>$width?1:$width/$height;
             $rw=$width>$height?1:$height/$width;
             $line_numbers = min($width,$height);
@@ -695,7 +670,8 @@ Class ImagesHelper
             default:
          }
       }
+      return $im;
    }
-    
+
 }
 ?>
