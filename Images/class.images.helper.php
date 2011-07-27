@@ -18,8 +18,8 @@ Class ImagesHelper
    /**
     * Convert color from hex to rgb
     * @access public
-    * @param  string $color
-    * @return array  $rgb
+    * @param  string $color - color in hex format
+    * @return array         - rgb color as array
     */
    public static function hextorgb($color) {
       if (is_array($color)) return $color;
@@ -34,9 +34,8 @@ Class ImagesHelper
    /**
     * Convert color image to grayscale
     * @access public
-    * @param  string $image_source
-    * @param  string $prefix
-    * @return mixed
+    * @param  string $image_source - path to image source
+    * @return mixed                - resulted image object or false
     */
    public static function colortograyscale($image_source)
    {
@@ -51,8 +50,8 @@ Class ImagesHelper
    /**
     * Conver image to negative
     * @access public
-    * @param  string $image_source
-    * @return string $image
+    * @param  string $image_source - path to image source
+    * @return mixed                - resulted image object or false
     */
    public static function imagetonegative($image_source)
    {
@@ -68,8 +67,8 @@ Class ImagesHelper
     *
     * Create image from source
     * @access public
-    * @param  string $image_source
-    * @return mixed
+    * @param  string $image_source - path to image source
+    * @return mixed                - image object or false
     */
    public static function createimagefromsource($image_source)
    {
@@ -99,11 +98,11 @@ Class ImagesHelper
    }
 
    /**
-    * Show image to browser
+    * Output image in to browser
     * @access public
-    * @param  string $image
-    * @param  string $type
-    * @param  int    $quality
+    * @param  object $image   - source image as object 
+    * @param  string $type    - output image format (default = png)
+    * @param  int    $quality - resulted image quality in % (default = 100)
     * @return void
     */
    public static function showimage($image,$type='png',$quality=100)
@@ -134,12 +133,12 @@ Class ImagesHelper
    /**
     * Save image in to file
     * @access public
-    * @param  string $image
-    * @param  string $destination
-    * @param  string $prefix
-    * @param  string $type
-    * @param  int    $quality
-    * @return string
+    * @param  object $image       - image source as object
+    * @param  string $destination - output destination path and filename
+    * @param  string $prefix      - prefix for new image filename (default = new_)
+    * @param  string $type        - new image format (default = png)
+    * @param  int    $quality     - resulted image quality (default = 100)
+    * @return string              - full path to resulted image 
     */
    public static function saveimage($image,$destination,$prefix='new_',$type='png',$quality=100)
    {
@@ -172,9 +171,9 @@ Class ImagesHelper
    /**
     * Get basic information from Image source
     * @access public
-    * @param  string $image_source
-    * @param  string $info_type
-    * @return mixed
+    * @param  string $image_source - pat to image source
+    * @param  string $info_type    - type of the returned information
+    * @return mixed                - source image information (int, string or array)
     */
    public static function getimageinfo($image_source,$info_type=false)
    {
@@ -205,8 +204,8 @@ Class ImagesHelper
    /**
     * Get image width
     * @access public
-    * @param  string $image_source
-    * @return int
+    * @param  string $image_source - path to image source
+    * @return int                  - source image width in px
     */
    public static function width($image_source)
    {
@@ -216,8 +215,8 @@ Class ImagesHelper
    /**
     * Get image height
     * @access public
-    * @param  string $image_source
-    * @return int
+    * @param  string $image_source - path to image source
+    * @return int                  - source image width in px
     */
    public static function height($image_source)
    {
@@ -227,8 +226,8 @@ Class ImagesHelper
    /**
     * Get image mime/type
     * @access public
-    * @param  string $image_source
-    * @return int
+    * @param  string $image_source - path to image source
+    * @return string               - source image mime/type
     */
    public static function mime($image_source)
    {
@@ -236,10 +235,10 @@ Class ImagesHelper
    }
 
    /**
-    * Clear image filename
+    * Clear (normalize) image filename
     * @access public
-    * @param  string $filename
-    * @return string $imagename
+    * @param  string $filename  - source image filename
+    * @return string $imagename - cleared filename
     */
    public static function clearimagename($filename)
    {
@@ -256,9 +255,9 @@ Class ImagesHelper
    /**
     * Build new image filename name with prefix
     * @access public
-    * @param  string $old_filename
-    * @param  string $prefix
-    * @return string $new_filename
+    * @param  string $old_filename - source image filename
+    * @param  string $prefix       - filename prefix
+    * @return string               - new image filename
     */
    public static function buildimagename($old_filename,$prefix,$type)
    {
@@ -273,9 +272,10 @@ Class ImagesHelper
    /**
     * Proportional resize image
     * @access public
-    * @param  string $image_source
-    * @param  int    $ratio
-    * @return string
+    * @param  string $image_source - path to image source
+    * @param  int    $ratio        -
+    * @param  string $dimension    -
+    * @return object               - the resulting image
     */
    public static function resizeimage($image_source,$new_size,$dimension = "width")
    {
@@ -298,10 +298,10 @@ Class ImagesHelper
    /**
     * Resize image to fixed dimensions
     * @access public
-    * @param  string $image_source
-    * @param  int    $width
-    * @param  int    $height
-    * @return string $new_image
+    * @param  string $image_source - path to image source
+    * @param  int    $width        - new image width in px
+    * @param  int    $height       - new image height in px
+    * @return object               - the resulting image
     */
    public static function resize($image_source,$width,$height)
    {
@@ -316,9 +316,9 @@ Class ImagesHelper
    /**
     * Scale image size
     * @access public
-    * @param  string $image_source
-    * @param  int    $ratio
-    * @return string
+    * @param  string $image_source - path to image source
+    * @param  int    $ratio        - image scaling value in %
+    * @return object               - the resulting image
     */
    public static function scale($image_source,$ratio)
    {
@@ -332,9 +332,10 @@ Class ImagesHelper
    /**
     * Build quadrate image
     * @access public
-    * @param  string $image_source
-    * @param unknown_type $ratio
-    * @return string
+    * @param  string $image_source - path to image source
+    * @param  int    $ratio        - resize ratio
+    * @param  string $dimension    - ration dimension % or px
+    * @return object               - the resulting image
     */
    public static function quadrate($image_source,$ratio,$dimension='px')
    {
@@ -370,9 +371,9 @@ Class ImagesHelper
    /**
     * Build image reflection
     * @access public
-    * @param  string $image_source
-    * @param  double $reflection_height
-    * @return string $buffer
+    * @param  string $image_source      - path to image source
+    * @param  int    $ratio             - reflection ratio %
+    * @return object                    - the resulting image
     */
    public static function buildreflection($image_source,$ratio=30)
    {
@@ -498,8 +499,8 @@ Class ImagesHelper
     * @param  string $image_source  - path to image source
     * @param  string $watermark_img - path to watemark image source
     * @param  int    $alpha_level   - watemark image aplha level (default = 100)
-    * @param  int    $x watemark    - coordinates on the x-axis (default = 5)
-    * @param  int    $y watemark    - coordinates on the y-axis (default = 5)
+    * @param  int    $x             - watemark coordinates on the x-axis (default = 5)
+    * @param  int    $y             - watemark coordinates on the y-axis (default = 5)
     * @return object                - the resulting image
     */
    function buildwatermarkfromimage($image_source, $watermark_img, $alpha_level = 100, $x = 5, $y = 5)
