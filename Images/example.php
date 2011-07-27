@@ -106,6 +106,15 @@ if($image_with_reflection  = ImagesHelper::buildimagewithreflection($image_sourc
    ImagesHelper::saveimage($image_with_reflection, $image_source,'wref_','png');   
 }
 
+# build faded image
+$alpha_start = 0;
+$alpha_end = 80;
+$bg_color = "#7E58BF";
+if($faded_image  = ImagesHelper::fade($image_source,$alpha_start,$alpha_end,$bg_color)) {
+   # save resulted image in to file in gif format
+   ImagesHelper::saveimage($faded_image, $image_source,'fad_','gif');  
+}
+
 # rotate image example 1 with transparent background
 $degrees = 55;
 if($rotated_image  = ImagesHelper::rotate($image_source,$degrees)) {

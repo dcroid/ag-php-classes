@@ -397,9 +397,38 @@ Class ImagesHelper
       {
          imagecopy($buffer, $output, 0, $y, 0, $reflection_height - $y - 1, $width_src, 1);
       }
+
       imagedestroy($output);
       return $buffer;
    }
+
+   /**
+    * Build faded reflection
+    * @access public
+    * @param unknown_type $image_source
+    * @param unknown_type $bg_color
+    * @param unknown_type $ratio
+    * @param unknown_type $transparent
+    * @return return_type bare_field_name
+    */
+   public static function buildfadedreflection($image_source,$bg_color = "#fff",$ratio = 30,$transparent = true)
+   {
+      $faded_reflection = self::buildreflection($image_source,$ratio);
+      $rgb_color = self::hextorgb($bg_color);
+
+      if(is_array($rgb_color)) {
+         $allocated_bg_color = imagecolorallocate($faded_reflection, $rgb_color[0], $rgb_color[1], $rgb_color[2]);
+      }
+      $final_bg_color = ($allocated_bg_color)?$allocated_bg_color:0;
+
+      if($transparent) {
+         imagecolortransparent($faded_reflection, $final_bg_color);
+      }
+
+      return $faded_reflection;
+   }
+
+
 
    /**
     * Build Image with Reflection
@@ -424,11 +453,41 @@ Class ImagesHelper
 
       $finaloutput = imagecreatetruecolor($width_src, $height_src + $reflection_height);
       imagecopy($finaloutput,$image_source, 0, 0, 0, 0, $width_src, $height_src);
-      imagecopy($finaloutput,$reflection_source, 0, $width_src, 0, 0, $width_src, $reflection_height);
+      imagecopy($finaloutput,$reflection_source, 0, $height_src, 0, 0, $width_src, $reflection_height);
 
       return $finaloutput;
    }
 
+   public static function fade($image_source,$alpha_start,$alpha_end,$bg_color = "#fff")
+   {
+      $alpha_length = abs($alpha_start - $alpha_end);
+      $rgb_color    = self::hextorgb($bg_color);
+      $width_src    = self::width($image_source);
+      $height_src   = self::height($image_source);
+      $finaloutput = self::createimagefromsource($image_source);
+      imagelayereffect($finaloutput, IMG_EFFECT_OVERLAY);
+
+      for ($y = 0; $y <= $height_src; $y++)
+      {
+         # Get % of reflection height
+         $pct = $y / $height_src;
+
+         # Get % of alpha
+         if ($alpha_start > $alpha_end) {
+            $alpha = (int) ($alpha_start - ($pct * $alpha_length));
+         } else {
+            $alpha = (int) ($alpha_start + ($pct * $alpha_length));
+         }
+
+         //  Rejig it because of the way in which the image effect overlay works
+         $final_alpha = 127 - $alpha;
+
+         imagefilledrectangle($finaloutput, 0, $y, $width_src, $y, imagecolorallocatealpha($finaloutput, $rgb_color[0], $rgb_color[1], $rgb_color[2], $final_alpha));
+      }
+      return $finaloutput;
+   }
+    
+    
    /**
     * Rotate image
     * @access public
@@ -456,7 +515,8 @@ Class ImagesHelper
       }
       $final_bg_color = ($allocated_bg_color)?$allocated_bg_color:0;
       $rotated_image = imagerotate($image_source, $degrees, $final_bg_color, 0);
-      // $rgb_color
+
+      # build transparent background
       if($transparent) {
          imagecolortransparent($rotated_image, $final_bg_color);
       }
