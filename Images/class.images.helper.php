@@ -101,7 +101,7 @@ Class ImagesHelper
    /**
     * Output image in to browser
     * @access public
-    * @param  object $image   - source image as object 
+    * @param  object $image   - source image as object
     * @param  string $type    - output image format (default = png)
     * @param  int    $quality - resulted image quality in % (default = 100)
     * @return void
@@ -139,7 +139,7 @@ Class ImagesHelper
     * @param  string $prefix      - prefix for new image filename (default = new_)
     * @param  string $type        - new image format (default = png)
     * @param  int    $quality     - resulted image quality (default = 100)
-    * @return string              - full path to resulted image 
+    * @return string              - full path to resulted image
     */
    public static function saveimage($image,$destination,$prefix='new_',$type='png',$quality=100)
    {
@@ -435,7 +435,7 @@ Class ImagesHelper
     * @param  string $image_source - path to image source
     * @param  int    $degrees      - rotate angle
     * @param  string $bg_color     - background color (default empty)
-    * @param  bool   $transparent  - transparent background (default = true) 
+    * @param  bool   $transparent  - transparent background (default = true)
     * @return object               - the resulting image
     */
    public static function rotate($image_source,$degrees,$bg_color='',$transparent=true)
@@ -469,12 +469,12 @@ Class ImagesHelper
     * @access public
     * @param  string $image_source - path to image source
     * @param  string $text         - watemark text
-    * @param  string $font         - path to watemark font file 
+    * @param  string $font         - path to watemark font file
     * @param  string $color        - watemark text color in hex format (default white #fff)
     * @param  imt    $alpha_level  - watemark text alpha level (default = 100)
     * @return object               - the resulting image
     */
-   function buildtextwatermark( $image_source, $text, $font, $color = '#fff', $alpha_level = 100 )
+   public static function buildtextwatermark( $image_source, $text, $font, $color = '#fff', $alpha_level = 100 )
    {
       $width_src    = self::width($image_source);
       $height_src   = self::height($image_source);
@@ -504,24 +504,198 @@ Class ImagesHelper
     * @param  int    $y             - watemark coordinates on the y-axis (default = 5)
     * @return object                - the resulting image
     */
-   function buildimagewatermark($image_source, $watermark_img, $alpha_level = 100, $x = 5, $y = 5)
+   public static function buildimagewatermark($image_source, $watermark_img, $alpha_level = 100, $x = 5, $y = 5)
    {
       $watermark_width  = self::width($watermark_img);
       $watermark_height = self::height($watermark_img);
       $watermark_img = self::createimagefromsource($watermark_img);
-      
+
       $width_src    = self::width($image_source);
       $height_src   = self::height($image_source);
       $image_source = self::createimagefromsource($image_source);
-      
+
       $dest_x = $width_src - $watermark_width - $x;
       $dest_y = $height_src - $watermark_height - $y;
       imagecopymerge($image_source, $watermark_img, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height, $alpha_level);
 
       return $image_source;
    }
+
+   /**
+    * Build gradient image
+    * @access public
+    * @param unknown_type $image_width
+    * @param unknown_type $image_height
+    * @param unknown_type $c1_r
+    * @param unknown_type $c1_g
+    * @param unknown_type $c1_b
+    * @param unknown_type $c2_r
+    * @param unknown_type $c2_g
+    * @param unknown_type $c2_b
+    * @param unknown_type $vertical
+    * @return return_type bare_field_name
+    */
+   public static function gradient($image_width, $image_height,$c1_r, $c1_g, $c1_b, $c2_r, $c2_g, $c2_b, $vertical=false)
+   {
+      // first: lets type cast;
+      $image_width = (integer)$image_width;
+      $image_height = (integer)$image_height;
+      $c1_r = (integer)$c1_r;
+      $c1_g = (integer)$c1_g;
+      $c1_b = (integer)$c1_b;
+      $c2_r = (integer)$c2_r;
+      $c2_g = (integer)$c2_g;
+      $c2_b = (integer)$c2_b;
+      $vertical = (bool)$vertical;
+
+      // create a image
+      $image  = imagecreatetruecolor($image_width, $image_height);
+
+      // make the gradient
+      for($i=0; $i<$image_height; $i++)
+      {
+         $color_r = floor($i * ($c2_r-$c1_r) / $image_height)+$c1_r;
+         $color_g = floor($i * ($c2_g-$c1_g) / $image_height)+$c1_g;
+         $color_b = floor($i * ($c2_b-$c1_b) / $image_height)+$c1_b;
+
+         $color = ImageColorAllocate($image, $color_r, $color_g, $color_b);
+         imageline($image, 0, $i, $image_width, $i, $color);
+      }
+      return $image;
+       
+   }
+
+   /**
+    * Draws the gradient
+    * @access public
+    * @param  string $im
+    * @param  string $direction
+    * @param  string $start
+    * @param  string $end
+    * @return object
+    */
+   function fill($im,$direction,$start,$end,$step = 0) {
+
+      switch($direction) {
+         case 'horizontal':
+            $line_numbers = imagesx($im);
+            $line_width = imagesy($im);
+            list($r1,$g1,$b1) = self::hex2rgb($start);
+            list($r2,$g2,$b2) = self::hex2rgb($end);
+            break;
+         case 'vertical':
+            $line_numbers = imagesy($im);
+            $line_width = imagesx($im);
+            list($r1,$g1,$b1) = self::hex2rgb($start);
+            list($r2,$g2,$b2) = self::hex2rgb($end);
+            break;
+         case 'ellipse':
+            $width = imagesx($im);
+            $height = imagesy($im);
+            $rh=$height>$width?1:$width/$height;
+            $rw=$width>$height?1:$height/$width;
+            $line_numbers = min($width,$height);
+            $center_x = $width/2;
+            $center_y = $height/2;
+            list($r1,$g1,$b1) = self::hex2rgb($end);
+            list($r2,$g2,$b2) = self::hex2rgb($start);
+            imagefill($im, 0, 0, imagecolorallocate( $im, $r1, $g1, $b1 ));
+            break;
+         case 'ellipse2':
+            $width = imagesx($im);
+            $height = imagesy($im);
+            $rh=$height>$width?1:$width/$height;
+            $rw=$width>$height?1:$height/$width;
+            $line_numbers = sqrt(pow($width,2)+pow($height,2));
+            $center_x = $width/2;
+            $center_y = $height/2;
+            list($r1,$g1,$b1) = self::hex2rgb($end);
+            list($r2,$g2,$b2) = self::hex2rgb($start);
+            break;
+         case 'circle':
+            $width = imagesx($im);
+            $height = imagesy($im);
+            $line_numbers = sqrt(pow($width,2)+pow($height,2));
+            $center_x = $width/2;
+            $center_y = $height/2;
+            $rh = $rw = 1;
+            list($r1,$g1,$b1) = self::hex2rgb($end);
+            list($r2,$g2,$b2) = self::hex2rgb($start);
+            break;
+         case 'circle2':
+            $width = imagesx($im);
+            $height = imagesy($im);
+            $line_numbers = min($width,$height);
+            $center_x = $width/2;
+            $center_y = $height/2;
+            $rh = $rw = 1;
+            list($r1,$g1,$b1) = self::hex2rgb($end);
+            list($r2,$g2,$b2) = self::hex2rgb($start);
+            imagefill($im, 0, 0, imagecolorallocate( $im, $r1, $g1, $b1 ));
+            break;
+         case 'square':
+         case 'rectangle':
+            $width = imagesx($im);
+            $height = imagesy($im);
+            $line_numbers = max($width,$height)/2;
+            list($r1,$g1,$b1) = self::hex2rgb($end);
+            list($r2,$g2,$b2) = self::hex2rgb($start);
+            break;
+         case 'diamond':
+            list($r1,$g1,$b1) = self::hex2rgb($end);
+            list($r2,$g2,$b2) = self::hex2rgb($start);
+            $width = imagesx($im);
+            $height = imagesy($im);
+            $rh=$height>$width?1:$width/$height;
+            $rw=$width>$height?1:$height/$width;
+            $line_numbers = min($width,$height);
+            break;
+         default:
+      }
+
+      for ( $i = 0; $i < $line_numbers; $i=$i+1+$step ) {
+         // old values :
+         $old_r=$r;
+         $old_g=$g;
+         $old_b=$b;
+         // new values :
+         $r = ( $r2 - $r1 != 0 ) ? intval( $r1 + ( $r2 - $r1 ) * ( $i / $line_numbers ) ): $r1;
+         $g = ( $g2 - $g1 != 0 ) ? intval( $g1 + ( $g2 - $g1 ) * ( $i / $line_numbers ) ): $g1;
+         $b = ( $b2 - $b1 != 0 ) ? intval( $b1 + ( $b2 - $b1 ) * ( $i / $line_numbers ) ): $b1;
+         // if new values are really new ones, allocate a new color, otherwise reuse previous color.
+         // There's a "feature" in imagecolorallocate that makes this function
+         // always returns '-1' after 255 colors have been allocated in an image that was created with
+         // imagecreate (everything works fine with imagecreatetruecolor)
+         if ( "$old_r,$old_g,$old_b" != "$r,$g,$b")
+         $fill = imagecolorallocate( $im, $r, $g, $b );
+         switch($direction) {
+            case 'vertical':
+               imagefilledrectangle($im, 0, $i, $line_width, $i+$step, $fill);
+               break;
+            case 'horizontal':
+               imagefilledrectangle( $im, $i, 0, $i+$step, $line_width, $fill );
+               break;
+            case 'ellipse':
+            case 'ellipse2':
+            case 'circle':
+            case 'circle2':
+               imagefilledellipse ($im,$center_x, $center_y, ($line_numbers-$i)*$rh, ($line_numbers-$i)*$rw,$fill);
+               break;
+            case 'square':
+            case 'rectangle':
+               imagefilledrectangle ($im,$i*$width/$height,$i*$height/$width,$width-($i*$width/$height), $height-($i*$height/$width),$fill);
+               break;
+            case 'diamond':
+               imagefilledpolygon($im, array (
+               $width/2, $i*$rw-0.5*$height,
+               $i*$rh-0.5*$width, $height/2,
+               $width/2,1.5*$height-$i*$rw,
+               1.5*$width-$i*$rh, $height/2 ), 4, $fill);
+               break;
+            default:
+         }
+      }
+   }
     
 }
-
-
 ?>
