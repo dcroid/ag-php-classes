@@ -11,6 +11,7 @@
  * @license       GPLv2
  * @author        Alexey Gordeyev IK <aleksej@gordejev.lv>
  * @link          http://www.agjoomla.com/classes/
+ * @source        http://code.google.com/p/ag-php-classes/
  */
 
 Class ImagesHelper
