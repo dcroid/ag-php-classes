@@ -469,7 +469,7 @@ Class ImagesHelper
 
       for ($y = 0; $y <= $height_src; $y++)
       {
-         # Get % of reflection height
+         # Get % of image height
          $pct = $y / $height_src;
 
          # Get % of alpha
@@ -478,11 +478,10 @@ Class ImagesHelper
          } else {
             $alpha = (int) ($alpha_start + ($pct * $alpha_length));
          }
-
-         //  Rejig it because of the way in which the image effect overlay works
+         # Rejig it because of the way in which the image effect overlay works
          $final_alpha = 127 - $alpha;
-
-         imagefilledrectangle($finaloutput, 0, $y, $width_src, $y, imagecolorallocatealpha($finaloutput, $rgb_color[0], $rgb_color[1], $rgb_color[2], $final_alpha));
+         $allocated_color = imagecolorallocatealpha($finaloutput, $rgb_color[0], $rgb_color[1], $rgb_color[2], $final_alpha);
+         imagefilledrectangle($finaloutput, 0, $y, $width_src, $y, $allocated_color);
       }
       return $finaloutput;
    }
