@@ -119,4 +119,19 @@ if($rotated_image  = ImagesHelper::rotate($image_source,$degrees,$bg_color,$tran
    ImagesHelper::saveimage($rotated_image, $image_source,'rtdf_','png');    
 }
 
+# build text watemark
+$text = 'Watemark';
+$font = './fonts/ithornet.ttf';
+if($watermarked_image  = ImagesHelper::buildwatermarktext( $image_source, $text, $font)) {
+   # save watermarked image in to file as png
+   ImagesHelper::saveimage($watermarked_image, $image_source,'wtmt_','jpg'); 
+}
+
+# build image watemark
+$watermark_img = './images/wtm.png';
+if($watermarked_image  = ImagesHelper::buildwatermarkfromimage($image_source, $watermark_img)) {
+   # save watermarked image in to file as gif
+   ImagesHelper::saveimage($watermarked_image, $image_source,'wtmi_','gif');    
+}
+
 ?>

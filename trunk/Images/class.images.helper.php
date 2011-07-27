@@ -402,7 +402,10 @@ Class ImagesHelper
    /**
     * Build Image with Reflection
     * @access public
-    * @return void
+    * @param  string $image_source      - path to image source
+    * @param  mixed  $reflection_source - path to reflection image source (default = false)
+    * @param  int    $ratio             - reflection height in % of the main image
+    * @return object                    - the resulting image
     */
    public static function buildimagewithreflection($image_source,$reflection_source=false,$ratio=30)
    {
@@ -427,9 +430,11 @@ Class ImagesHelper
    /**
     * Rotate image
     * @access public
-    * @param  string $image_source
-    * @param  int    $degrees
-    * @return string $rotated_image
+    * @param  string $image_source - path to image source
+    * @param  int    $degrees      - rotate angle
+    * @param  string $bg_color     - background color (default empty)
+    * @param  bool   $transparent  - transparent background (default = true) 
+    * @return object               - the resulting image
     */
    public static function rotate($image_source,$degrees,$bg_color='',$transparent=true)
    {
@@ -457,6 +462,63 @@ Class ImagesHelper
       return $rotated_image;
    }
 
+   /**
+    * Build watermark text
+    * @access public
+    * @param  string $image_source - path to image source
+    * @param  string $text         - watemark text
+    * @param  string $font         - path to watemark font file 
+    * @param  string $color        - watemark text color in hex format (default white #fff)
+    * @param  imt    $alpha_level  - watemark text alpha level (default = 100)
+    * @return object               - the resulting image
+    */
+   function buildwatermarktext( $image_source, $text, $font, $color = '#fff', $alpha_level = 100 )
+   {
+      $width_src    = self::width($image_source);
+      $height_src   = self::height($image_source);
+      $angle        =  -rad2deg(atan2((-$height_src),($width_src)));
+      $rgb_color    = self::hextorgb($color);
+
+      $image_source = self::createimagefromsource($image_source);
+      $text = " ".$text." ";
+
+      $c = imagecolorallocatealpha($image_source, $rgb_color[0], $rgb_color[1], $rgb_color[2], $alpha_level);
+      $size = (($width_src+$height_src)/2)*2/strlen($text);
+      $box  = imagettfbbox( $size, $angle, $font, $text );
+      $x = $width_src/2 - abs($box[4] - $box[0])/2;
+      $y = $height_src/2 + abs($box[5] - $box[1])/2;
+
+      imagettftext($image_source,$size ,$angle, $x, $y, $c, $font, $text);
+      return $image_source;
+   }
+
+   /**
+    * Build watermark from image
+    * @access public
+    * @param  string $image_source  - path to image source
+    * @param  string $watermark_img - path to watemark image source
+    * @param  int    $alpha_level   - watemark image aplha level (default = 100)
+    * @param  int    $x watemark    - coordinates on the x-axis (default = 5)
+    * @param  int    $y watemark    - coordinates on the y-axis (default = 5)
+    * @return object                - the resulting image
+    */
+   function buildwatermarkfromimage($image_source, $watermark_img, $alpha_level = 100, $x = 5, $y = 5)
+   {
+      $watermark_width  = self::width($watermark_img);
+      $watermark_height = self::height($watermark_img);
+      $watermark_img = self::createimagefromsource($watermark_img);
+      
+      $width_src    = self::width($image_source);
+      $height_src   = self::height($image_source);
+      $image_source = self::createimagefromsource($image_source);
+      
+      $dest_x = $width_src - $watermark_width - $x;
+      $dest_y = $height_src - $watermark_height - $y;
+      imagecopymerge($image_source, $watermark_img, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height, $alpha_level);
+
+      return $image_source;
+   }
+    
 }
 
 
