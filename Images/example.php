@@ -46,6 +46,9 @@ $hex_color = '#cccccc';
 $rgb_color = ImagesHelper::hextorgb($hex_color);
 // var_dump($rgb_color);
 
+# Convert image format
+ImagesHelper::convert($image_source,'png');
+
 # Convert image to grayscale
 if($grayscale_image = ImagesHelper::colortograyscale($image_source)) {
    # save grayscale image in to file in gif format
@@ -97,7 +100,7 @@ if($quadrate_image  = ImagesHelper::quadrate($image_source,$ratio)) {
 $reflection_height = 25; # % 
 if($image_reflection  = ImagesHelper::buildreflection($image_source,$reflection_height)) {
    # save reflection image in to file in gif format
-   ImagesHelper::saveimage($image_reflection, $image_source,'ref_','gif');  
+   ImagesHelper::saveimage($image_reflection, $image_source,'ref_','png');  
 }
 
 # build image with reflection
@@ -107,12 +110,12 @@ if($image_with_reflection  = ImagesHelper::buildimagewithreflection($image_sourc
 }
 
 # build faded image
-$alpha_start = 0;
-$alpha_end = 80;
-$bg_color = "#7E58BF";
+$alpha_start = 120;
+$alpha_end = 0;
+$bg_color = "#7E58BF"; //   #7E58BF
 if($faded_image  = ImagesHelper::fade($image_source,$alpha_start,$alpha_end,$bg_color)) {
-   # save resulted image in to file in gif format
-   ImagesHelper::saveimage($faded_image, $image_source,'fad_','gif');  
+   # save resulted image in to file in png format
+   ImagesHelper::saveimage($faded_image, $image_source,'fad_','png');  
 }
 
 # rotate image example 1 with transparent background
