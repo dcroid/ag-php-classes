@@ -18,14 +18,14 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 require_once 'class.images.helper.php';
-
+/*
 echo ' GIF: '.IMAGETYPE_GIF;
 echo ' JPEG: '.IMAGETYPE_JPEG;
 echo ' PNG: '.IMAGETYPE_PNG;
 echo ' BMP: '.IMAGETYPE_BMP;
 echo ' XBM: '.IMAGETYPE_XBM;
 echo ' WBMP: '.IMAGETYPE_WBMP;
-
+*/
 
 
 $image_source = './images/source.jpg';
@@ -33,7 +33,7 @@ $new_image    = 'test.png';
 
 # get full information from image 
 $image_info = ImagesHelper::getimageinfo($image_source);
-var_dump($image_info);
+// var_dump($image_info);
 /*
 if(is_object($image_source)) {
    echo "Is object";
@@ -76,6 +76,8 @@ ImagesHelper::convert($image_source,'xbm');
 if($grayscale_image = ImagesHelper::colortograyscale($image_source)) {
    # save grayscale image in to file in gif format
    ImagesHelper::saveimage($grayscale_image, $image_source,'bw_','gif');
+   $grayscale_image  = ImagesHelper::buildimagewithreflection($grayscale_image);
+   ImagesHelper::showimage($grayscale_image,'png',100);
 }
 
 # Convert image to grayscale
