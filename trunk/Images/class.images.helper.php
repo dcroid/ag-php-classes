@@ -3,8 +3,8 @@
  * @revision      $Id$
  * @created       Jul 22, 2011
  * @package       Images
- * @subpackage	  Helper
- * @category      Utillites
+ * @subpackage	  Helpers
+ * @category      Auxiliary
  * @version       1.0.0
  * @desc          Basic manipulation with image
  * @copyright     Copyright Alexey Gordeyev IK © 2009-2011 - All rights reserved.
@@ -22,7 +22,8 @@ Class ImagesHelper
     * @param  string $color - color in hex format
     * @return array         - rgb color as array
     */
-   public static function hextorgb($color) {
+   public static function hextorgb($color)
+   {
       if (is_array($color)) return $color;
       $color = str_replace('#', '', $color);
       $s = strlen($color) / 3;
@@ -30,6 +31,70 @@ Class ImagesHelper
       $rgb[] = hexdec(str_repeat(substr($color, $s, $s), 2 / $s));
       $rgb[] = hexdec(str_repeat(substr($color, 2 * $s, $s), 2 / $s));
       return $rgb;
+   }
+
+   /**
+    *
+    * Create image from source
+    * @access public
+    * @param  string $image_source - path to image source
+    * @return mixed                - image object or false
+    */
+   public static function createimagefromsource($image_source)
+   {
+      $image = false;
+      if(self::isgdresource($image_source)) {
+         $image = $image_source;
+      } else {
+         if(file_exists($image_source)) {
+            $image_type = self::getimageinfo($image_source,'type');
+
+            if($image_type) {
+               switch ($image_type)
+               {
+                  case 1:
+                  case IMAGETYPE_GIF:
+                     $image = imagecreatefromgif($image_source);
+                     break;
+                  case 2:
+                  case IMAGETYPE_JPEG:
+                     $image = imagecreatefromjpeg($image_source);
+                     break;
+                  case 3:
+                  case IMAGETYPE_PNG:
+                     $image = imagecreatefrompng($image_source);
+                     break;
+                  case 15:
+                  case IMAGETYPE_WBMP:
+                     $image = imagecreatefromwbmp($image_source);
+                     break;
+                  case 16:
+                  case IMAGETYPE_XBM:
+                     $image = imagecreatefromxbm($image_source);
+                     break;
+               }
+            }
+         }
+      }
+      return $image;
+   }
+
+   /**
+    *
+    * Validate gd resource
+    * @access public
+    * @param  mixed $image_source
+    * @return bool
+    */
+   public static function isgdresource($image_source)
+   {
+      $gd_resource = false;
+      if(gettype($image_source) == 'resource') {
+         if(get_resource_type($image_source) == 'gd') {
+            $gd_resource = true;
+         }
+      }
+      return $gd_resource;
    }
 
    /**
@@ -41,7 +106,7 @@ Class ImagesHelper
    public static function colortograyscale($image_source)
    {
       $image = false;
-      if(file_exists($image_source)) {
+      if(file_exists($image_source) || self::isgdresource($image_source)) {
          $image = self::createimagefromsource($image_source);
          imagefilter($image,IMG_FILTER_GRAYSCALE);
       }
@@ -57,43 +122,9 @@ Class ImagesHelper
    public static function imagetonegative($image_source)
    {
       $image = false;
-      if(file_exists($image_source)) {
+      if(file_exists($image_source) || self::isgdresource($image_source)) {
          $image = self::createimagefromsource($image_source);
          imagefilter($image,IMG_FILTER_NEGATE);
-      }
-      return $image;
-   }
-
-   /**
-    *
-    * Create image from source
-    * @access public
-    * @param  string $image_source - path to image source
-    * @return mixed                - image object or false
-    */
-   public static function createimagefromsource($image_source)
-   {
-      $image = false;
-      if(file_exists($image_source)) {
-         $image_type = self::getimageinfo($image_source,'type');
-
-         if($image_type) {
-            switch ($image_type)
-            {
-               case 1:
-                  # GIF
-                  $image = imagecreatefromgif($image_source);
-                  break;
-               case 2:
-                  # JPG
-                  $image = imagecreatefromjpeg($image_source);
-                  break;
-               case 3:
-                  # PNG
-                  $image = imagecreatefrompng($image_source);
-                  break;
-            }
-         }
       }
       return $image;
    }
@@ -144,6 +175,12 @@ Class ImagesHelper
          case 'png':
             imagepng($image);
             break;
+         case 'wbmp':
+            imagewbmp($image);
+            break;
+         case 'xbm':
+            imagexbm($image);
+            break;
          default:
             echo 'Unsupported image file format.';
       }
@@ -165,24 +202,35 @@ Class ImagesHelper
       $type = strtolower($type);
       # build new image name
       if($prefix || $type) {
-         $destination = self::buildimagename($destination,$prefix,$type);
+         if($type != '' || $prefix != '') {
+            $destination = self::buildimagename($destination,$prefix,$type);
+         }
       }
-
-      switch ($type)
-      {
-         case 'gif':
-            imagegif($image,$destination);
-            break;
-         case 'jpg':
-         case 'jpeg':
-            imagejpeg($image, $destination,$quality);
-            break;
-         case 'png':
-            // ,$quality echo $quality;
-            imagepng($image,$destination);
-            break;
-         default:
-            echo 'Unsupported image file format.';
+      if(self::isgdresource($image)) {
+         switch ($type)
+         {
+            case 'gif':
+               imagegif($image,$destination);
+               break;
+            case 'jpg':
+            case 'jpeg':
+               imagejpeg($image, $destination,$quality);
+               break;
+            case 'png':
+               imagepng($image,$destination);
+               break;
+            case 'wbmp':
+               imagewbmp($image,$destination);
+               break;
+            case 'xbm':
+               imagexbm($image,$destination);
+               break;
+            default:
+               echo 'Unsupported image file format.';
+         }
+      }
+      else {
+         $destination = false;
       }
       // imagedestroy($image);
       return $destination;
@@ -191,14 +239,35 @@ Class ImagesHelper
    /**
     * Get basic information from Image source
     * @access public
-    * @param  string $image_source - pat to image source
+    * @param  mixed  $image_source - path to image source or image object
     * @param  string $info_type    - type of the returned information
     * @return mixed                - source image information (int, string or array)
     */
    public static function getimageinfo($image_source,$info_type=false)
    {
       # read information from image file
-      $image_info   = getimagesize($image_source);
+      if(file_exists($image_source)) {
+         $image_info   = getimagesize($image_source);
+      }
+      elseif(self::isgdresource($image_source)) {
+         $image_info    = array();
+         $image_info[0] = imagesx($image_source);
+         $image_info[1] = imagesy($image_source);
+         if (imagetypes() & IMG_PNG) {
+            $image_info[1] = 3;
+            $image_info['mime'] = 'image/png';
+         }
+         elseif (imagetypes() & IMG_GIF) {
+            $image_info[1] = 1;
+            $image_info['mime'] = 'image/gif';
+         }
+         else {
+            $image_info[1] = 2;
+            $image_info['mime'] = 'image/jpeg';
+         }
+      }
+      else { $image_info = array(0=>0,1=>0,2=>false,'mime'=>false); }
+
       if($image_info) {
          if($info_type) {
             switch($info_type) {
@@ -224,7 +293,7 @@ Class ImagesHelper
    /**
     * Get image width
     * @access public
-    * @param  string $image_source - path to image source
+    * @param  mixed  $image_source - path to image source or image object
     * @return int                  - source image width in px
     */
    public static function width($image_source)
@@ -235,7 +304,7 @@ Class ImagesHelper
    /**
     * Get image height
     * @access public
-    * @param  string $image_source - path to image source
+    * @param  mixed  $image_source - path to image source or image object
     * @return int                  - source image width in px
     */
    public static function height($image_source)
@@ -246,7 +315,7 @@ Class ImagesHelper
    /**
     * Get image mime/type
     * @access public
-    * @param  string $image_source - path to image source
+    * @param  mixed  $image_source - path to image source or image object
     * @return string               - source image mime/type
     */
    public static function mime($image_source)
@@ -279,20 +348,21 @@ Class ImagesHelper
     * @param  string $prefix       - filename prefix
     * @return string               - new image filename
     */
-   public static function buildimagename($old_filename,$prefix,$type)
+   public static function buildimagename($old_filename,$prefix,$type=false)
    {
       $path_parts = pathinfo($old_filename);
+      $ext = ($type && $type != '')?$type:$path_parts['extension'];
       $slash = '/';
       $new_filename  = $path_parts['dirname'].$slash;
       $new_filename .= $prefix.$path_parts['filename'];
-      $new_filename .= '.'.$type;
+      $new_filename .= '.'.$ext;
       return $new_filename;
    }
 
    /**
     * Proportional resize image
     * @access public
-    * @param  string $image_source - path to image source
+    * @param  mixed  $image_source - path to image source or image object
     * @param  int    $ratio        -
     * @param  string $dimension    -
     * @return object               - the resulting image
@@ -490,7 +560,6 @@ Class ImagesHelper
       return $faded;
    }
 
-
    /**
     * Rotate image
     * @access public
@@ -580,160 +649,124 @@ Class ImagesHelper
       $dest_x = $width_src - $watermark_width - $x;
       $dest_y = $height_src - $watermark_height - $y;
       imagecopymerge($image_source, $watermark_img, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height, $alpha_level);
-      /*
-       if ($position == 'random') {
-       $position = rand(1,8);
-       }
-       switch ($position) {
-       case 'top-right':
-       case 'right-top':
-       case 1:
-       imagecopy($dst_image, $src_image, ($dest_x-$src_w), 0, 0, 0, $src_w, $src_h);
-       break;
-       case 'top-left':
-       case 'left-top':
-       case 2:
-       imagecopy($dst_image, $src_image, 0, 0, 0, 0, $src_w, $src_h);
-       break;
-       case 'bottom-right':
-       case 'right-bottom':
-       case 3:
-       imagecopy($dst_image, $src_image, ($dest_x-$src_w), ($dst_h-$src_h), 0, 0, $src_w, $src_h);
-       break;
-       case 'bottom-left':
-       case 'left-bottom':
-       case 4:
-       imagecopy($dst_image, $src_image, 0 , ($dst_h-$src_h), 0, 0, $src_w, $src_h);
-       break;
-       case 'center':
-       case 5:
-       imagecopy($dst_image, $src_image, (($dest_x/2)-($src_w/2)), (($dst_h/2)-($src_h/2)), 0, 0, $src_w, $src_h);
-       break;
-       case 'top':
-       case 6:
-       imagecopy($dst_image, $src_image, (($dest_x/2)-($src_w/2)), 0, 0, 0, $src_w, $src_h);
-       break;
-       case 'bottom':
-       case 7:
-       imagecopy($dst_image, $src_image, (($dest_x/2)-($src_w/2)), ($dst_h-$src_h), 0, 0, $src_w, $src_h);
-       break;
-       case 'left':
-       case 8:
-       imagecopy($dst_image, $src_image, 0, (($dst_h/2)-($src_h/2)), 0, 0, $src_w, $src_h);
-       break;
-       case 'right':
-       case 9:
-       imagecopy($dst_image, $src_image, ($dest_x-$src_w), (($dst_h/2)-($src_h/2)), 0, 0, $src_w, $src_h);
-       break;
-       }
-       */
 
       return $image_source;
    }
 
-   /**
-    * Build gradient image
-    * @access public
-    * @param unknown_type $image_width
-    * @param unknown_type $image_height
-    * @param unknown_type $c1_r
-    * @param unknown_type $c1_g
-    * @param unknown_type $c1_b
-    * @param unknown_type $c2_r
-    * @param unknown_type $c2_g
-    * @param unknown_type $c2_b
-    * @param unknown_type $vertical
-    * @return return_type bare_field_name
-    */
-   public static function gradient($image_width, $image_height,$c1_r, $c1_g, $c1_b, $c2_r, $c2_g, $c2_b, $vertical=false)
+   public static function calculateposition($src_image,$dest_image,$position)
    {
-      // first: lets type cast;
-      $image_width = (integer)$image_width;
-      $image_height = (integer)$image_height;
-      $c1_r = (integer)$c1_r;
-      $c1_g = (integer)$c1_g;
-      $c1_b = (integer)$c1_b;
-      $c2_r = (integer)$c2_r;
-      $c2_g = (integer)$c2_g;
-      $c2_b = (integer)$c2_b;
-      $vertical = (bool)$vertical;
+      $coordinates = array('dest_x'=>0,
+                           'dest_y'=>0,
+                           'dest_w'=>0,
+                           'dest_h'=>0,
+                           'src_x'=>0,
+                           'src_y'=>0,
+                           'src_w'=>0,
+                           'src_h'=>0);
 
-      // create a image
-      $image  = imagecreatetruecolor($image_width, $image_height);
-
-      // make the gradient
-      for($i=0; $i<$image_height; $i++)
-      {
-         $color_r = floor($i * ($c2_r-$c1_r) / $image_height)+$c1_r;
-         $color_g = floor($i * ($c2_g-$c1_g) / $image_height)+$c1_g;
-         $color_b = floor($i * ($c2_b-$c1_b) / $image_height)+$c1_b;
-
-         $color = ImageColorAllocate($image, $color_r, $color_g, $color_b);
-         imageline($image, 0, $i, $image_width, $i, $color);
+      if ($position == 'random') {
+         $position = rand(1,8);
       }
-      return $image;
-       
+      switch ($position) {
+         case 'top-right':
+         case 'right-top':
+         case 1:
+            //  $coordinates[''] = ;
+            //  $coordinates[''] = ;
+            imagecopy($dst_image, $src_image, ($dest_x-$src_w), 0, 0, 0, $src_w, $src_h);
+            break;
+         case 'top-left':
+         case 'left-top':
+         case 2:
+            imagecopy($dst_image, $src_image, 0, 0, 0, 0, $src_w, $src_h);
+            break;
+         case 'bottom-right':
+         case 'right-bottom':
+         case 3:
+            imagecopy($dst_image, $src_image, ($dest_x-$src_w), ($dst_h-$src_h), 0, 0, $src_w, $src_h);
+            break;
+         case 'bottom-left':
+         case 'left-bottom':
+         case 4:
+            imagecopy($dst_image, $src_image, 0 , ($dst_h-$src_h), 0, 0, $src_w, $src_h);
+            break;
+         case 'center':
+         case 5:
+            imagecopy($dst_image, $src_image, (($dest_x/2)-($src_w/2)), (($dst_h/2)-($src_h/2)), 0, 0, $src_w, $src_h);
+            break;
+         case 'top':
+         case 6:
+            imagecopy($dst_image, $src_image, (($dest_x/2)-($src_w/2)), 0, 0, 0, $src_w, $src_h);
+            break;
+         case 'bottom':
+         case 7:
+            imagecopy($dst_image, $src_image, (($dest_x/2)-($src_w/2)), ($dst_h-$src_h), 0, 0, $src_w, $src_h);
+            break;
+         case 'left':
+         case 8:
+            imagecopy($dst_image, $src_image, 0, (($dst_h/2)-($src_h/2)), 0, 0, $src_w, $src_h);
+            break;
+         case 'right':
+         case 9:
+            imagecopy($dst_image, $src_image, ($dest_x-$src_w), (($dst_h/2)-($src_h/2)), 0, 0, $src_w, $src_h);
+            break;
+      }
    }
 
    /**
     * Draws the gradient
     * @access public
-    * @param  string $image_source
-    * @param  string $direction
-    * @param  string $start
-    * @param  string $end
+    * @param  string $image_source  - path to image source
+    * @param  string $direction     - gradient direction
+    * @param  string $start         -
+    * @param  string $end           -
     * @return object                - the resulting image
     */
-   function fill($image_source,$direction,$start,$end,$step = 0)
+   public static function gradientfill($image_width,$image_height,$direction,$start,$end,$step = 0)
    {
-      list($r1,$g1,$b1) = self::hex2rgb($end);
-      list($r2,$g2,$b2) = self::hex2rgb($start);
-      $width            = self::width($image_source);
-      $height           = self::height($image_source);
-      $im               = self::createimagefromsource($image_source);
-      $center_x         = $width/2;
-      $center_y         = $height/2;
-      /*
-       $width = imagesx($im);
-       $height = imagesy($im);
-       */
+      $r = $g = $b = null;
+      list($r1,$g1,$b1) = self::hextorgb($end);
+      list($r2,$g2,$b2) = self::hextorgb($start);
+      $gradiened        = imagecreatetruecolor($image_width,$image_height);
+      $center_x         = $image_width/2;
+      $center_y         = $image_height/2;
 
       switch($direction) {
          case 'horizontal':
          case 'vertical':
-            $line_numbers = imagesx($im);
-            $line_width = imagesy($im);
-            list($r1,$g1,$b1) = self::hex2rgb($start);
-            list($r2,$g2,$b2) = self::hex2rgb($end);
+            $line_numbers = ($direction == 'vertical')?imagesy($gradiened):imagesx($gradiened);
+            $line_width = ($direction == 'vertical')?imagesx($gradiened):imagesy($gradiened);
+            list($r1,$g1,$b1) = self::hextorgb($start);
+            list($r2,$g2,$b2) = self::hextorgb($end);
             break;
          case 'ellipse':
-            $rh=$height>$width?1:$width/$height;
-            $rw=$width>$height?1:$height/$width;
-            $line_numbers = min($width,$height);
-            imagefill($im, 0, 0, imagecolorallocate( $im, $r1, $g1, $b1 ));
+            $rh=$image_height>$image_width?1:$image_width/$image_height;
+            $rw=$image_width>$image_height?1:$image_height/$image_width;
+            $line_numbers = min($image_width,$image_height);
+            imagefill($gradiened, 0, 0, imagecolorallocate($gradiened, $r1, $g1, $b1 ));
             break;
          case 'ellipse2':
-            $rh=$height>$width?1:$width/$height;
-            $rw=$width>$height?1:$height/$width;
-            $line_numbers = sqrt(pow($width,2)+pow($height,2));
+            $rh=$image_height>$image_width?1:$image_width/$image_height;
+            $rw=$image_width>$image_height?1:$image_height/$image_width;
+            $line_numbers = sqrt(pow($image_width,2)+pow($image_height,2));
             break;
          case 'circle':
-            $line_numbers = sqrt(pow($width,2)+pow($height,2));
+            $line_numbers = min($image_width,$image_height);
             $rh = $rw = 1;
+            imagefill($gradiened, 0, 0, imagecolorallocate($gradiened, $r1, $g1, $b1));
             break;
          case 'circle2':
-            $line_numbers = min($width,$height);
+            $line_numbers = sqrt(pow($image_width,2)+pow($image_height,2));
             $rh = $rw = 1;
-            imagefill($im, 0, 0, imagecolorallocate( $im, $r1, $g1, $b1 ));
             break;
          case 'square':
          case 'rectangle':
-            $line_numbers = max($width,$height)/2;
+            $line_numbers = max($image_width,$image_height)/2;
             break;
          case 'diamond':
-            $rh=$height>$width?1:$width/$height;
-            $rw=$width>$height?1:$height/$width;
-            $line_numbers = min($width,$height);
+            $rh=$image_height>$image_width?1:$image_width/$image_height;
+            $rw=$image_width>$image_height?1:$image_height/$image_width;
+            $line_numbers = round(min($image_width,$image_height)*0.95);
             break;
          default:
       }
@@ -751,37 +784,65 @@ Class ImagesHelper
          // There's a "feature" in imagecolorallocate that makes this function
          // always returns '-1' after 255 colors have been allocated in an image that was created with
          // imagecreate (everything works fine with imagecreatetruecolor)
-         if ( "$old_r,$old_g,$old_b" != "$r,$g,$b")
-         $fill = imagecolorallocate( $im, $r, $g, $b );
+         if ( "$old_r,$old_g,$old_b" != "$r,$g,$b") { $fill = imagecolorallocate($gradiened, $r, $g, $b ); }
          switch($direction) {
             case 'vertical':
-               imagefilledrectangle($im, 0, $i, $line_width, $i+$step, $fill);
+               imagefilledrectangle($gradiened, 0, $i, $line_width, $i+$step, $fill);
                break;
             case 'horizontal':
-               imagefilledrectangle( $im, $i, 0, $i+$step, $line_width, $fill );
+               imagefilledrectangle($gradiened, $i, 0, $i+$step, $line_width, $fill );
                break;
             case 'ellipse':
             case 'ellipse2':
             case 'circle':
             case 'circle2':
-               imagefilledellipse ($im,$center_x, $center_y, ($line_numbers-$i)*$rh, ($line_numbers-$i)*$rw,$fill);
+               imagefilledellipse ($gradiened,$center_x, $center_y, ($line_numbers-$i)*$rh, ($line_numbers-$i)*$rw,$fill);
                break;
             case 'square':
             case 'rectangle':
-               imagefilledrectangle ($im,$i*$width/$height,$i*$height/$width,$width-($i*$width/$height), $height-($i*$height/$width),$fill);
+               imagefilledrectangle ($gradiened,$i*$image_width/$image_height,$i*$image_height/$image_width,$image_width-($i*$image_width/$image_height), $image_height-($i*$image_height/$image_width),$fill);
                break;
             case 'diamond':
-               imagefilledpolygon($im, array (
-               $width/2, $i*$rw-0.5*$height,
-               $i*$rh-0.5*$width, $height/2,
-               $width/2,1.5*$height-$i*$rw,
-               1.5*$width-$i*$rh, $height/2 ), 4, $fill);
+               imagefilledpolygon($gradiened, array (
+               $image_width/2, $i*$rw-0.5*$image_height,
+               $i*$rh-0.5*$image_width, $image_height/2,
+               $image_width/2,1.5*$image_height-$i*$rw,
+               1.5*$image_width-$i*$rh, $image_height/2 ), 4, $fill);
                break;
             default:
          }
       }
-      return $im;
+      return $gradiened;
    }
+
+   /**
+    *
+    * Set tranparent color
+    * @access public
+    * @param  object $image
+    * @param  mixed $color
+    * @return object
+    */
+   public static function tranparent($image,$color)
+   {
+      $rgb_color = false;
+      if($color) {
+         if(is_array($color)) {
+            $rgb_color = $color;
+         } elseif($color != '') {
+            $rgb_color = self::hextorgb($color);
+         }
+      }
+      if(is_array($rgb_color)) {
+         $allocated_bg_color = imagecolorallocate($image, $rgb_color[0], $rgb_color[1], $rgb_color[2]);
+      }
+      # build transparent background
+      if($allocated_bg_color) {
+         imagecolortransparent($image, $allocated_bg_color);
+      }
+      return $image;
+   }
+
 
 }
 ?>
