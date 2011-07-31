@@ -159,8 +159,10 @@ Class ImagesHelper
    public static function showimage($image,$type='png',$quality=100)
    {
       $type = strtolower($type);
-      header('content-type: '.$type);
-      header('Content-Length: ' . strlen($image));
+      $type = ($type == 'jpg')?'jpeg':$type;
+      $type = ($type == 'wbmp')?'vnd.wap.wbmp':$type;
+      header('Content-type: image/'.$type);
+      // header('Content-Length: ' . strlen($image));
       $type = str_replace('mime/','',$type);
 
       switch ($type)
@@ -175,7 +177,7 @@ Class ImagesHelper
          case 'png':
             imagepng($image);
             break;
-         case 'wbmp':
+         case 'vnd.wap.wbmp':
             imagewbmp($image);
             break;
          case 'xbm':
@@ -190,14 +192,14 @@ Class ImagesHelper
    /**
     * Save image in to file
     * @access public
-    * @param  object $image       - image source as object
+    * @param  object $image       - image object
     * @param  string $destination - output destination path and filename
     * @param  string $prefix      - prefix for new image filename (default = new_)
     * @param  string $type        - new image format (default = png)
     * @param  int    $quality     - resulted image quality (default = 100)
     * @return string              - full path to resulted image
     */
-   public static function saveimage($image,$destination,$prefix='new_',$type='png',$quality=100)
+   public static function saveimage($image,$destination,$prefix='',$type='png',$quality=100)
    {
       $type = strtolower($type);
       # build new image name
@@ -232,10 +234,24 @@ Class ImagesHelper
       else {
          $destination = false;
       }
-      // imagedestroy($image);
       return $destination;
    }
 
+   /**
+    * Destroy image resource
+    * @access public
+    * @param  object $image
+    * @return bool
+    */
+   public static function destroy($image)
+   {
+      if(self::isgdresource($image)) {
+         imagedestroy($image);
+         return true;
+      }
+      return false;
+   }
+    
    /**
     * Get basic information from Image source
     * @access public
@@ -254,15 +270,15 @@ Class ImagesHelper
          $image_info[0] = imagesx($image_source);
          $image_info[1] = imagesy($image_source);
          if (imagetypes() & IMG_PNG) {
-            $image_info[1] = 3;
+            $image_info[2] = 3;
             $image_info['mime'] = 'image/png';
          }
          elseif (imagetypes() & IMG_GIF) {
-            $image_info[1] = 1;
+            $image_info[2] = 1;
             $image_info['mime'] = 'image/gif';
          }
          else {
-            $image_info[1] = 2;
+            $image_info[2] = 2;
             $image_info['mime'] = 'image/jpeg';
          }
       }
@@ -388,7 +404,7 @@ Class ImagesHelper
    /**
     * Resize image to fixed dimensions
     * @access public
-    * @param  string $image_source - path to image source
+    * @param  mixed  $image_source - path to image source or image object
     * @param  int    $width        - new image width in px
     * @param  int    $height       - new image height in px
     * @return object               - the resulting image
@@ -406,7 +422,7 @@ Class ImagesHelper
    /**
     * Scale image size
     * @access public
-    * @param  string $image_source - path to image source
+    * @param  mixed  $image_source - path to image source or image object
     * @param  int    $ratio        - image scaling value in %
     * @return object               - the resulting image
     */
@@ -422,7 +438,7 @@ Class ImagesHelper
    /**
     * Build quadrate image
     * @access public
-    * @param  string $image_source - path to image source
+    * @param  mixed  $image_source - path to image source or image object
     * @param  int    $ratio        - resize ratio
     * @param  string $dimension    - ration dimension % or px
     * @return object               - the resulting image
@@ -461,9 +477,9 @@ Class ImagesHelper
    /**
     * Build image reflection
     * @access public
-    * @param  string $image_source      - path to image source
-    * @param  int    $ratio             - reflection ratio %
-    * @return object                    - the resulting image
+    * @param  mixed  $image_source - path to image source or image object
+    * @param  int    $ratio        - reflection ratio %
+    * @return object               - the resulting image
     */
    public static function buildreflection($image_source,$ratio=30)
    {
@@ -494,9 +510,9 @@ Class ImagesHelper
    /**
     * Build image with reflection
     * @access public
-    * @param  string $image_source      - path to image source
-    * @param  int    $ratio             - reflection ratio %
-    * @return object                    - the resulting image
+    * @param  mixed  $image_source - path to image source or image object
+    * @param  int    $ratio        - reflection ratio %
+    * @return object               - the resulting image
     */
    function buildimagewithreflection($image_source,$ratio = 30)
    {
@@ -530,6 +546,15 @@ Class ImagesHelper
       return $reflected;
    }
 
+   /**
+    * Fade image
+    * @access public
+    * @param  mixed  $image_source - path to image source or image object
+    * @param  int    $alpha_start
+    * @param  int    $alpha_end
+    * @param  string $bg_color
+    * @return object
+    */
    public static function fade($image_source,$alpha_start,$alpha_end,$bg_color = "#fff")
    {
       if ($alpha_start < 1 || $alpha_start > 127) { $alpha_start = 80; }
@@ -563,7 +588,7 @@ Class ImagesHelper
    /**
     * Rotate image
     * @access public
-    * @param  string $image_source - path to image source
+    * @param  mixed  $image_source - path to image source or image object
     * @param  int    $degrees      - rotate angle
     * @param  string $bg_color     - background color (default empty)
     * @param  bool   $transparent  - transparent background (default = true)
@@ -599,7 +624,7 @@ Class ImagesHelper
    /**
     * Build watermark text
     * @access public
-    * @param  string $image_source - path to image source
+    * @param  mixed  $image_source - path to image source or image object
     * @param  string $text         - watemark text
     * @param  string $font         - path to watemark font file
     * @param  string $color        - watemark text color in hex format (default white #fff)
@@ -629,7 +654,7 @@ Class ImagesHelper
    /**
     * Build watermarked image from another image
     * @access public
-    * @param  string $image_source  - path to image source
+    * @param  mixed  $image_source  - path to image source or image object
     * @param  string $watermark_img - path to watemark image source
     * @param  int    $alpha_level   - watemark image aplha level (default = 100)
     * @param  int    $x             - watemark coordinates on the x-axis (default = 5)
@@ -653,6 +678,14 @@ Class ImagesHelper
       return $image_source;
    }
 
+   /**
+    * Calculate watemark position
+    * @access public
+    * @param  mixed  $src_image - path to image source or image object
+    * @param  mixed  $dst_image - path to image destination or image object
+    * @param  string $position
+    * @return array
+    */
    public static function calculateposition($src_image,$dest_image,$position)
    {
       $coordinates = array('dest_x'=>0,
@@ -819,13 +852,14 @@ Class ImagesHelper
     *
     * Set tranparent color
     * @access public
-    * @param  object $image
-    * @param  mixed $color
-    * @return object
+    * @param  mixed  $image - 
+    * @param  mixed  $color - color hex format
+    * @return resource
     */
-   public static function tranparent($image,$color)
+   public static function tranparent($image_source,$color)
    {
-      $rgb_color = false;
+      $rgb_color       = false;
+      $image_source    = self::createimagefromsource($watermark_img);
       if($color) {
          if(is_array($color)) {
             $rgb_color = $color;
@@ -834,15 +868,36 @@ Class ImagesHelper
          }
       }
       if(is_array($rgb_color)) {
-         $allocated_bg_color = imagecolorallocate($image, $rgb_color[0], $rgb_color[1], $rgb_color[2]);
+         $allocated_bg_color = imagecolorallocate($image_source, $rgb_color[0], $rgb_color[1], $rgb_color[2]);
       }
       # build transparent background
       if($allocated_bg_color) {
-         imagecolortransparent($image, $allocated_bg_color);
+         imagecolortransparent($image_source, $allocated_bg_color);
       }
-      return $image;
+      return $image_source;
    }
 
-
+   /**
+    * Crop image
+    * @access public
+    * @param  mixed  $image_source - path to image source or gd image resource
+    * @param  int    $src_x        - x-coordinate of source point.
+    * @param  int    $src_y        - y-coordinate of source point.
+    * @param  int    $crp_width    - destination width
+    * @param  int    $crp_height   - destination height
+    * @return resource
+    */
+   public static function crop($image_source, $src_x, $src_y, $crp_width, $crp_height)
+   {
+      $width_src        = self::width($image_source);
+      $height_src       = self::height($image_source);
+      $image_source     = self::createimagefromsource($image_source);
+      $crp_width        = ($crp_width >= $width_src || $crp_width <= 0)?$width_src:$crp_width;
+      $crp_height       = ($crp_height >= $height_src || $crp_height <= 0)?$height_src:$crp_height;
+      $destination = imagecreatetruecolor($crp_width, $crp_height);
+      imagecopy($destination, $image_source, 0, 0, $src_x, $src_y, $crp_width, $crp_height);
+      imagedestroy($image_source);
+      return $destination;
+   }
 }
 ?>
