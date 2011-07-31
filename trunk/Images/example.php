@@ -28,8 +28,10 @@ echo ' WBMP: '.IMAGETYPE_WBMP;
 */
 
 
-$image_source = './images/source.jpg';
+// $image_source = './images/source.jpg';
+$image_source = ImagesHelper::downloadimage('http://mp3passion.net/uploads/posts/thumbs/1240391573_nice_lounge_part12_500.jpg','./images/');
 $new_image    = 'test.png';
+// $image_source = './images/source.jpg';
 
 # get full information from image 
 $image_info = ImagesHelper::getimageinfo($image_source);
@@ -47,6 +49,7 @@ if(is_object($image_source)) {
    }
 }
 */
+
 # get image width
 $width      = ImagesHelper::getimageinfo($image_source,'width');
 # or
