@@ -202,6 +202,7 @@ Class ImagesHelper
    public static function saveimage($image,$destination,$prefix='',$type='png',$quality=100)
    {
       $type = strtolower($type);
+      
       # build new image name
       if($prefix || $type) {
          if($type != '' || $prefix != '') {
@@ -251,7 +252,7 @@ Class ImagesHelper
       }
       return false;
    }
-    
+
    /**
     * Get basic information from Image source
     * @access public
@@ -355,6 +356,20 @@ Class ImagesHelper
       $imagename = ereg_replace("[ _]+", "_", $imagename);
 
       return $imagename;
+   }
+
+   /**
+    * Get image filename
+    * @access public
+    * @param  string $image_source  - source image filename
+    * @return string
+    */
+   public static function filename($image_source)
+   {
+      $path_parts = pathinfo($image_source);
+      $filename  = $path_parts['filename'];
+      $filename .= '.'.$path_parts['extension'];
+      return $filename;
    }
 
    /**
@@ -852,7 +867,7 @@ Class ImagesHelper
     *
     * Set tranparent color
     * @access public
-    * @param  mixed  $image - 
+    * @param  mixed  $image -
     * @param  mixed  $color - color hex format
     * @return resource
     */
@@ -899,5 +914,50 @@ Class ImagesHelper
       imagedestroy($image_source);
       return $destination;
    }
+
+   /**
+    * Download image from url
+    * @access public
+    * @param  string $path_to_source -
+    * @param  mixed  $path_to_temp   -
+    * @return string
+    */
+   public function downloadimage($path_to_source,$path_to_temp = false)
+   {
+      $filename = false;
+      if(!$path_to_temp) {
+         $path_to_temp = sys_get_temp_dir();
+      }
+      if($path_to_source && mb_substr($path_to_source, 0, 7) == 'http://') {
+         $filename = self::filename($path_to_source);
+         $path_to_temp = $path_to_temp.$filename;
+      }
+      if($filename && !file_exists($path_to_temp)) {
+          
+         # cURL initialization
+         $ch = curl_init();
+         curl_setopt($ch,CURLOPT_URL,$path_to_source);
+         curl_setopt($ch,CURLOPT_FAILONERROR, 1);
+         curl_setopt($ch,CURLOPT_FOLLOWLOCATION, 1);
+         curl_setopt($ch,CURLOPT_AUTOREFERER, 1);
+         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+         # set cURL connection timeout
+         curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,500);
+         # execute cURL
+         $image_source = curl_exec($ch);
+         # write image to temporary folder
+         file_put_contents($path_to_temp,$image_source);
+         # close cURL
+         curl_close($ch);
+         return $path_to_temp;
+      }
+      elseif(file_exists($path_to_temp)) {
+         return $path_to_temp;
+      }
+      else {
+         return $path_to_source;
+      }
+   }
+
 }
 ?>
