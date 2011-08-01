@@ -25,6 +25,9 @@ echo ' PNG: '.IMAGETYPE_PNG;
 echo ' BMP: '.IMAGETYPE_BMP;
 echo ' XBM: '.IMAGETYPE_XBM;
 echo ' WBMP: '.IMAGETYPE_WBMP;
+
+Your username is : bereg.muzeum.net.ua@email.ua
+Your password is : CTT63573
 */
 
 
