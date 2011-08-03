@@ -5,7 +5,7 @@
  * @package       Images
  * @subpackage	  Helper
  * @category      Utillites
- * @version       1.0.0
+ * @version       1.0.2
  * @desc          Example using ImagesHelper class
  * @copyright     Copyright Alexey Gordeyev IK © 2009-2011 - All rights reserved.
  * @license       GPLv2
@@ -31,8 +31,8 @@ Your password is : CTT63573
 */
 
 
-// $image_source = './images/source.jpg';
-$image_source = ImagesHelper::downloadimage('http://mp3passion.net/uploads/posts/thumbs/1240391573_nice_lounge_part12_500.jpg','./images/');
+$image_source = './images/source.jpg';
+// $image_source = ImagesHelper::downloadimage('http://mp3passion.net/uploads/posts/thumbs/1240391573_nice_lounge_part12_500.jpg','./images/');
 $new_image    = 'test.png';
 // $image_source = './images/source.jpg';
 
@@ -82,8 +82,6 @@ ImagesHelper::convert($image_source,'xbm');
 if($grayscale_image = ImagesHelper::colortograyscale($image_source)) {
    # save grayscale image in to file in gif format
    ImagesHelper::saveimage($grayscale_image, $image_source,'bw_','gif');
-   $grayscale_image  = ImagesHelper::buildimagewithreflection($grayscale_image);
-   ImagesHelper::showimage($grayscale_image,'png',100);
 }
 
 # Convert image to grayscale
@@ -134,6 +132,16 @@ if($quadrate_image  = ImagesHelper::quadrate($image_source,$ratio)) {
    ImagesHelper::saveimage($quadrate_image, $image_source,'qua_','gif'); 
 }
 
+# Crop image
+$src_x = 50;
+$src_y = 50;
+$crp_width = 200;
+$crp_height = 150;
+if($croped_image  = ImagesHelper::crop($image_source, $src_x, $src_y, $crp_width, $crp_height)) {
+   # save scaled image in to file in jpg format
+   ImagesHelper::saveimage($croped_image, $image_source,'crp_','jpg');    
+}
+
 # build reflection 
 $reflection_height = 25; # % 
 if($image_reflection  = ImagesHelper::buildreflection($image_source,$reflection_height)) {
@@ -174,17 +182,37 @@ if($rotated_image  = ImagesHelper::rotate($image_source,$degrees,$bg_color,$tran
 # build text watemark
 $text = 'agjoomla';
 $font = './fonts/ithornet.ttf';
-if($watermarked_image  = ImagesHelper::buildtextwatermark( $image_source, $text, $font)) {
-   # save watermarked image in to file in jpg format
-   ImagesHelper::saveimage($watermarked_image, $image_source,'wtmt_','jpg'); 
+$color = '#5E0B5F'; //#5E0B5F';
+$alpha_level = 40;
+$position    = 'center';
+
+if($watermarked_image  = ImagesHelper::buildtextwatermark( $image_source, $text, $font, $position, $alpha_level, 20)) {
+   # save watermarked image in to file in png format
+   ImagesHelper::saveimage($watermarked_image, $image_source,'wtmt_','png'); 
+   ImagesHelper::showimage($watermarked_image,'png',100);
+}
+/**/
+// buildtextwatermark( $image_source, $text, $font, $color = '#fff', $alpha_level = 100, $position = 'center', $angle = 0)
+# build image watemark
+$watermark_img = './images/wtm.gif';
+$alpha_level   = 50;
+$position = 'right-bottom';
+/*
+ * 'top-right','right-top',1
+ * 'top-left','left-top',2
+ * 'bottom-right','right-bottom',3
+ * 'bottom-left','left-bottom',4
+ * 'center',5
+ * 'top',6
+ * 'bottom',7
+ * 'left',8
+ * 'right',9
+ */
+if($watermarked_image = ImagesHelper::buildimagewatermark($image_source,$watermark_img,$position,$alpha_level)) {
+   # save watermarked image in to file in gif format
+   ImagesHelper::saveimage($watermarked_image, $image_source,'wtmi2_','gif');    
 }
 
-# build image watemark
-$watermark_img = './images/wtm.png';
-if($watermarked_image = ImagesHelper::buildimagewatermark($image_source, $watermark_img)) {
-   # save watermarked image in to file in gif format
-   ImagesHelper::saveimage($watermarked_image, $image_source,'wtmi_','gif');    
-}
 
 /*
 'horizontal'
