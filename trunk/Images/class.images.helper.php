@@ -5,7 +5,7 @@
  * @package       Images
  * @subpackage	  Helpers
  * @category      Auxiliary
- * @version       1.0.0
+ * @version       1.0.2
  * @desc          Basic manipulation with image
  * @copyright     Copyright Alexey Gordeyev IK © 2009-2011 - All rights reserved.
  * @license       GPLv2
@@ -140,10 +140,12 @@ Class ImagesHelper
     */
    public static function convert($image_source,$format = 'png',$prefix = '',$new_filename = false)
    {
-      $new_filename = $image_source;
       $image = self::createimagefromsource($image_source);
       if($new_filename) {
          $destination = $new_filename;
+      } 
+      else {
+         $destination = $image_source;
       }
       return self::saveimage($image,$destination,$prefix,$format);
    }
@@ -202,7 +204,7 @@ Class ImagesHelper
    public static function saveimage($image,$destination,$prefix='',$type='png',$quality=100)
    {
       $type = strtolower($type);
-      
+
       # build new image name
       if($prefix || $type) {
          if($type != '' || $prefix != '') {
@@ -263,7 +265,7 @@ Class ImagesHelper
    public static function getimageinfo($image_source,$info_type=false)
    {
       # read information from image file
-      if(file_exists($image_source)) {
+      if(@is_string($image_source) && @file_exists($image_source)) {
          $image_info   = getimagesize($image_source);
       }
       elseif(self::isgdresource($image_source)) {
@@ -637,6 +639,20 @@ Class ImagesHelper
    }
 
    /**
+    * 
+    * Build text as image
+    * @access public
+    * @param  string $font
+    * @param unknown_type $text_color
+    * @param unknown_type $bg_color
+    * @return return_type bare_field_name
+    */
+   public static function buildtext($font_size,$font,$text_color,$bg_color,$shadow=false,$shadow_color='#cccccc')
+   {
+      
+   }   
+   
+   /**
     * Build watermark text
     * @access public
     * @param  mixed  $image_source - path to image source or image object
@@ -646,23 +662,27 @@ Class ImagesHelper
     * @param  imt    $alpha_level  - watemark text alpha level (default = 100)
     * @return object               - the resulting image
     */
-   public static function buildtextwatermark( $image_source, $text, $font, $color = '#fff', $alpha_level = 100 )
+   public static function buildtextwatermark( $image_source, $text, $font, $color = '#ffffff', $position = 'center', $alpha_level = 50, $angle = 0)
    {
       $width_src    = self::width($image_source);
       $height_src   = self::height($image_source);
-      $angle        =  -rad2deg(atan2((-$height_src),($width_src)));
-      $rgb_color    = self::hextorgb($color);
+      if(!$angle) {
+         $angle     =  -rad2deg(atan2((-$height_src),($width_src)));
+      }
 
+      $rgb_color    = self::hextorgb($color);
       $image_source = self::createimagefromsource($image_source);
       $text = " ".$text." ";
 
-      $c = imagecolorallocatealpha($image_source, $rgb_color[0], $rgb_color[1], $rgb_color[2], $alpha_level);
-      $size = (($width_src+$height_src)/2)*2/strlen($text);
-      $box  = imagettfbbox( $size, $angle, $font, $text );
-      $x = $width_src/2 - abs($box[4] - $box[0])/2;
-      $y = $height_src/2 + abs($box[5] - $box[1])/2;
+      $allocated_bg_color = imagecolorallocatealpha($image_source, $rgb_color[0], $rgb_color[1], $rgb_color[2], $alpha_level);
+      $text_box_size = (($width_src+$height_src)/2)*2/strlen($text);
+      $text_box  = imagettfbbox($text_box_size, $angle, $font, $text );
 
-      imagettftext($image_source,$size ,$angle, $x, $y, $c, $font, $text);
+      $x = $width_src/2 - abs($text_box[4] - $text_box[0])/2;
+      $y = $height_src/2 + abs($text_box[5] - $text_box[1])/2;
+      $sample = imagecreatetruecolor($y,$x);
+      $coordinates = self::calculateposition($image_source, $sample, $position);
+      imagettftext($image_source, $text_box_size, $angle, $x, $y, $allocated_bg_color, $font, $text);
       return $image_source;
    }
 
@@ -672,93 +692,102 @@ Class ImagesHelper
     * @param  mixed  $image_source  - path to image source or image object
     * @param  string $watermark_img - path to watemark image source
     * @param  int    $alpha_level   - watemark image aplha level (default = 100)
-    * @param  int    $x             - watemark coordinates on the x-axis (default = 5)
-    * @param  int    $y             - watemark coordinates on the y-axis (default = 5)
     * @return object                - the resulting image
     */
-   public static function buildimagewatermark($image_source, $watermark_img, $position = 'random', $alpha_level = 100, $x = 5, $y = 5)
+   public static function buildimagewatermark($image_source, $watermark_img, $position = 'random', $alpha_level = 50)
    {
-      $watermark_width  = self::width($watermark_img);
-      $watermark_height = self::height($watermark_img);
       $watermark_img    = self::createimagefromsource($watermark_img);
 
       $width_src        = self::width($image_source);
       $height_src       = self::height($image_source);
       $image_source     = self::createimagefromsource($image_source);
 
-      $dest_x = $width_src - $watermark_width - $x;
-      $dest_y = $height_src - $watermark_height - $y;
-      imagecopymerge($image_source, $watermark_img, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height, $alpha_level);
+      if($width_src < self::width($watermark_img)) {
+         $watermark_img  = ImagesHelper::resizeimage($image_source,round($width_src*0.75),'width');
+      }
+      elseif($height_src < self::height($watermark_img)) {
+         $watermark_img  = ImagesHelper::resizeimage($image_source,round($height_src*0.75),'height');
+      }
+
+      $watermark_width  = self::width($watermark_img);
+      $watermark_height = self::height($watermark_img);
+
+      $coordinates = self::calculateposition($image_source,$watermark_img,$position);
+      imagecopymerge($image_source, $watermark_img, $coordinates['dst_x'], $coordinates['dst_y'], 0, 0, $watermark_width, $watermark_height, $alpha_level);
 
       return $image_source;
    }
 
+   
    /**
     * Calculate watemark position
     * @access public
-    * @param  mixed  $src_image - path to image source or image object
-    * @param  mixed  $dst_image - path to image destination or image object
+    * @param  mixed  $src_image     - path to image source or image object
+    * @param  mixed  $watermark_img - path to image destination or image object
     * @param  string $position
     * @return array
     */
-   public static function calculateposition($src_image,$dest_image,$position)
+   public static function calculateposition($image_source,$watermark_img,$position)
    {
-      $coordinates = array('dest_x'=>0,
-                           'dest_y'=>0,
-                           'dest_w'=>0,
-                           'dest_h'=>0,
-                           'src_x'=>0,
-                           'src_y'=>0,
-                           'src_w'=>0,
-                           'src_h'=>0);
+      $src_w  = self::width($image_source);
+      $src_h  = self::height($image_source);
+      $wtm_w  = self::width($watermark_img);
+      $wtm_h  = self::height($watermark_img);
+      $dst_x  = $src_w - $wtm_w;
+      $dst_y  = $src_h - $wtm_h;
 
+      $coordinates = array('dst_x'=>0,'dst_y'=>0);
+       
       if ($position == 'random') {
          $position = rand(1,8);
       }
+
       switch ($position) {
          case 'top-right':
          case 'right-top':
          case 1:
-            //  $coordinates[''] = ;
-            //  $coordinates[''] = ;
-            imagecopy($dst_image, $src_image, ($dest_x-$src_w), 0, 0, 0, $src_w, $src_h);
+            $coordinates['dst_x'] = $dst_x-$wtn_w;
             break;
          case 'top-left':
          case 'left-top':
          case 2:
-            imagecopy($dst_image, $src_image, 0, 0, 0, 0, $src_w, $src_h);
             break;
          case 'bottom-right':
          case 'right-bottom':
          case 3:
-            imagecopy($dst_image, $src_image, ($dest_x-$src_w), ($dst_h-$src_h), 0, 0, $src_w, $src_h);
+            $coordinates['dst_x'] = $dst_x-$wtm_w;
+            $coordinates['dst_y'] = $src_h-$wtm_h;
             break;
          case 'bottom-left':
          case 'left-bottom':
          case 4:
-            imagecopy($dst_image, $src_image, 0 , ($dst_h-$src_h), 0, 0, $src_w, $src_h);
+            $coordinates['dst_y'] = $src_h-$wtm_h;
             break;
          case 'center':
          case 5:
-            imagecopy($dst_image, $src_image, (($dest_x/2)-($src_w/2)), (($dst_h/2)-($src_h/2)), 0, 0, $src_w, $src_h);
+            $coordinates['dst_x'] = ($src_w/2)-($wtm_w/2);
+            $coordinates['dst_y'] = ($src_h/2)-($wtm_h/2);
             break;
          case 'top':
          case 6:
-            imagecopy($dst_image, $src_image, (($dest_x/2)-($src_w/2)), 0, 0, 0, $src_w, $src_h);
+            $coordinates['dst_x'] = ($dst_x/2)-($wtm_w/2);
             break;
          case 'bottom':
          case 7:
-            imagecopy($dst_image, $src_image, (($dest_x/2)-($src_w/2)), ($dst_h-$src_h), 0, 0, $src_w, $src_h);
+            $coordinates['dst_x'] = ($dst_x/2)-($wtm_w/2);
+            $coordinates['dst_y'] = $src_h-$wtm_h;
             break;
          case 'left':
          case 8:
-            imagecopy($dst_image, $src_image, 0, (($dst_h/2)-($src_h/2)), 0, 0, $src_w, $src_h);
+            $coordinates['dst_y'] = ($src_h/2)-($wtm_h/2);
             break;
          case 'right':
          case 9:
-            imagecopy($dst_image, $src_image, ($dest_x-$src_w), (($dst_h/2)-($src_h/2)), 0, 0, $src_w, $src_h);
+            $coordinates['dst_x'] = $dst_x-$wtm_w;
+            $coordinates['dst_y'] = ($src_h/2)-($wtm_h/2);
             break;
       }
+      return $coordinates;
    }
 
    /**
@@ -874,7 +903,7 @@ Class ImagesHelper
    public static function tranparent($image_source,$color)
    {
       $rgb_color       = false;
-      $image_source    = self::createimagefromsource($watermark_img);
+      $image_source    = self::createimagefromsource($image_source);
       if($color) {
          if(is_array($color)) {
             $rgb_color = $color;
@@ -933,7 +962,7 @@ Class ImagesHelper
          $path_to_temp = $path_to_temp.$filename;
       }
       if($filename && !file_exists($path_to_temp)) {
-          
+
          # cURL initialization
          $ch = curl_init();
          curl_setopt($ch,CURLOPT_URL,$path_to_source);
