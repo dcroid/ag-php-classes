@@ -143,7 +143,7 @@ Class ImagesHelper
       $image = self::createimagefromsource($image_source);
       if($new_filename) {
          $destination = $new_filename;
-      } 
+      }
       else {
          $destination = $image_source;
       }
@@ -639,7 +639,7 @@ Class ImagesHelper
    }
 
    /**
-    * 
+    *
     * Build text as image
     * @access public
     * @param  string $font
@@ -647,11 +647,53 @@ Class ImagesHelper
     * @param unknown_type $bg_color
     * @return return_type bare_field_name
     */
-   public static function buildtext($font_size,$font,$text_color,$bg_color,$shadow=false,$shadow_color='#cccccc')
+   public static function buildtextasimage($text,$font_size,$path_to_font,$font_color='#ffffff',$bg_color='#000000',$shadow=false,$shadow_color='#cccccc')
    {
-      
-   }   
-   
+      $bbox = imagettfbbox($font_size, 0,$path_to_font, $text);
+      $width = abs($bbox[2] - $bbox[0]);
+      $height = abs($bbox[7] - $bbox[1]);
+      $rgb_bg_color      = self::hextorgb($bg_color);
+      $rgb_font_color    = self::hextorgb($font_color);
+      $text_img = imagecreatetruecolor($width, $height);
+      $allocated_bg_color = imagecolorallocate($text_img, $rgb_bg_color[0], $rgb_bg_color[1], $rgb_bg_color[2]);
+      $color = imagecolorallocate($text_img, $rgb_font_color[0], $rgb_font_color[1], $rgb_font_color[2]);
+
+      $x = $bbox[0] + ($width / 2) - ($bbox[4] / 2) * 0.9;
+      $y = $bbox[1] + ($height / 2) - ($bbox[5] / 2) * 0.9;
+
+      imagefilledrectangle($text_img, 0, 0, $width - 1, $height - 1, $allocated_bg_color);
+      imagettftext($text_img, $font_size, 0, $x, $y, $color, $path_to_font, $text);
+
+      $last_pixel= imagecolorat($text_img, 0, 0);
+
+      for ($j = 0; $j < $height; $j++)
+      {
+         for ($i = 0; $i < $width; $i++)
+         {
+            if (isset($blank_left) && $i >= $blank_left) {  break;  }
+
+            if (imagecolorat($text_img, $i, $j) !== $last_pixel)
+            {
+               if (!isset($blank_top)) {  $blank_top = $j;  }
+               $blank_left = $i;
+               break;
+            }
+            $last_pixel = imagecolorat($text_img, $i, $j);
+         }
+      }
+
+      $x -= $blank_left;
+      $y -= $blank_top;
+
+      imagefilledrectangle($text_img, 0, 0, $width - 1, $height - 1, $allocated_bg_color);
+      imagettftext($text_img, $font_size, 0, $x, $y, $color, $path_to_font, $text);
+      # build transparent background
+      if(!$allocated_bg_color) {
+         imagecolortransparent($image_source, $allocated_bg_color);
+      }
+      return $text_img;
+   }
+
    /**
     * Build watermark text
     * @access public
@@ -718,7 +760,7 @@ Class ImagesHelper
       return $image_source;
    }
 
-   
+
    /**
     * Calculate watemark position
     * @access public
@@ -857,10 +899,7 @@ Class ImagesHelper
          $r = ( $r2 - $r1 != 0 ) ? intval( $r1 + ( $r2 - $r1 ) * ( $i / $line_numbers ) ): $r1;
          $g = ( $g2 - $g1 != 0 ) ? intval( $g1 + ( $g2 - $g1 ) * ( $i / $line_numbers ) ): $g1;
          $b = ( $b2 - $b1 != 0 ) ? intval( $b1 + ( $b2 - $b1 ) * ( $i / $line_numbers ) ): $b1;
-         // if new values are really new ones, allocate a new color, otherwise reuse previous color.
-         // There's a "feature" in imagecolorallocate that makes this function
-         // always returns '-1' after 255 colors have been allocated in an image that was created with
-         // imagecreate (everything works fine with imagecreatetruecolor)
+
          if ( "$old_r,$old_g,$old_b" != "$r,$g,$b") { $fill = imagecolorallocate($gradiened, $r, $g, $b ); }
          switch($direction) {
             case 'vertical':
