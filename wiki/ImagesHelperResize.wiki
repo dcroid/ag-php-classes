@@ -7,6 +7,12 @@
 
 Масштабирование
 {{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+
 $ratio = 70; // соотношение в % от основного изображения
 $prefix = 'sca_'; // Приставка к имени файла от масштабированного изображения   
 if($scaled_image  = ImagesHelper::scale($image_source,$ratio)) {            
@@ -17,6 +23,12 @@ if($scaled_image  = ImagesHelper::scale($image_source,$ratio)) {
 
 Изменение размера изображения Пример 1
 {{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+
 $new_width = 50; // фиксированная ширина будущего изображения в px
 $prefix = 'thumb_'; // приставка к имени файла с измененными размерами 
 if($resized_image  = ImagesHelper::resizeto($image_source,$new_width)) {
@@ -26,6 +38,12 @@ if($resized_image  = ImagesHelper::resizeto($image_source,$new_width)) {
 }}}
 Изменение размера изображения Пример 2
 {{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+
 $resize_to = 'height'; // фиксировать по высоте
 $new_height = 30; // высота будущего изображения в px
 $prefix = 'thumb2_'; // приставка к имени файла с измененными размерами 
