@@ -1,5 +1,5 @@
 #summary PHP Класс ImagesHelper
-#labels PHPClass,Image,Helper,GD
+#labels PHPClass,Image,Helper,GD,ImagesHelper
 <g:plusone size="medium"></g:plusone>
 = ImagesHelper - PHP Class =
 Небольшой PHP класс для работы с изображениями: создание отражения, изменение размеров, поворот, конвертирование в другой формат, обрезка и т.д.. Класс использует GD библиотеку, и поддерживает самые распространённые графические форматы: GIF, PNG, JPEG. Можно выполнять несколько операций, без необходимости сохранять и повторной инициализации изображения.
