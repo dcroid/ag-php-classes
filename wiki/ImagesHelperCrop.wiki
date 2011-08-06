@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Методы для вырезания и сложного масштабирования
 #labels PHPClass,Image,Resize,Scale,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
