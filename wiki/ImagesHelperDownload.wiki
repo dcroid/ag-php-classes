@@ -1,6 +1,7 @@
 #summary One-sentence summary of this page.
 #labels PHPClass,Image,Download,GD,cURL
-
+#sidebar ImagesHelperSidebar
+<g:plusone size="medium"></g:plusone>
 = Скачивание изображения =
 
 {{{
