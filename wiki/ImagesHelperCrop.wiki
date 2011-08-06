@@ -5,7 +5,7 @@
 = Обрезка, сложное масштабирование изображения =
 Иногда требуется из прямоугольного изображения сделать квадратное с сохранением всех пропорций. С помощью ImagesHelper сделать это легко, как показано в описанном ниже примере
 
-сложное масштабирование
+==== Сложное масштабирование ====
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
@@ -20,7 +20,7 @@ if($quadrate_image  = ImagesHelper::quadrate($image_source,$ratio)) {
    ImagesHelper::save($quadrate_image, $image_source,'qua_','gif'); 
 }
 }}}
-вырезание
+==== Вырезание ====
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
