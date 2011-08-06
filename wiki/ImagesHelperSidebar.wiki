@@ -1,5 +1,6 @@
-#summary One-sentence summary of this page.
-== ImagesHelper ==
+#summary Панель навигации для класса ImagesHelper
+#labels PHPClass,Image,ImagesHelper
+== Класс ImagesHelper ==
   * [ImagesHelperDownload Скачивание изображения]
   * [ImagesHelperSave Сохранение изображения]
   * [ImagesHelperShow Вывод изображения в броузер]
