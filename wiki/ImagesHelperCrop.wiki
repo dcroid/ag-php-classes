@@ -1,5 +1,5 @@
 #summary Методы для вырезания и сложного масштабирования
-#labels PHPClass,Image,Resize,Scale,GD
+#labels PHPClass,Image,Quadrate,Crop,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Обрезка, сложное масштабирование изображения =
