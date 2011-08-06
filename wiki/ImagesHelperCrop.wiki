@@ -7,6 +7,12 @@
 
 сложное масштабирование
 {{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+
 $ratio = 70; // соотношение в % от основного изображения
 if($quadrate_image  = ImagesHelper::quadrate($image_source,$ratio)) { 
    // сохранение полученного изображения в gif формате   
@@ -15,6 +21,12 @@ if($quadrate_image  = ImagesHelper::quadrate($image_source,$ratio)) {
 }}}
 вырезание
 {{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+
 $src_x = 50; // точка начала вырезания по оси x
 $src_y = 50; // точка начала вырезания по оси y
 $crp_width = 200; // ширина вырезаемой области
