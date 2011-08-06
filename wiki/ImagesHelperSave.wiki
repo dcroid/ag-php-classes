@@ -1,4 +1,8 @@
-#summary Метод save PHP класса ImagesHelper (ImagesHelper::save())
+#summary Метод для сохранения изображения
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Сохранение изображения =
+
+{{{
+
+}}}
