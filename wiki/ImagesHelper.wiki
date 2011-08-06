@@ -6,6 +6,10 @@
 
 = Доступны манипуляции с изображениями =
 
+  * [ImagesHelperDownload Скачивание изображения]
+  * [ImagesHelperSave Сохранение изображения]
+  * [ImagesHelperShow Вывод изображения в броузер]
+  * [ImagesHelperConvert Конвертация изображения]
   * [ImagesHelperResize Изменение размера изображения]
   * [ImagesHelperCrop Обрезка, сложное масштабирование изображения]
   * [ImagesHelperreflection Изображения с отражением]
