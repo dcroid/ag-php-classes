@@ -8,14 +8,17 @@
 // Подключение класса 
 require_once 'class.images.helper.php'; 
 
-// создать изображение из файла
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+
+// Создать изображение из файла
 $image = ImagesHelper::create($image_source);
 
-// вывести изображение в броузер
+// Вывести изображение в броузер
 ImagesHelper::show($image);
 
 /*
-  вывод изображения в броузер в определенном формате
+  Вывод изображения в броузер в определенном формате
   ImagesHelper::showimage($image_text,'png');
 */
 
