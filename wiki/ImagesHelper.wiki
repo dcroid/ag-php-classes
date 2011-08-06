@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary PHP Класс ImagesHelper
 #labels PHPClass,Image,Helper,GD
 <g:plusone size="medium"></g:plusone>
 = ImagesHelper - PHP Class =
