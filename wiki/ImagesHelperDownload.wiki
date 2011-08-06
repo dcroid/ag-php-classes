@@ -1,4 +1,4 @@
-#summary Метод download PHP класса ImagesHelper (ImagesHelper::download())
+#summary Метод для скачивания изображения
 #labels PHPClass,Image,Download,GD,cURL
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
