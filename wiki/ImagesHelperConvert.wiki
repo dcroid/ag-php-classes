@@ -1,4 +1,4 @@
-#summary Метод convert PHP класса ImagesHelper (ImagesHelper::convert())
+#summary Метод для конвертации изображения
 #labels PHPClass,Image,Convert,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
