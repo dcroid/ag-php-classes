@@ -1,0 +1,5 @@
+#summary Метод для создания изображения с отражением
+#labels PHPClass,Image,Reflection,GD,ImagesHelper
+#sidebar ImagesHelperSidebar
+<g:plusone size="medium"></g:plusone>
+= Изображения с отражением =
