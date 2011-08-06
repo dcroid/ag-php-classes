@@ -19,7 +19,7 @@ ImagesHelper::show($image);
 
 /*
   Вывод изображения в броузер в определенном формате
-  ImagesHelper::showimage($image_text,'png');
+  ImagesHelper::show($image_text,'png');
 */
 
 }}}
