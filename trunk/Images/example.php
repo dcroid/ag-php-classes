@@ -37,13 +37,13 @@ $new_image    = 'test.png';
 // $image_source = './images/source.jpg';
 
 # get full information from image
-$image_info = ImagesHelper::getimageinfo($image_source);
+$image_info = ImagesHelper::info($image_source);
 // var_dump($image_info);
 /*
  if(is_object($image_source)) {
  echo "Is object";
  } else {
- $image = ImagesHelper::createimagefromsource($image_source);
+ $image = ImagesHelper::create($image_source);
  if(is_object($image)) {
  echo "Cool is object";
  } else {
@@ -54,17 +54,17 @@ $image_info = ImagesHelper::getimageinfo($image_source);
  */
 
 # get image width
-$width      = ImagesHelper::getimageinfo($image_source,'width');
+$width      = ImagesHelper::info($image_source,'width');
 # or
 $width      = ImagesHelper::width($image_source);
 
 # get image height
-$height     = ImagesHelper::getimageinfo($image_source,'height');
+$height     = ImagesHelper::info($image_source,'height');
 # or
 $height     = ImagesHelper::height($image_source);
 
 # get image mime/type
-$mime       = ImagesHelper::getimageinfo($image_source,'mime');
+$mime       = ImagesHelper::info($image_source,'mime');
 # or
 $mime       = ImagesHelper::mime($image_source);
 
@@ -79,37 +79,37 @@ ImagesHelper::convert($image_source,'wbmp');
 ImagesHelper::convert($image_source,'xbm');
 
 # Convert image to grayscale
-if($grayscale_image = ImagesHelper::colortograyscale($image_source)) {
+if($grayscale_image = ImagesHelper::grayscale($image_source)) {
    # save grayscale image in to file in gif format
-   ImagesHelper::saveimage($grayscale_image, $image_source,'bw_','gif');
+   ImagesHelper::save($grayscale_image, $image_source,'bw_','gif');
 }
 
 # Convert image to grayscale
-if($grayscale_image = ImagesHelper::colortograyscale($image_source)) {
-   $grayscale_image  = ImagesHelper::imagetonegative($grayscale_image);
+if($grayscale_image = ImagesHelper::grayscale($image_source)) {
+   $grayscale_image  = ImagesHelper::negative($grayscale_image);
    # save grayscale image in to file in gif format
-   ImagesHelper::saveimage($grayscale_image, $image_source,'bw2_','gif');
+   ImagesHelper::save($grayscale_image, $image_source,'bw2_','gif');
 }
 
 # Convert image to negative
-if($negative_image  = ImagesHelper::imagetonegative($image_source)) {
+if($negative_image  = ImagesHelper::negative($image_source)) {
    # save image negative in to file in png format
-   ImagesHelper::saveimage($negative_image, $image_source,'ng_','png');
+   ImagesHelper::save($negative_image, $image_source,'ng_','png');
 }
 
 # Resize image example 1
 $new_width = 50; // new image width px
-if($resized_image  = ImagesHelper::resizeimage($image_source,$new_width)) {
+if($resized_image  = ImagesHelper::resizeto($image_source,$new_width)) {
    # save thumblain image in to file in jpg format
-   ImagesHelper::saveimage($resized_image, $image_source,'thumb_','jpg');
+   ImagesHelper::save($resized_image, $image_source,'thumb_','jpg');
 }
 
 # Resize image example 2
 $resize_to = 'height';
 $new_value = 30; // new height value px
-if($resized_image  = ImagesHelper::resizeimage($image_source,$new_value,$resize_to)) {
+if($resized_image  = ImagesHelper::resizeto($image_source,$new_value,$resize_to)) {
    # save thumblain image in to file in gif format
-   ImagesHelper::saveimage($resized_image, $image_source,'thumb_','gif');
+   ImagesHelper::save($resized_image, $image_source,'thumb_','gif');
 }
 
 # Resize image example 3
@@ -117,19 +117,19 @@ $width  = 90; # px
 $height = 30; # px
 if($fix_resized_image  = ImagesHelper::resize($image_source,$width,$height)) {
    # save resized image with fixed size in to file in gif format
-   ImagesHelper::saveimage($fix_resized_image, $image_source,'fix_','gif');
+   ImagesHelper::save($fix_resized_image, $image_source,'fix_','gif');
 }
 
 # Scale image
 $ratio = 70; # %
 if($scaled_image  = ImagesHelper::scale($image_source,$ratio)) {
    # save scaled image in to file in gif format
-   ImagesHelper::saveimage($scaled_image, $image_source,'sca_','gif');
+   ImagesHelper::save($scaled_image, $image_source,'sca_','gif');
 }
 
 if($quadrate_image  = ImagesHelper::quadrate($image_source,$ratio)) {
    # save scaled image in to file in gif format
-   ImagesHelper::saveimage($quadrate_image, $image_source,'qua_','gif');
+   ImagesHelper::save($quadrate_image, $image_source,'qua_','gif');
 }
 
 # Crop image
@@ -139,20 +139,20 @@ $crp_width = 200;
 $crp_height = 150;
 if($croped_image  = ImagesHelper::crop($image_source, $src_x, $src_y, $crp_width, $crp_height)) {
    # save scaled image in to file in jpg format
-   ImagesHelper::saveimage($croped_image, $image_source,'crp_','jpg');
+   ImagesHelper::save($croped_image, $image_source,'crp_','jpg');
 }
 
 # build reflection
 $reflection_height = 25; # %
-if($image_reflection  = ImagesHelper::buildreflection($image_source,$reflection_height)) {
+if($image_reflection  = ImagesHelper::reflection($image_source,$reflection_height)) {
    # save reflection image in to file in gif format
-   ImagesHelper::saveimage($image_reflection, $image_source,'ref_','png');
+   ImagesHelper::save($image_reflection, $image_source,'ref_','png');
 }
 
 # build image with reflection
 if($image_with_reflection  = ImagesHelper::buildimagewithreflection($image_source)) {
    # save resulted image in to file in png format
-   ImagesHelper::saveimage($image_with_reflection, $image_source,'wref_','png');
+   ImagesHelper::save($image_with_reflection, $image_source,'wref_','png');
 }
 
 # build faded image
@@ -161,14 +161,14 @@ $alpha_end = 0;
 $bg_color = "#000"; //   #7E58BF
 if($faded_image  = ImagesHelper::fade($image_source,$alpha_start,$alpha_end,$bg_color)) {
    # save resulted image in to file in png format
-   ImagesHelper::saveimage($faded_image, $image_source,'fad2_','png');
+   ImagesHelper::save($faded_image, $image_source,'fad2_','png');
 }
 
 # rotate image example 1 with transparent background
 $degrees = 55;
 if($rotated_image  = ImagesHelper::rotate($image_source,$degrees)) {
    # save rotated image in to file in png format
-   ImagesHelper::saveimage($rotated_image, $image_source,'rtdt_','png');
+   ImagesHelper::save($rotated_image, $image_source,'rtdt_','png');
 }
 
 # rotate image example 2 with filled background
@@ -176,28 +176,38 @@ $bg_color = '#7E58BF';
 $transparent = false;
 if($rotated_image  = ImagesHelper::rotate($image_source,$degrees,$bg_color,$transparent)) {
    # save rotated image in to file in png format
-   ImagesHelper::saveimage($rotated_image, $image_source,'rtdf_','png');
+   ImagesHelper::save($rotated_image, $image_source,'rtdf_','png');
 }
 
 # build text watemark
 $text = "ImagesHelper\n     PHP\n    class";
-$font = './fonts/BeAggressive.ttf';
+$font = './fonts/BraesideOutline.ttf';
 $color = '#5E0B5F'; //#5E0B5F';
 $alpha_level = 40;
 $position    = 'center';
 
 if($watermarked_image  = ImagesHelper::buildtextwatermark( $image_source, $text, $font, $position, $alpha_level, 20)) {
    # save watermarked image in to file in png format
-   ImagesHelper::saveimage($watermarked_image, $image_source,'wtmt_','png');
+   ImagesHelper::save($watermarked_image, $image_source,'wtmt_','png');
     
 }
 
-$text_color = '#ffffff';
-$bg_color = '#5E0B5F';
-if($image_text  = ImagesHelper::buildtextasimage($text,30,$font,$text_color,$bg_color)) {
-   ImagesHelper::showimage($image_text,'png',100);
+$text = "OVERLEY";
+$text_color = false;
+$bg_color = '#FFF';
+if($image_text  = ImagesHelper::text($text,50,$font,$text_color,$bg_color)) {
+      $new_height  = ImagesHelper::height($image_source);
+      $image_text  = ImagesHelper::resizeto($image_text,$new_height,'height');
+      ImagesHelper::save($image_text, $image_source,'txt3_','gif');
 }
-/**/
+
+if($watermarked2_image = ImagesHelper::watermark($image_source,$image_text,'center',100)) {
+
+   # save watermarked image in to file in png format
+   ImagesHelper::save($watermarked2_image, $image_source,'wtmt2_','png');
+   ImagesHelper::show($watermarked2_image,'png',100);
+}
+/* */
 // buildtextwatermark( $image_source, $text, $font, $color = '#fff', $alpha_level = 100, $position = 'center', $angle = 0)
 # build image watemark
 $watermark_img = './images/wtm.gif';
@@ -214,9 +224,9 @@ $position = 'right-bottom';
  * 'left',8
  * 'right',9
  */
-if($watermarked_image = ImagesHelper::buildimagewatermark($image_source,$watermark_img,$position,$alpha_level)) {
+if($watermarked_image = ImagesHelper::watermark($image_source,$watermark_img,$position,$alpha_level)) {
    # save watermarked image in to file in gif format
-   ImagesHelper::saveimage($watermarked_image, $image_source,'wtmi2_','gif');
+   ImagesHelper::save($watermarked_image, $image_source,'wtmi2_','gif');
 }
 
 
@@ -239,26 +249,26 @@ $end_color = '#fff';
 $step = 0;
 if($gradient_image = ImagesHelper::gradientfill($width,$height,$direction,$start_color,$end_color,$step)) {
    # save watermarked image in to file in gif format
-   ImagesHelper::saveimage($gradient_image, $image_source,'gr1_','png');
+   ImagesHelper::save($gradient_image, $image_source,'gr1_','png');
 }
 
 $width = 100;
 $direction = 'circle';
 if($gradient_image = ImagesHelper::gradientfill($width,$height,$direction,$start_color,$end_color,$step)) {
    # save watermarked image in to file in gif format
-   ImagesHelper::saveimage($gradient_image, $image_source,'gr2_','png');
+   ImagesHelper::save($gradient_image, $image_source,'gr2_','png');
 }
 
 $direction = 'horizontal';
 if($gradient_image = ImagesHelper::gradientfill($width,$height,$direction,$start_color,$end_color,$step)) {
    # save watermarked image in to file in gif format
-   ImagesHelper::saveimage($gradient_image, $image_source,'gr3_','png');
+   ImagesHelper::save($gradient_image, $image_source,'gr3_','png');
 }
 
 $direction = 'rectangle';
 if($gradient_image = ImagesHelper::gradientfill($width,$height,$direction,$start_color,$end_color,$step)) {
    # save watermarked image in to file in gif format
-   ImagesHelper::saveimage($gradient_image, $image_source,'gr4_','png');
+   ImagesHelper::save($gradient_image, $image_source,'gr4_','png');
 }
 
 $direction = 'square';
@@ -266,6 +276,6 @@ if($gradient_image = ImagesHelper::gradientfill($width,$height,$direction,$start
    # build transparent
    $gradient_image = ImagesHelper::tranparent($gradient_image,$start_color);
    # save watermarked image in to file in gif format
-   ImagesHelper::saveimage($gradient_image, $image_source,'gr5_','png');
+   ImagesHelper::save($gradient_image, $image_source,'gr5_','png');
 }
 ?>

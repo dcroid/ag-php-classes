@@ -40,14 +40,14 @@ Class ImagesHelper
     * @param  string $image_source - path to image source
     * @return mixed                - image object or false
     */
-   public static function createimagefromsource($image_source)
+   public static function create($image_source)
    {
       $image = false;
       if(self::isgdresource($image_source)) {
          $image = $image_source;
       } else {
          if(file_exists($image_source)) {
-            $image_type = self::getimageinfo($image_source,'type');
+            $image_type = self::info($image_source,'type');
 
             if($image_type) {
                switch ($image_type)
@@ -103,11 +103,11 @@ Class ImagesHelper
     * @param  string $image_source - path to image source
     * @return mixed                - resulted image object or false
     */
-   public static function colortograyscale($image_source)
+   public static function grayscale($image_source)
    {
       $image = false;
       if(file_exists($image_source) || self::isgdresource($image_source)) {
-         $image = self::createimagefromsource($image_source);
+         $image = self::create($image_source);
          imagefilter($image,IMG_FILTER_GRAYSCALE);
       }
       return $image;
@@ -119,11 +119,11 @@ Class ImagesHelper
     * @param  string $image_source - path to image source
     * @return mixed                - resulted image object or false
     */
-   public static function imagetonegative($image_source)
+   public static function negative($image_source)
    {
       $image = false;
       if(file_exists($image_source) || self::isgdresource($image_source)) {
-         $image = self::createimagefromsource($image_source);
+         $image = self::create($image_source);
          imagefilter($image,IMG_FILTER_NEGATE);
       }
       return $image;
@@ -140,14 +140,14 @@ Class ImagesHelper
     */
    public static function convert($image_source,$format = 'png',$prefix = '',$new_filename = false)
    {
-      $image = self::createimagefromsource($image_source);
+      $image = self::create($image_source);
       if($new_filename) {
          $destination = $new_filename;
       }
       else {
          $destination = $image_source;
       }
-      return self::saveimage($image,$destination,$prefix,$format);
+      return self::save($image,$destination,$prefix,$format);
    }
 
    /**
@@ -158,7 +158,7 @@ Class ImagesHelper
     * @param  int    $quality - resulted image quality in % (default = 100)
     * @return void
     */
-   public static function showimage($image,$type='png',$quality=100)
+   public static function show($image,$type='png',$quality=100)
    {
       $type = strtolower($type);
       $type = ($type == 'jpg')?'jpeg':$type;
@@ -201,7 +201,7 @@ Class ImagesHelper
     * @param  int    $quality     - resulted image quality (default = 100)
     * @return string              - full path to resulted image
     */
-   public static function saveimage($image,$destination,$prefix='',$type='png',$quality=100)
+   public static function save($image,$destination,$prefix='',$type='png',$quality=100)
    {
       $type = strtolower($type);
 
@@ -262,7 +262,7 @@ Class ImagesHelper
     * @param  string $info_type    - type of the returned information
     * @return mixed                - source image information (int, string or array)
     */
-   public static function getimageinfo($image_source,$info_type=false)
+   public static function info($image_source,$info_type=false)
    {
       # read information from image file
       if(@is_string($image_source) && @file_exists($image_source)) {
@@ -317,7 +317,7 @@ Class ImagesHelper
     */
    public static function width($image_source)
    {
-      return self::getimageinfo($image_source,'width');
+      return self::info($image_source,'width');
    }
 
    /**
@@ -328,7 +328,7 @@ Class ImagesHelper
     */
    public static function height($image_source)
    {
-      return self::getimageinfo($image_source,'height');
+      return self::info($image_source,'height');
    }
 
    /**
@@ -339,7 +339,7 @@ Class ImagesHelper
     */
    public static function mime($image_source)
    {
-      return self::getimageinfo($image_source,'mime');
+      return self::info($image_source,'mime');
    }
 
    /**
@@ -400,11 +400,11 @@ Class ImagesHelper
     * @param  string $dimension    -
     * @return object               - the resulting image
     */
-   public static function resizeimage($image_source,$new_size,$dimension = "width")
+   public static function resizeto($image_source,$new_size,$dimension = "width")
    {
       $width_src    = self::width($image_source);
       $height_src   = self::height($image_source);
-      $image_source = self::createimagefromsource($image_source);
+      $image_source = self::create($image_source);
       if($dimension == 'width') {
          $ratio = $width_src/$new_size;
       } else {
@@ -430,7 +430,7 @@ Class ImagesHelper
    {
       $width_src    = self::width($image_source);
       $height_src   = self::height($image_source);
-      $image_source = self::createimagefromsource($image_source);
+      $image_source = self::create($image_source);
       $new_image = imagecreatetruecolor($width, $height);
       imagecopyresampled($new_image, $image_source, 0, 0, 0, 0, $width, $height, $width_src, $height_src);
       return $new_image;
@@ -464,7 +464,7 @@ Class ImagesHelper
    {
       $width_src    = self::width($image_source);
       $height_src   = self::height($image_source);
-      $image_source = self::createimagefromsource($image_source);
+      $image_source = self::create($image_source);
       if($dimension == 'px') {
          $width_dest   = $ratio;
       } else {
@@ -498,11 +498,11 @@ Class ImagesHelper
     * @param  int    $ratio        - reflection ratio %
     * @return object               - the resulting image
     */
-   public static function buildreflection($image_source,$ratio=30)
+   public static function reflection($image_source,$ratio=30)
    {
       $width_src    = self::width($image_source);
       $height_src   = self::height($image_source);
-      $image_source = self::createimagefromsource($image_source);
+      $image_source = self::create($image_source);
 
       # calculate reflection height
       $reflection_height = round($height_src * ($ratio/100));
@@ -535,7 +535,7 @@ Class ImagesHelper
    {
       $width_src    = self::width($image_source);
       $height_src   = self::height($image_source);
-      $image_source = self::createimagefromsource($image_source);
+      $image_source = self::create($image_source);
 
       # calculate reflection height
       $reflection_height = round($height_src * ($ratio/100));
@@ -580,7 +580,7 @@ Class ImagesHelper
       $rgb_color    = self::hextorgb($bg_color);
       $width_src    = self::width($image_source);
       $height_src   = self::height($image_source);
-      $faded        = self::createimagefromsource($image_source);
+      $faded        = self::create($image_source);
       imagelayereffect($faded, IMG_EFFECT_OVERLAY);
 
       for ($y = 0; $y <= $height_src; $y++)
@@ -622,7 +622,7 @@ Class ImagesHelper
          }
       }
 
-      $image_source = self::createimagefromsource($image_source);
+      $image_source = self::create($image_source);
       $allocated_bg_color = false;
       if(is_array($rgb_color)) {
          $allocated_bg_color = imagecolorallocate($image_source, $rgb_color[0], $rgb_color[1], $rgb_color[2]);
@@ -642,27 +642,50 @@ Class ImagesHelper
     *
     * Build text as image
     * @access public
-    * @param  string $font
-    * @param unknown_type $text_color
-    * @param unknown_type $bg_color
-    * @return return_type bare_field_name
+    * @param  string $font         -
+    * @param  string $text_color   -
+    * @param  string $bg_color     -
+    * @return object               - the resulting image
     */
-   public static function buildtextasimage($text,$font_size,$path_to_font,$font_color='#ffffff',$bg_color='#000000',$shadow=false,$shadow_color='#cccccc')
+   public static function text($text,$font_size,$path_to_font,$font_color='#ffffff',$bg_color='#000000',$shadow=false,$shadow_color='#cccccc')
    {
       $bbox = imagettfbbox($font_size, 0,$path_to_font, $text);
       $width = abs($bbox[2] - $bbox[0]);
       $height = abs($bbox[7] - $bbox[1]);
-      $rgb_bg_color      = self::hextorgb($bg_color);
-      $rgb_font_color    = self::hextorgb($font_color);
+
+      if(!$bg_color) {
+         if($font_color == '#000' || $font_color == '#000000') {
+            $rgb_bg_color = array(0 => 255,1 => 255,2 => 255);
+         }
+         else {
+            $rgb_bg_color = array(0 => 0,1 => 0,2 => 0);
+         }
+      }
+      else {
+         $rgb_bg_color      = self::hextorgb($bg_color);
+      }
+
+      if(!$font_color) {
+         if(strtolower($bg_color) == '#fff' || strtolower($bg_color) == '#ffffff') {
+            $rgb_font_color = array(0 => 0,1 => 0,2 => 0);
+         }
+         else {
+            $rgb_font_color = array(0 => 255,1 => 255,2 => 255);
+         }
+      }
+      else {
+         $rgb_font_color      = self::hextorgb($font_color);
+      }
+
       $text_img = imagecreatetruecolor($width, $height);
       $allocated_bg_color = imagecolorallocate($text_img, $rgb_bg_color[0], $rgb_bg_color[1], $rgb_bg_color[2]);
-      $color = imagecolorallocate($text_img, $rgb_font_color[0], $rgb_font_color[1], $rgb_font_color[2]);
+      $allocated_text_color = imagecolorallocate($text_img, $rgb_font_color[0], $rgb_font_color[1], $rgb_font_color[2]);
 
       $x = $bbox[0] + ($width / 2) - ($bbox[4] / 2) * 0.9;
       $y = $bbox[1] + ($height / 2) - ($bbox[5] / 2) * 0.9;
 
       imagefilledrectangle($text_img, 0, 0, $width - 1, $height - 1, $allocated_bg_color);
-      imagettftext($text_img, $font_size, 0, $x, $y, $color, $path_to_font, $text);
+      imagettftext($text_img, $font_size, 0, $x, $y, $allocated_text_color, $path_to_font, $text);
 
       $last_pixel= imagecolorat($text_img, 0, 0);
 
@@ -686,10 +709,13 @@ Class ImagesHelper
       $y -= $blank_top;
 
       imagefilledrectangle($text_img, 0, 0, $width - 1, $height - 1, $allocated_bg_color);
-      imagettftext($text_img, $font_size, 0, $x, $y, $color, $path_to_font, $text);
+      imagettftext($text_img, $font_size, 0, $x, $y, $allocated_text_color, $path_to_font, $text);
       # build transparent background
-      if(!$allocated_bg_color) {
-         imagecolortransparent($image_source, $allocated_bg_color);
+      if(!$bg_color) {
+         imagecolortransparent($text_img, $allocated_bg_color);
+      }
+      if(!$font_color) {
+         imagecolortransparent($text_img, $allocated_text_color);
       }
       return $text_img;
    }
@@ -713,7 +739,7 @@ Class ImagesHelper
       }
 
       $rgb_color    = self::hextorgb($color);
-      $image_source = self::createimagefromsource($image_source);
+      $image_source = self::create($image_source);
       $text = " ".$text." ";
 
       $allocated_bg_color = imagecolorallocatealpha($image_source, $rgb_color[0], $rgb_color[1], $rgb_color[2], $alpha_level);
@@ -736,19 +762,19 @@ Class ImagesHelper
     * @param  int    $alpha_level   - watemark image aplha level (default = 100)
     * @return object                - the resulting image
     */
-   public static function buildimagewatermark($image_source, $watermark_img, $position = 'random', $alpha_level = 50)
+   public static function watermark($image_source, $watermark_img, $position = 'random', $alpha_level = 50)
    {
-      $watermark_img    = self::createimagefromsource($watermark_img);
+      $watermark_img    = self::create($watermark_img);
 
       $width_src        = self::width($image_source);
       $height_src       = self::height($image_source);
-      $image_source     = self::createimagefromsource($image_source);
+      $image_source     = self::create($image_source);
 
       if($width_src < self::width($watermark_img)) {
-         $watermark_img  = ImagesHelper::resizeimage($image_source,round($width_src*0.75),'width');
+         $watermark_img  = ImagesHelper::resizeto($image_source,round($width_src*0.75),'width');
       }
       elseif($height_src < self::height($watermark_img)) {
-         $watermark_img  = ImagesHelper::resizeimage($image_source,round($height_src*0.75),'height');
+         $watermark_img  = ImagesHelper::resizeto($image_source,round($height_src*0.75),'height');
       }
 
       $watermark_width  = self::width($watermark_img);
@@ -942,7 +968,7 @@ Class ImagesHelper
    public static function tranparent($image_source,$color)
    {
       $rgb_color       = false;
-      $image_source    = self::createimagefromsource($image_source);
+      $image_source    = self::create($image_source);
       if($color) {
          if(is_array($color)) {
             $rgb_color = $color;
@@ -974,7 +1000,7 @@ Class ImagesHelper
    {
       $width_src        = self::width($image_source);
       $height_src       = self::height($image_source);
-      $image_source     = self::createimagefromsource($image_source);
+      $image_source     = self::create($image_source);
       $crp_width        = ($crp_width >= $width_src || $crp_width <= 0)?$width_src:$crp_width;
       $crp_height       = ($crp_height >= $height_src || $crp_height <= 0)?$height_src:$crp_height;
       $destination = imagecreatetruecolor($crp_width, $crp_height);
@@ -990,7 +1016,7 @@ Class ImagesHelper
     * @param  mixed  $path_to_temp   -
     * @return string
     */
-   public function downloadimage($path_to_source,$path_to_temp = false)
+   public function download($path_to_source,$path_to_temp = false)
    {
       $filename = false;
       if(!$path_to_temp) {

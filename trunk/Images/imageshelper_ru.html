@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+</head>
+
+<body>
+
+
+<p>Небольшой <a name="top">PHP</a> класс для работы с изображениями: создание отражения, изменение размеров, поворот, конвертирование в другой формат, обрезка и т.д.. Если каких то операций не хватает, вы можете их добавить. Класс использует GD библиотеку, и поддерживает самые распространённые графические форматы: GIF, PNG, JPEG. Можно выполнять несколько операций, без необходимости сохранять и повторной инициализации изображения.</p>
+<hr id="system-readmore" />
+<p><strong>Доступны манипуляции</strong></p>
+<ul>
+<li><a href="#resize">Изменение размера изображения</a></li>
+<li><a href="#cutting">Обрезка, сложное масштабирование изображения</a></li>
+<li><a href="#reflect">Изображения с отражением</a></li>
+<li><a href="#fade">Затемнение изображения</a></li>
+<li><a href="#rotate">Вращение изображения</a></li>
+<li><a href="#black">Из цветного изображения в черно-белое или негатив</a></li>
+<li><a href="#gradient">Градиентная заливка</a></li>
+<li><a href="#overlay">Наложение изображения, водяные знаки</a></li>
+<li><a href="#text">Текст как изображение</a></li>
+<li><a href="#combi">Комбинирование методов</a> 
+<ul>
+<li><a href="#watertext">Текст как водяной знак</a></li>
+</ul>
+</li>
+</ul>
+<h3>Получение информации об изображении</h3>
+<pre class="brush: php;">// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+  
+// получение размера изображения  
+$width      = ImagesHelper::width($image_source); 
+$height     = ImagesHelper::height($image_source);  
+
+// Получение типа изображения 
+$mime       = ImagesHelper::mime($image_source);
+</pre>
+<h3>Вспомогательные функции</h3>
+<pre class="brush: php;">// Конвертация цвета из hex в rgb  
+$hex_color = '#cccccc'; 
+$rgb_color = ImagesHelper::hextorgb($hex_color);  
+
+// локальный путь для сохранения изображений
+$destination_path = './images/'; 
+// путь к удаленному источнику изображения
+$image_url = 'http://agjoomla.com/media/k2/categories/1.png'; 
+// загрузка изображения с удаленного сервера
+$image_source = ImagesHelper::downloadimage($image_url,$destination_path);
+
+// Конвертация картинки в другой формат 
+ImagesHelper::convert($image_source,'png');
+
+// создать изображение из файла
+$image = ImagesHelper::create($image_source);
+
+$new_filename = 'new_test.png';
+// сохранить созданное изображение в файл
+ImagesHelper::save($image, $new_filename);
+
+// вывести изображение в броузер
+ImagesHelper::show($image);
+</pre>
+<p><a href="#top">На верх</a></p>
+<h3><a name="resize">Изменение размера изображения</a></h3>
+<p style="line-height:normal;">При разработке различных программ очень часто приходится изменять размеры изображений, масштабировать и делать превьюшки. Ниже приведены несколько способов сделать это с помощью ImagesHelper.</p>
+<pre class="brush: php;">// простое масштабирование
+$ratio = 70; // соотношение в % от основного изображения
+$prefix = 'sca_'; // Приставка к имени файла от масштабированного изображения   
+if($scaled_image  = ImagesHelper::scale($image_source,$ratio)) {            
+        // сохранение полученного изображения в gif формате            
+        ImagesHelper::save($scaled_image, $image_source,$prefix,'gif');     
+}
+
+// Изменение размера изображения Пример 1
+$new_width = 50; // фиксированная ширина будущего изображения в px
+if($resized_image  = ImagesHelper::resizeto($image_source,$new_width)) {
+   // сохранение полученного изображения в jpg формате
+   ImagesHelper::save($resized_image, $image_source,'thumb_','jpg');   
+}
+
+// Изменение размера изображения Пример 2
+$resize_to = 'height'; // фиксировать по высоте
+$new_height = 30; // высота будущего изображения в px
+if($resized_image  = ImagesHelper::resizeto($image_source,$new_height,$resize_to)) {
+   // сохранение полученного изображения в gif формате
+   ImagesHelper::save($resized_image, $image_source,'thumb_','gif');   
+}
+
+// Изменение размера изображения Пример 3
+$width  = 90; // ширина будущего изображения в px
+$height = 30; // высота будущего изображения в px
+if($fix_resized_image  = ImagesHelper::resize($image_source,$width,$height)) {
+   // сохранение полученного изображения в gif формате
+   ImagesHelper::save($fix_resized_image, $image_source,'fix_','gif');   
+}
+
+</pre>
+<p><a href="#top">На верх</a></p>
+<h3><a name="cutting">Обрезка, сложное масштабирование изображения</a></h3>
+<p style="line-height:normal;">Иногда требуется из прямоугольного изображения сделать квадратное с сохранением всех пропорций. С помощью ImagesHelper сделать это легко, как показано в описанном ниже примере</p>
+<pre class="brush: php;">// сложное масштабирование
+$ratio = 70; // соотношение в % от основного изображения
+if($quadrate_image  = ImagesHelper::quadrate($image_source,$ratio)) { 
+   // сохранение полученного изображения в gif формате   
+   ImagesHelper::save($quadrate_image, $image_source,'qua_','gif'); 
+}
+
+// вырезание
+$src_x = 50; // точка начала вырезания по оси x
+$src_y = 50; // точка начала вырезания по оси y
+$crp_width = 200; // ширина вырезаемой области
+$crp_height = 150; // высота вырезаемой области
+if($croped_image  = ImagesHelper::crop($image_source, $src_x, $src_y, $crp_width, $crp_height)) {
+   // сохранение полученного изображения в jpg формате  
+   ImagesHelper::save($croped_image, $image_source,'crp_','jpg');    
+}
+
+</pre>
+<h4>Пример</h4>
+<p><img src="images/stories/source.png" border="0" /> <img src="images/stories/qua_source.gif" border="0" /><img src="images/stories/crp_source.jpg" border="0" /></p>
+<p><a href="#top">На верх</a></p>
+<h3><a name="reflect">Изображения с отражением</a></h3>
+<pre class="brush: php;">// изображения с отражением 
+if($image_with_reflection  = ImagesHelper::buildimagewithreflection($image_source)) {    
+    // сохранение полученного изображения в png формате 
+    // Примечание: изображение с отражением следует сохранять только в png формате
+    ImagesHelper::save($image_with_reflection, $image_source,'wref_','png');    
+}</pre>
+<h4>Пример</h4>
+<p><img src="images/stories/wref_source.png" border="0" /></p>
+<h3><a name="fade">Затемнение изображения</a></h3>
+<pre class="brush: php;">// затемнение изображения
+$alpha_start = 120;
+$alpha_end = 0;
+$bg_color = "#000"; // накладываемый цвет
+if($faded_image  = ImagesHelper::fade($image_source,$alpha_start,$alpha_end,$bg_color)) {
+   // сохранение полученного изображения в png формате 
+   ImagesHelper::save($faded_image, $image_source,'fad_','png');  
+}
+</pre>
+<h4>Пример</h4>
+<p><img src="images/stories/fad2_source.png" border="0" /><img src="images/stories/fad_source.png" border="0" /></p>
+<p><a href="#top">На верх</a></p>
+<h3><a name="rotate">Вращение изображения</a></h3>
+<pre class="brush: php;">// вращение изображения Пример 1 
+// с прозрачным фоном
+$degrees = 55; // угол поворота в градусах
+if($rotated_image = ImagesHelper::rotate($image_source,$degrees))
+{
+   // сохранение полученного изображения в png формате 
+   ImagesHelper::save($rotated_image, $image_source,'rtdt_','png');    
+}
+
+// вращение изображения Пример 2
+// с фоном залитым определенным цветом 
+$degrees = 75; // угол поворота в градусах
+$bg_color = '#7E58BF'; // цвет фоновой заливки
+$transparent = false;  // прозрачность
+if($rotated_image = ImagesHelper::rotate($image_source,$degrees,$bg_color,$transparent))
+{
+   // сохранение полученного изображения в png формате 
+   ImagesHelper::save($rotated_image, $image_source,'rtdf_','png');    
+}
+
+</pre>
+<h4>Пример</h4>
+<p><img src="images/stories/rtdt_source.png" border="0" width="300" /><img src="images/stories/rtdf_source.png" border="0" width="300" /></p>
+<p><a href="#top">На верх</a></p>
+<h3><a name="black">Из цветного изображения в черно-белое или негатив</a></h3>
+<pre class="brush: php;">// черно-белое
+if($grayscale_image = ImagesHelper::grayscale($image_source)) {
+   // сохранение полученного изображения в gif формате 
+   ImagesHelper::save($grayscale_image, $image_source,'bw_','gif');
+}
+
+// негатив
+if($negative_image  = ImagesHelper::negative($image_source)) {
+   // сохранение полученного изображения в png формате 
+   ImagesHelper::save($negative_image, $image_source,'ng_','png');
+}
+</pre>
+<h4>Пример</h4>
+<p><img src="images/stories/bw_source.gif" border="0" /><img src="images/stories/ng_source.png" border="0" /></p>
+<p><a href="#top">На верх</a></p>
+<h3><a name="gradient">Градиентная заливка</a></h3>
+<pre class="brush: php;">$width = 200;
+$height = 100;
+$direction = 'ellipse';
+/*
+возможные варианты
+'horizontal'
+'vertical'
+'ellipse'
+'ellipse2'
+'circle'
+'circle2'
+'square'
+'rectangle'
+'diamond'
+*/  
+$start_color = '#5E0B5F';
+$end_color = '#fff';
+$step = 0;
+if($gradient_image = ImagesHelper::gradientfill($width,$height,$direction,$start_color,$end_color,$step))
+{
+   // сохранение полученного изображения в gif формате 
+   ImagesHelper::save($gradient_image, './images/test.gif','grd_','gif');   
+}
+
+</pre>
+<h4>Пример</h4>
+<p><img src="images/stories/gr1_source.png" border="0" />
+<img src="images/stories/gr2_source.png" border="0" />
+<img src="images/stories/gr4_source.png" border="0" />
+<img src="images/stories/gr3_source.png" border="0" /></p>
+<p><a href="#top">На верх</a></p>
+<h3><a name="overlay">Наложение изображения, водяные знаки</a></h3>
+<pre class="brush: php;">// водяные знаки
+$watermark_img = './images/wtm.gif'; // накладываемое изображение
+$alpha_level   = 30; // прозрачность накладываемого изображения
+$position = 'center'; // позиция
+/*
+ *  доступные позиции
+ * 'top-right','right-top',1
+ * 'top-left','left-top',2
+ * 'bottom-right','right-bottom',3
+ * 'bottom-left','left-bottom',4
+ * 'center',5
+ * 'top',6
+ * 'bottom',7
+ * 'left',8
+ * 'right',9
+ */
+if($watermarked_image = ImagesHelper::watermark($image_source, $watermark_img,$position,$alpha_level)) {
+   // сохранение полученного изображения в gif формате
+   ImagesHelper::save($watermarked_image, $image_source,'wtmi_','gif'); 
+   // или вывести изображение в броузер
+   ImagesHelper::show($watermarked_image);   
+}
+</pre>
+<h4>Пример</h4>
+<p><img src="images/stories/wtmi_source.gif" border="0" /><img src="images/stories/wtmi2_source.gif" border="0" /></p>
+<p><a href="#top">На верх</a></p>
+<h3><a name="text">Текст как изображение</a></h3>
+<pre class="brush: php;">// текст как картинка
+$text = "ImagesHelper\n     PHP\n    class";
+$path_to_font = './fonts/BeAggressive.ttf'; // путь к файлу с фонтом
+$text_color = '#ffffff'; // цвет текста
+$bg_color = '#5E0B5F'; // цвет фона 
+/* если значение переменной $bg_color = false фон будет прозрачным */
+$font_size = 30; // размер шрифта
+if($image_text  = ImagesHelper::text($text,$font_size,$path_to_font,$text_color,$bg_color)) {
+  // вывести изображение в броузер как png
+  ImagesHelper::show($image_text,'png',100);
+}
+</pre>
+<h4>Пример</h4>
+<p><img src="images/stories/txt_source.png" border="0" /><img src="images/stories/txt2_source.png" border="0" /></p>
+<p><a href="#top">На верх</a></p>
+<h3><a name="watertext">Текст как водяной знак</a></h3>
+<pre class="brush: php;">$text = "-  agJoomla  -\n- best tools -";  // текст
+$text_color = '#FFF'; // цвет текста
+$bg_color = false;  // цвет фона (если false - прозрачный)
+$path_to_font = './fonts/BeAggressive.ttf'; // путь к файлу с фонтом
+$font_size = 30; // размер шрифта
+// создаем белый текст на прозрачном фоне
+if($image_text = ImagesHelper::text($text,$font_size,$path_to_font,$text_color,$bg_color)) {
+  // накладываем полученное изображение
+  if($image_text = ImagesHelper::watermark($image_source,$image_text,'center',20)) {
+      // вывести изображение в броузер как png
+      ImagesHelper::show($image_text,'png',100);
+  }
+}
+</pre>
+<h4>Пример</h4>
+<p><img src="images/stories/wtmt2_source.png" border="0" /></p>
+<p><a href="#top">На верх</a></p>
+
+
+</body>
+</html>
