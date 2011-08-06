@@ -1,0 +1,5 @@
+#summary Методы для изменения размеров изображения
+#labels PHPClass,Image,Fade,GD,ImagesHelper
+#sidebar ImagesHelperSidebar
+<g:plusone size="medium"></g:plusone>
+= Introduction =
