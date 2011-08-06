@@ -1,0 +1,5 @@
+#summary Метод для вращения изображения
+#labels PHPClass,Image,Rotate,GD
+#sidebar ImagesHelperSidebar
+<g:plusone size="medium"></g:plusone>
+= Вращение изображения изображения =
