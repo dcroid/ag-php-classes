@@ -14,7 +14,7 @@
   * [ImagesHelperConvert Конвертация изображения]
   * [ImagesHelperResize Изменение размера изображения]
   * [ImagesHelperCrop Обрезка, сложное масштабирование изображения]
-  * [ImagesHelperreflection Изображения с отражением]
+  * [ImagesHelperReflection Изображения с отражением]
   * [ImagesHelperFade Затемнение изображения]
   * [ImagesHelperRotate Вращение изображения]
   * [ImagesHelperGrayscale Из цветного изображения в черно-белое или негатив]
