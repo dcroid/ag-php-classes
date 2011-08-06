@@ -1,6 +1,17 @@
 #summary One-sentence summary of this page.
+#labels PHPClass,Image,Convert,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 
 = Конвертация изображения =
 
+{{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+ 
+// Конвертация картинки в другой формат 
+$image_dest = ImagesHelper::convert($image_source,'png');
+}}}
