@@ -23,7 +23,8 @@ if($scaled_image  = ImagesHelper::scale($image_source,$ratio)) {
 }
 }}}
 
-Изменение размера изображения Пример 1
+==== Изменение размера изображения Пример 1 ====
+Изменение размера изображения с выравниванием по ширине и масштабированием по высоте.
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
@@ -40,7 +41,8 @@ if($resized_image  = ImagesHelper::resizeto($image_source,$new_width)) {
    ImagesHelper::save($resized_image, $image_source,$prefix,$format);   
 }
 }}}
-Изменение размера изображения Пример 2
+==== Изменение размера изображения Пример 2 ==== 
+Изменение размера изображения с выравниванием по высоте и масштабированием по ширине.
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
@@ -60,6 +62,7 @@ if($resized_image  = ImagesHelper::resizeto($image_source,$new_height,$resize_to
 }}}
 
 ==== Изменение размера изображения Пример 3 ====
+Изменение размера изображения без масштабирования и учета прежнего размера.
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
