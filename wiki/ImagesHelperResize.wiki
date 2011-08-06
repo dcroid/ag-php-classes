@@ -59,7 +59,7 @@ if($resized_image  = ImagesHelper::resizeto($image_source,$new_height,$resize_to
 }
 }}}
 
-Изменение размера изображения Пример 3
+==== Изменение размера изображения Пример 3 ====
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
