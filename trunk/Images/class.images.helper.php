@@ -5,7 +5,7 @@
  * @package       Images
  * @subpackage	  Helpers
  * @category      Auxiliary
- * @version       1.0.2
+ * @version       1.0.3
  * @desc          Basic manipulation with image
  * @copyright     Copyright Alexey Gordeyev IK © 2009-2011 - All rights reserved.
  * @license       GPLv2
