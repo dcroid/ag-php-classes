@@ -1,5 +1,6 @@
 #summary One-sentence summary of this page.
 #labels PHPClass,Image,Resize,Scale,GD
+#sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Обрезка, сложное масштабирование изображения =
 Иногда требуется из прямоугольного изображения сделать квадратное с сохранением всех пропорций. С помощью ImagesHelper сделать это легко, как показано в описанном ниже примере
