@@ -1,5 +1,5 @@
 #summary Метод для конвертации изображения
-#labels PHPClass,Image,Convert,GD
+#labels PHPClass,Image,Convert,GD,ImagesHelper
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 
