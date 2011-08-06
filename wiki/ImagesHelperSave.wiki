@@ -1,0 +1,4 @@
+#summary One-sentence summary of this page.
+#sidebar ImagesHelperSidebar
+<g:plusone size="medium"></g:plusone>
+= Сохранение изображения =
