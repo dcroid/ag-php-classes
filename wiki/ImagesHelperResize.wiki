@@ -1,5 +1,5 @@
 #summary Методы для изменения размеров изображения
-#labels PHPClass,Image,Resize,GD
+#labels PHPClass,Image,Resize,ResizeTo,Scale,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Изменение размера изображения =
