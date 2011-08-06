@@ -1,6 +1,6 @@
 <?php
 /**
- * @revision      $Id:$   
+ * @revision      $Id$   
  * @created       Jul 26, 2011
  * @package       Images
  * @subpackage	  Helper
