@@ -1,5 +1,5 @@
 #summary One-sentence summary of this page.
-#labels PHPClass,Image,Resize
+#labels PHPClass,Image,Resize,GD
 
 = Изменение размера изображения =
 При разработке различных программ очень часто приходится изменять размеры изображений, масштабировать и делать превьюшки. Ниже приведены несколько способов сделать это с помощью ImagesHelper.
