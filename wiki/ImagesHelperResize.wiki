@@ -18,18 +18,20 @@ if($scaled_image  = ImagesHelper::scale($image_source,$ratio)) {
 Изменение размера изображения Пример 1
 {{{
 $new_width = 50; // фиксированная ширина будущего изображения в px
+$prefix = 'thumb_'; // приставка к имени файла с измененными размерами 
 if($resized_image  = ImagesHelper::resizeto($image_source,$new_width)) {
    // сохранение полученного изображения в jpg формате
-   ImagesHelper::save($resized_image, $image_source,'thumb_','jpg');   
+   ImagesHelper::save($resized_image, $image_source,$prefix,'jpg');   
 }
 }}}
 Изменение размера изображения Пример 2
 {{{
 $resize_to = 'height'; // фиксировать по высоте
 $new_height = 30; // высота будущего изображения в px
+$prefix = 'thumb2_'; // приставка к имени файла с измененными размерами 
 if($resized_image  = ImagesHelper::resizeto($image_source,$new_height,$resize_to)) {
    // сохранение полученного изображения в gif формате
-   ImagesHelper::save($resized_image, $image_source,'thumb_','gif');   
+   ImagesHelper::save($resized_image, $image_source,$prefix,'gif');   
 }
 }}}
 
@@ -37,8 +39,9 @@ if($resized_image  = ImagesHelper::resizeto($image_source,$new_height,$resize_to
 {{{
 $width  = 90; // ширина будущего изображения в px
 $height = 30; // высота будущего изображения в px
+$prefix = 'fix_'; // приставка к имени файла с измененными размерами 
 if($fix_resized_image  = ImagesHelper::resize($image_source,$width,$height)) {
    // сохранение полученного изображения в gif формате
-   ImagesHelper::save($fix_resized_image, $image_source,'fix_','gif');   
+   ImagesHelper::save($fix_resized_image, $image_source,$prefix,'gif');   
 }
 }}}
