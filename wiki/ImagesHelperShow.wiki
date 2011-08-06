@@ -1,4 +1,4 @@
-#summary Метод show PHP класса ImagesHelper (ImagesHelper::show())
+#summary Метод для вывода изображения в броузер
 #labels PHPClass,Image,Show,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
