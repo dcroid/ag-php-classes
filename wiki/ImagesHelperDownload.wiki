@@ -1,5 +1,5 @@
 #summary Метод для скачивания изображения
-#labels PHPClass,Image,Download,GD,cURL
+#labels PHPClass,Image,Download,GD,cURL,ImagesHelper
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Скачивание изображения =
