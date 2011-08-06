@@ -14,10 +14,12 @@ require_once 'class.images.helper.php';
 $image_source = './images/test.jpg'; 
 
 $ratio = 70; // соотношение в % от основного изображения
-$prefix = 'sca_'; // Приставка к имени файла от масштабированного изображения   
+$prefix = 'sca_'; // Приставка к имени файла от масштабированного 
+$format = 'gif'; // формат для сохранения изображения
+   
 if($scaled_image  = ImagesHelper::scale($image_source,$ratio)) {            
         // сохранение полученного изображения в gif формате            
-        ImagesHelper::save($scaled_image, $image_source,$prefix,'gif');     
+        ImagesHelper::save($scaled_image, $image_source,$prefix,$format);     
 }
 }}}
 
@@ -31,9 +33,11 @@ $image_source = './images/test.jpg';
 
 $new_width = 50; // фиксированная ширина будущего изображения в px
 $prefix = 'thumb_'; // приставка к имени файла с измененными размерами 
+$format = 'jpg'; // формат для сохранения изображения
+
 if($resized_image  = ImagesHelper::resizeto($image_source,$new_width)) {
    // сохранение полученного изображения в jpg формате
-   ImagesHelper::save($resized_image, $image_source,$prefix,'jpg');   
+   ImagesHelper::save($resized_image, $image_source,$prefix,$format);   
 }
 }}}
 Изменение размера изображения Пример 2
@@ -47,19 +51,29 @@ $image_source = './images/test.jpg';
 $resize_to = 'height'; // фиксировать по высоте
 $new_height = 30; // высота будущего изображения в px
 $prefix = 'thumb2_'; // приставка к имени файла с измененными размерами 
+$format = 'gif'; // формат для сохранения изображения
+
 if($resized_image  = ImagesHelper::resizeto($image_source,$new_height,$resize_to)) {
    // сохранение полученного изображения в gif формате
-   ImagesHelper::save($resized_image, $image_source,$prefix,'gif');   
+   ImagesHelper::save($resized_image, $image_source,$prefix,$format);   
 }
 }}}
 
 Изменение размера изображения Пример 3
 {{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+
 $width  = 90; // ширина будущего изображения в px
 $height = 30; // высота будущего изображения в px
 $prefix = 'fix_'; // приставка к имени файла с измененными размерами 
+$format = 'gif'; // формат для сохранения изображения
+
 if($fix_resized_image  = ImagesHelper::resize($image_source,$width,$height)) {
    // сохранение полученного изображения в gif формате
-   ImagesHelper::save($fix_resized_image, $image_source,$prefix,'gif');   
+   ImagesHelper::save($fix_resized_image, $image_source,$prefix,$format);   
 }
 }}}
