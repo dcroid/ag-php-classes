@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Метод show PHP класса ImagesHelper
 #labels PHPClass,Image,Show,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
