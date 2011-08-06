@@ -1,5 +1,7 @@
 #summary One-sentence summary of this page.
 == ImagesHelper ==
+  * [ImagesHelperDownload Скачивание изображения]
+  * [ImagesHelperConvert Конвертация изображения]
   * [ImagesHelperResize Изменение размера изображения]
   * [ImagesHelperCrop Обрезка, сложное масштабирование изображения]
   * [ImagesHelperreflection Изображения с отражением]
