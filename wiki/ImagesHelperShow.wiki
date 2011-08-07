@@ -23,5 +23,6 @@ ImagesHelper::show($image);
 */
 
 }}}
+----
 [http://www.gordejev.lv/ http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png]
 <br />
