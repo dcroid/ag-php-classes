@@ -3,6 +3,38 @@
 <g:plusone size="medium"></g:plusone>
 = Градиентная заливка =
 {{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_dest = './images/test.jpg'; 
+
+$prefix = 'grd_'; // Приставка к имени файла 
+$format = 'gif'; // формат для сохранения изображения
+
+$width = 200; // ширина изображения
+$height = 100; // высота изображения
+$direction = 'ellipse'; // направление заливки
+/*
+возможные варианты заливки
+'horizontal'
+'vertical'
+'ellipse'
+'ellipse2'
+'circle'
+'circle2'
+'square'
+'rectangle'
+'diamond'
+*/  
+$start_color = '#5E0B5F';
+$end_color = '#fff';
+$step = 0;
+if($gradient_image = ImagesHelper::gradientfill($width,$height, $direction, $start_color, $end_color, $step))
+{
+   // сохранение полученного изображения в gif формате 
+   ImagesHelper::save($gradient_image, $image_dest, $prefix, $format);   
+}
 
 }}}
 
