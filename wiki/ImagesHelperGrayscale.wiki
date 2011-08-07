@@ -1,0 +1,4 @@
+#summary Методы для создания черно-белого изображения или негатива
+#sidebar ImagesHelperSidebar
+<g:plusone size="medium"></g:plusone>
+= Из цветного изображения в черно-белое или негатив =
