@@ -32,7 +32,7 @@ $start_color = '#5E0B5F'; // начальный цвет
 $end_color = '#fff'; // конечный цвет
 $step = 0; //
 
-if($gradient_image = ImagesHelper::gradientfill($width,$height, $direction, $start_color, $end_color, $step))
+if($gradient_image = ImagesHelper::gradientfill($width, $height, $direction, $start_color, $end_color, $step))
 {
    // сохранение полученного изображения в gif формате 
    ImagesHelper::save($gradient_image, $image_dest, $prefix, $format);   
