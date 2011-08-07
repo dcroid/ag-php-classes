@@ -23,3 +23,5 @@ ImagesHelper::show($image);
 */
 
 }}}
+=== [ImagesHelper PHP Класс ImagesHelper] ===
+<img src=http://code.google.com/p/ag-php-classes/source/trunk/gora_88x31.png align=right/>
