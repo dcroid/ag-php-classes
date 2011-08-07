@@ -17,10 +17,10 @@
 Class ImagesHelper
 {
    /**
-    * Convert color from hex to rgb
+    * Convert color from hex string to rgb color
     * @access public
     * @param  string $color - color in hex format
-    * @return array         - rgb color as array
+    * @return array  rgb color as array
     */
    public static function hextorgb($color)
    {
@@ -38,7 +38,7 @@ Class ImagesHelper
     * Create image from source
     * @access public
     * @param  string $image_source - path to image source
-    * @return mixed                - image object or false
+    * @return mixed  gd resource or false
     */
    public static function create($image_source)
    {
@@ -83,7 +83,7 @@ Class ImagesHelper
     *
     * Validate gd resource
     * @access public
-    * @param  mixed $image_source
+    * @param  mixed $image_source  - gd image resource
     * @return bool
     */
    public static function isgdresource($image_source)
@@ -101,7 +101,7 @@ Class ImagesHelper
     * Convert color image to grayscale
     * @access public
     * @param  string $image_source - path to image source
-    * @return mixed                - resulted image object or false
+    * @return mixed  gd resource or false
     */
    public static function grayscale($image_source)
    {
@@ -117,7 +117,7 @@ Class ImagesHelper
     * Conver image to negative
     * @access public
     * @param  string $image_source - path to image source
-    * @return mixed                - resulted image object or false
+    * @return mixed  gd resource or false
     */
    public static function negative($image_source)
    {
@@ -134,9 +134,9 @@ Class ImagesHelper
     * @access public
     * @param  string $image_source - path to image source
     * @param  string $format       - new image format
-    * @param  string $prefix       -
-    * @param  string $new_filename - new image filename
-    * @return string               - full path to destination
+    * @param  string $prefix       - prefix to the file name
+    * @param  string $new_filename - new image file name
+    * @return string full path to destination
     */
    public static function convert($image_source,$format = 'png',$prefix = '',$new_filename = false)
    {
@@ -194,12 +194,12 @@ Class ImagesHelper
    /**
     * Save image in to file
     * @access public
-    * @param  object $image       - image object
-    * @param  string $destination - output destination path and filename
-    * @param  string $prefix      - prefix for new image filename (default = new_)
-    * @param  string $type        - new image format (default = png)
-    * @param  int    $quality     - resulted image quality (default = 100)
-    * @return string              - full path to resulted image
+    * @param  resource $image       - gd image resource
+    * @param  string   $destination - output destination path and filename
+    * @param  string   $prefix      - prefix to the file name
+    * @param  string   $type        - new image format (default = png)
+    * @param  int      $quality     - resulted image quality (default = 100)
+    * @return string path to destination
     */
    public static function save($image,$destination,$prefix='',$type='png',$quality=100)
    {
@@ -243,7 +243,7 @@ Class ImagesHelper
    /**
     * Destroy image resource
     * @access public
-    * @param  object $image
+    * @param  resource $image  - gd resource
     * @return bool
     */
    public static function destroy($image)
@@ -260,7 +260,7 @@ Class ImagesHelper
     * @access public
     * @param  mixed  $image_source - path to image source or image object
     * @param  string $info_type    - type of the returned information
-    * @return mixed                - source image information (int, string or array)
+    * @return mixed  source image information (int, string or array)
     */
    public static function info($image_source,$info_type=false)
    {
@@ -312,8 +312,8 @@ Class ImagesHelper
    /**
     * Get image width
     * @access public
-    * @param  mixed  $image_source - path to image source or image object
-    * @return int                  - source image width in px
+    * @param  mixed  $image_source - path to image source or gd resource
+    * @return int    source image width in px
     */
    public static function width($image_source)
    {
@@ -323,8 +323,8 @@ Class ImagesHelper
    /**
     * Get image height
     * @access public
-    * @param  mixed  $image_source - path to image source or image object
-    * @return int                  - source image width in px
+    * @param  mixed  $image_source - path to image source or gd resource
+    * @return int    source image width in px
     */
    public static function height($image_source)
    {
@@ -334,8 +334,8 @@ Class ImagesHelper
    /**
     * Get image mime/type
     * @access public
-    * @param  mixed  $image_source - path to image source or image object
-    * @return string               - source image mime/type
+    * @param  mixed  $image_source - path to image source or gd resource
+    * @return string source image mime type
     */
    public static function mime($image_source)
    {
@@ -346,7 +346,7 @@ Class ImagesHelper
     * Clear (normalize) image filename
     * @access public
     * @param  string $filename  - source image filename
-    * @return string $imagename - cleared filename
+    * @return string cleared filename
     */
    public static function clearimagename($filename)
    {
@@ -364,7 +364,7 @@ Class ImagesHelper
     * Get image filename
     * @access public
     * @param  string $image_source  - source image filename
-    * @return string
+    * @return string image file name
     */
    public static function filename($image_source)
    {
@@ -379,7 +379,7 @@ Class ImagesHelper
     * @access public
     * @param  string $old_filename - source image filename
     * @param  string $prefix       - filename prefix
-    * @return string               - new image filename
+    * @return string new image filename
     */
    public static function buildimagename($old_filename,$prefix,$type=false)
    {
@@ -395,10 +395,10 @@ Class ImagesHelper
    /**
     * Proportional resize image
     * @access public
-    * @param  mixed  $image_source - path to image source or image object
-    * @param  int    $ratio        -
-    * @param  string $dimension    -
-    * @return object               - the resulting image
+    * @param  mixed    $image_source - path to image source or gd image resource
+    * @param  int      $new_size     - new image size in px
+    * @param  string   $dimension    - resize directions
+    * @return resource gd resource
     */
    public static function resizeto($image_source,$new_size,$dimension = "width")
    {
@@ -421,10 +421,10 @@ Class ImagesHelper
    /**
     * Resize image to fixed dimensions
     * @access public
-    * @param  mixed  $image_source - path to image source or image object
-    * @param  int    $width        - new image width in px
-    * @param  int    $height       - new image height in px
-    * @return object               - the resulting image
+    * @param  mixed    $image_source - path to image source or gd image resource
+    * @param  int      $width        - new image width in px
+    * @param  int      $height       - new image height in px
+    * @return resource gd resource
     */
    public static function resize($image_source,$width,$height)
    {
@@ -439,9 +439,9 @@ Class ImagesHelper
    /**
     * Scale image size
     * @access public
-    * @param  mixed  $image_source - path to image source or image object
-    * @param  int    $ratio        - image scaling value in %
-    * @return object               - the resulting image
+    * @param  mixed    $image_source - path to image source or gd image resource
+    * @param  int      $ratio        - image scaling value in %
+    * @return resource gd resource
     */
    public static function scale($image_source,$ratio)
    {
@@ -455,10 +455,10 @@ Class ImagesHelper
    /**
     * Build quadrate image
     * @access public
-    * @param  mixed  $image_source - path to image source or image object
-    * @param  int    $ratio        - resize ratio
-    * @param  string $dimension    - ration dimension % or px
-    * @return object               - the resulting image
+    * @param  mixed    $image_source - path to image source or gd image resource
+    * @param  int      $ratio        - resize ratio
+    * @param  string   $dimension    - ration dimension % or px
+    * @return resource gd resource
     */
    public static function quadrate($image_source,$ratio,$dimension='px')
    {
@@ -494,11 +494,11 @@ Class ImagesHelper
    /**
     * Build image reflection
     * @access public
-    * @param  mixed  $image_source - path to image source or image object
-    * @param  int    $ratio        - reflection ratio %
-    * @return object               - the resulting image
+    * @param  mixed    $image_source - path to image source or gd image resource
+    * @param  int      $ratio        - reflection ratio %
+    * @return resource gd resource
     */
-   public static function reflection($image_source,$ratio=30)
+   public static function omlyreflection($image_source,$ratio=30)
    {
       $width_src    = self::width($image_source);
       $height_src   = self::height($image_source);
@@ -527,11 +527,11 @@ Class ImagesHelper
    /**
     * Build image with reflection
     * @access public
-    * @param  mixed  $image_source - path to image source or image object
-    * @param  int    $ratio        - reflection ratio %
-    * @return object               - the resulting image
+    * @param  mixed    $image_source - path to image source or image object
+    * @param  int      $ratio        - reflection ratio %
+    * @return resource gd resource
     */
-   function buildimagewithreflection($image_source,$ratio = 30)
+   public static function reflection($image_source,$ratio = 30)
    {
       $width_src    = self::width($image_source);
       $height_src   = self::height($image_source);
@@ -566,11 +566,11 @@ Class ImagesHelper
    /**
     * Fade image
     * @access public
-    * @param  mixed  $image_source - path to image source or image object
-    * @param  int    $alpha_start
-    * @param  int    $alpha_end
-    * @param  string $bg_color
-    * @return object
+    * @param  mixed    $image_source - path to image source or gd image resource
+    * @param  int      $alpha_start  - start alpha level
+    * @param  int      $alpha_end    - end alpha level
+    * @param  string   $bg_color     - color in hex string format
+    * @return resource gd resource
     */
    public static function fade($image_source,$alpha_start,$alpha_end,$bg_color = "#fff")
    {
@@ -605,11 +605,11 @@ Class ImagesHelper
    /**
     * Rotate image
     * @access public
-    * @param  mixed  $image_source - path to image source or image object
-    * @param  int    $degrees      - rotate angle
-    * @param  string $bg_color     - background color (default empty)
-    * @param  bool   $transparent  - transparent background (default = true)
-    * @return object               - the resulting image
+    * @param  mixed    $image_source - path to image source or gd image resource
+    * @param  int      $degrees      - rotate angle
+    * @param  string   $bg_color     - background color (default empty)
+    * @param  bool     $transparent  - transparent background (default = true)
+    * @return resource gd resource
     */
    public static function rotate($image_source,$degrees,$bg_color='',$transparent=true)
    {
@@ -642,10 +642,10 @@ Class ImagesHelper
     *
     * Build text as image
     * @access public
-    * @param  string $font         -
-    * @param  string $text_color   -
-    * @param  string $bg_color     -
-    * @return object               - the resulting image
+    * @param  string   $font          - path to ttf font file
+    * @param  string   $text_color    - text color if false transparent
+    * @param  string   $bg_color      - background color if false transparent
+    * @return resource gd resource
     */
    public static function text($text,$font_size,$path_to_font,$font_color='#ffffff',$bg_color='#000000',$shadow=false,$shadow_color='#cccccc')
    {
@@ -723,12 +723,12 @@ Class ImagesHelper
    /**
     * Build watermark text
     * @access public
-    * @param  mixed  $image_source - path to image source or image object
-    * @param  string $text         - watemark text
-    * @param  string $font         - path to watemark font file
-    * @param  string $color        - watemark text color in hex format (default white #fff)
-    * @param  imt    $alpha_level  - watemark text alpha level (default = 100)
-    * @return object               - the resulting image
+    * @param  mixed    $image_source - path to image source or gd image resource
+    * @param  string   $text         - watemark text
+    * @param  string   $font         - path to watemark font file
+    * @param  string   $color        - watemark text color in hex format (default white #fff)
+    * @param  imt      $alpha_level  - watemark text alpha level (default = 100)
+    * @return resource gd resource
     */
    public static function buildtextwatermark( $image_source, $text, $font, $color = '#ffffff', $position = 'center', $alpha_level = 50, $angle = 0)
    {
@@ -757,10 +757,10 @@ Class ImagesHelper
    /**
     * Build watermarked image from another image
     * @access public
-    * @param  mixed  $image_source  - path to image source or image object
-    * @param  string $watermark_img - path to watemark image source
-    * @param  int    $alpha_level   - watemark image aplha level (default = 100)
-    * @return object                - the resulting image
+    * @param  mixed    $image_source  - path to image source or gd image resource
+    * @param  string   $watermark_img - path to watemark image source
+    * @param  int      $alpha_level   - watemark image aplha level (default = 100)
+    * @return resource gd resource
     */
    public static function watermark($image_source, $watermark_img, $position = 'random', $alpha_level = 50)
    {
@@ -790,10 +790,10 @@ Class ImagesHelper
    /**
     * Calculate watemark position
     * @access public
-    * @param  mixed  $src_image     - path to image source or image object
-    * @param  mixed  $watermark_img - path to image destination or image object
-    * @param  string $position
-    * @return array
+    * @param  mixed  $src_image     - path to image source or gd image resource
+    * @param  mixed  $watermark_img - path to image destination or gd image resource
+    * @param  string $position      - overlay position
+    * @return array  start overlay coordinates
     */
    public static function calculateposition($image_source,$watermark_img,$position)
    {
@@ -859,15 +859,16 @@ Class ImagesHelper
    }
 
    /**
-    * Draws the gradient
+    * Draws the gradient image
     * @access public
-    * @param  string $image_source  - path to image source
-    * @param  string $direction     - gradient direction
-    * @param  string $start         -
-    * @param  string $end           -
-    * @return object                - the resulting image
+    * @param  int      $image_width   - image width
+    * @param  int      $image_height  - image height
+    * @param  string   $direction     - gradient direction
+    * @param  string   $start_color   - start color in hex color
+    * @param  string   $end_color     - end color in hex color
+    * @return resource gd image resource
     */
-   public static function gradientfill($image_width,$image_height,$direction,$start,$end,$step = 0)
+   public static function gradientfill($image_width,$image_height,$direction,$start_color,$end_color,$step = 0)
    {
       $r = $g = $b = null;
       list($r1,$g1,$b1) = self::hextorgb($end);
@@ -961,9 +962,9 @@ Class ImagesHelper
     *
     * Set tranparent color
     * @access public
-    * @param  mixed  $image -
-    * @param  mixed  $color - color hex format
-    * @return resource
+    * @param  mixed    $image - path to image source or gd image resource
+    * @param  mixed    $color - color hex string format or rgb array
+    * @return resource gd resource
     */
    public static function tranparent($image_source,$color)
    {
@@ -989,12 +990,12 @@ Class ImagesHelper
    /**
     * Crop image
     * @access public
-    * @param  mixed  $image_source - path to image source or gd image resource
-    * @param  int    $src_x        - x-coordinate of source point.
-    * @param  int    $src_y        - y-coordinate of source point.
-    * @param  int    $crp_width    - destination width
-    * @param  int    $crp_height   - destination height
-    * @return resource
+    * @param  mixed    $image_source - path to image source or gd image resource
+    * @param  int      $src_x        - x-coordinate of source point.
+    * @param  int      $src_y        - y-coordinate of source point.
+    * @param  int      $crp_width    - destination image width
+    * @param  int      $crp_height   - destination image height
+    * @return resource gd resource
     */
    public static function crop($image_source, $src_x, $src_y, $crp_width, $crp_height)
    {
@@ -1012,9 +1013,9 @@ Class ImagesHelper
    /**
     * Download image from url
     * @access public
-    * @param  string $path_to_source -
-    * @param  mixed  $path_to_temp   -
-    * @return string
+    * @param  string $path_to_source - path to remote image source
+    * @param  mixed  $path_to_temp   - path to local destination
+    * @return string full local path to downloaded image
     */
    public function download($path_to_source,$path_to_temp = false)
    {
