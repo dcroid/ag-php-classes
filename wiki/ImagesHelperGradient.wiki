@@ -10,7 +10,7 @@ require_once 'class.images.helper.php';
 // Путь до файла картинки  
 $image_dest = './images/test.gif'; 
 
-$prefix = 'grd_'; // Приставка к имени файла 
+$prefix = ''; // Приставка к имени файла 
 $format = 'gif'; // формат для сохранения изображения
 
 $width = 200; // ширина изображения
