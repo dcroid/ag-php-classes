@@ -1,0 +1,4 @@
+#summary Метод для создания изображения с градиентной заливкой
+#sidebar ImagesHelperSidebar
+<g:plusone size="medium"></g:plusone>
+= Градиентная заливка =
