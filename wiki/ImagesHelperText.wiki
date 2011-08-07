@@ -48,6 +48,7 @@ if($image_text = ImagesHelper::textto( $image_bg, $text, $font_size, $path_to_fo
    ImagesHelper::save($image_text, $image_source, 'txto2_', 'gif');
 }
 }}}
+https://lh5.googleusercontent.com/-I8BOUkU6lL8/Tj8Rq6gWq2I/AAAAAAAALHI/ctZM4xi9v7M/txto2_source.gif
 ==== [http://code.google.com/p/ag-php-classes/downloads/list Скачать класс]  [http://code.google.com/p/ag-php-classes/source/browse/#svn%2Ftrunk%2FImages Исходный код] ====
 ----
 <span style="width:100%;float:right;">
