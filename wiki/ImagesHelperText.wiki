@@ -1,0 +1,4 @@
+#summary Метод для создания текста в виде изображения
+#sidebar ImagesHelperSidebar
+<g:plusone size="medium"></g:plusone>
+= Текст как изображение =
