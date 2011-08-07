@@ -3,8 +3,26 @@
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Затемнение изображения =
+Метод позволяет затемнять и накладывать цвет на изображение 
 {{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
 
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+
+$prefix = 'fad_'; // Приставка к имени файла с отражением 
+$format = 'png'; // формат для сохранения изображения
+
+$alpha_start = 120;
+$alpha_end = 0;
+$bg_color = "#000"; // накладываемый цвет (черный)
+
+// Накладываем цвет на изображение
+if($faded_image = ImagesHelper::fade($image_source,$alpha_start,$alpha_end,$bg_color)) {
+   // сохранение полученного изображения в png формате 
+   ImagesHelper::save($faded_image, $image_source, $prefix, $format);  
+}
 }}}
 
 ----
