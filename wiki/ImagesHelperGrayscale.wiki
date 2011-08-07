@@ -5,7 +5,20 @@
 = Из цветного изображения в черно-белое или негатив =
 ==== Черно-белое изображение ====
 {{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
 
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+
+$prefix = 'bw_'; // Приставка к имени файла 
+$format = 'gif'; // формат для сохранения изображения
+
+// конвертируем в черно-белое
+if($grayscale_image = ImagesHelper::grayscale($image_source)) {
+   // сохранение полученного изображения в gif формате 
+   ImagesHelper::saveimage($grayscale_image, $image_source,$prefix, $format);
+}
 }}}
 ==== Негатив изображения ====
 {{{
