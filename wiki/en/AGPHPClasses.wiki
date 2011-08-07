@@ -1,6 +1,6 @@
-#summary Sidebar for - PHP Classes
+#summary Панель навигации для - PHP Классы
 #labels PHPClass
 
-= PHP Classes =
+= PHP Классы =
 
-  * [ImagesHelper PHP Class ImagesHelper]
+  * [ImagesHelper PHP Класс ImagesHelper]

@@ -1,9 +1,9 @@
-#summary Метод для сохранения изображения
+#summary Пример сохранения изображения
 #labels PHPClass,Image,Save,GD,ImagesHelper
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Сохранение изображения =
-Метод выполняет выполняет сохранение изображения в файл, доступно сохранение в различных графических форматах.
+Пример показывает как выполнить сохранение изображения в файл, доступно сохранение в различных графических форматах.
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
@@ -30,3 +30,9 @@ ImagesHelper::save($image, $new_filename);
   ImagesHelper::save($image, $image_source, $prefix, $format);
 */
 }}}
+
+----
+<span style="width:100%;float:right;">
+[http://www.gordejev.lv/ http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png]
+<br />
+</span>

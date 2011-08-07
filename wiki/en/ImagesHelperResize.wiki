@@ -1,9 +1,9 @@
-#summary Методы для изменения размеров изображения
+#summary Примеры изменения размеров изображения
 #labels PHPClass,Image,Resize,ResizeTo,Scale,GD,ImagesHelper
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Изменение размера изображения =
-При разработке различных программ очень часто приходится изменять размеры изображений, масштабировать и делать превьюшки. Ниже приведены несколько способов сделать это с помощью ImagesHelper.
+При разработке различных программ очень часто приходится изменять размеры изображений, масштабировать и делать превьюшки. Ниже приведены несколько способов сделать с помощью класса ImagesHelper.
 
 ==== Масштабирование изображения ====
 Изменение размера изображения масштабированием.
@@ -81,3 +81,8 @@ if($fix_resized_image  = ImagesHelper::resize($image_source,$width,$height)) {
    ImagesHelper::save($fix_resized_image, $image_source,$prefix,$format);   
 }
 }}}
+----
+<span style="width:100%;float:right;">
+[http://www.gordejev.lv/ http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png]
+<br />
+</span>

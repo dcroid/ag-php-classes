@@ -6,7 +6,7 @@
 = ImagesHelper - PHP Class =
 Небольшой PHP класс для работы с изображениями: создание отражения, изменение размеров, поворот, конвертирование в другой формат, обрезка и т.д.. Класс использует GD библиотеку, и поддерживает самые распространённые графические форматы: GIF, PNG, JPEG. Можно выполнять несколько операций, без необходимости сохранять и повторной инициализации изображения.
 
-= Доступны манипуляции с изображениями =
+= Примеры манипуляций с изображениями =
 
   * [ImagesHelperDownload Скачивание изображения]
   * [ImagesHelperSave Сохранение изображения]
@@ -14,10 +14,16 @@
   * [ImagesHelperConvert Конвертация изображения]
   * [ImagesHelperResize Изменение размера изображения]
   * [ImagesHelperCrop Обрезка, сложное масштабирование изображения]
-  * [ImagesHelperreflection Изображения с отражением]
+  * [ImagesHelperReflection Изображения с отражением]
   * [ImagesHelperFade Затемнение изображения]
   * [ImagesHelperRotate Вращение изображения]
   * [ImagesHelperGrayscale Из цветного изображения в черно-белое или негатив]
   * [ImagesHelperGradient Градиентная заливка]
   * [ImagesHelperOverlay Наложение изображения, водяные знаки]
   * [ImagesHelperText Текст как изображение]
+
+----
+<span style="width:100%;float:right;">
+[http://www.gordejev.lv/ http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png]
+<br />
+</span>
