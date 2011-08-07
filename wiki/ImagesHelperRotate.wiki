@@ -47,7 +47,7 @@ if($rotated_image = ImagesHelper::rotate($image_source, $degrees, $bg_color, $tr
    ImagesHelper::save($rotated_image, $image_source, $prefix, $format);    
 }
 }}}
-=== [http://code.google.com/p/ag-php-classes/downloads/list Скачать] ===
+==== [http://code.google.com/p/ag-php-classes/downloads/list Скачать класс]  [http://code.google.com/p/ag-php-classes/source/browse/#svn%2Ftrunk%2FImages Исходный код] ====
 ----
 <span style="width:100%;float:right;">
 [http://www.gordejev.lv/ http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png]
