@@ -5,12 +5,21 @@
 = Вращение изображения =
 ==== Вращение изображения Пример 1 ====
 {{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+
+$prefix = 'rtdt_'; // Приставка к имени файла отражения 
+$format = 'png'; // формат для сохранения изображения
+
 // с прозрачным фоном
 $degrees = 55; // угол поворота в градусах
 if($rotated_image = ImagesHelper::rotate($image_source,$degrees))
 {
    // сохранение полученного изображения в png формате 
-   ImagesHelper::saveimage($rotated_image, $image_source,'rtdt_','png');    
+   ImagesHelper::saveimage($rotated_image, $image_source,$prefix,$format);    
 }
 }}}
 ==== Вращение изображения Пример 2 ====
