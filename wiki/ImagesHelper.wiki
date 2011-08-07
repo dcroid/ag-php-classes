@@ -8,6 +8,7 @@
 
 = Примеры манипуляций с изображениями =
 
+  * [ImagesHelperInfo Информация об изображении]
   * [ImagesHelperDownload Скачивание изображения]
   * [ImagesHelperSave Сохранение изображения]
   * [ImagesHelperShow Вывод изображения в броузер]
