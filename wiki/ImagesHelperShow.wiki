@@ -23,6 +23,5 @@ ImagesHelper::show($image);
 */
 
 }}}
-[http://www.gordejev.lv/ http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png]
-[http://code.google.com/ http://code.google.com/images/code_sm.png]
+[http://www.gordejev.lv/ http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png align=right]
 <br />
