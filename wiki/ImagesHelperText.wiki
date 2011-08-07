@@ -3,7 +3,7 @@
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Текст как изображение =
-
+Метод создает текст в виде изображения. 
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
