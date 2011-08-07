@@ -14,6 +14,7 @@ $image_source = './images/test.jpg';
 $text = "ImagesHelper\n     PHP\n    class";
 $path_to_font = './fonts/BeAggressive.ttf'; // путь к файлу с фонтом
 $text_color = '#ffffff'; // цвет текста
+/* если значение переменной $text_color = false текст будет прозрачным */
 $bg_color = '#5E0B5F'; // цвет фона 
 /* если значение переменной $bg_color = false фон будет прозрачным */
 $font_size = 30; // размер шрифта
