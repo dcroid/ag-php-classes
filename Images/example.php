@@ -189,23 +189,23 @@ $position    = 'center';
 if($watermarked_image  = ImagesHelper::buildtextwatermark( $image_source, $text, $font, $position, $alpha_level, 20)) {
    # save watermarked image in to file in png format
    ImagesHelper::save($watermarked_image, $image_source,'wtmt_','png');
-    
 }
 
 $text = "OVERLEY";
 $text_color = false;
-$bg_color = '#FFF';
+$bg_color = '#fff';
 if($image_text  = ImagesHelper::text($text,50,$font,$text_color,$bg_color)) {
       $new_height  = ImagesHelper::height($image_source);
       $image_text  = ImagesHelper::resizeto($image_text,$new_height,'height');
       ImagesHelper::save($image_text, $image_source,'txt3_','gif');
+      ImagesHelper::show($image_text,'png',100);
 }
 
-if($watermarked2_image = ImagesHelper::watermark($image_source,$image_text,'center',100)) {
+if($watermarked2_image = ImagesHelper::overlay($image_source,$image_text,'center',100)) {
 
    # save watermarked image in to file in png format
    ImagesHelper::save($watermarked2_image, $image_source,'wtmt2_','png');
-   ImagesHelper::show($watermarked2_image,'png',100);
+
 }
 /* */
 // buildtextwatermark( $image_source, $text, $font, $color = '#fff', $alpha_level = 100, $position = 'center', $angle = 0)
