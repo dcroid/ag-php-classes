@@ -1,4 +1,21 @@
 #summary Метод для создания изображения с отражением
+#labels PHPClass,Image,Reflection,OnlyReflection,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Изображение с отражением =
+Метод создает изображение с отражением.
+{{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+
+// изображения с отражением 
+if($image_with_reflection  = ImagesHelper::reflection($image_source)) {    
+    // сохранение полученного изображения в png формате 
+    // Примечание: изображение с отражением следует сохранять только в png формате
+    ImagesHelper::saveimage($image_with_reflection, $image_source,'wref_','png');    
+}
+
+}}}
