@@ -1,4 +1,4 @@
-#summary Метод для создания изображения с градиентной заливкой
+#summary Пример создания изображения с градиентной заливкой
 #labels PHPClass,Image,Gradientfill,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
