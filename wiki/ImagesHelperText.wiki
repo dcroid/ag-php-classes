@@ -1,9 +1,9 @@
-#summary Метод для создания текста в виде изображения
+#summary Пример создания текста в виде изображения
 #labels PHPClass,Image,Text,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Текст как изображение =
-Метод создает текст в виде изображения. 
+Пример как создать текст в виде изображения. 
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
