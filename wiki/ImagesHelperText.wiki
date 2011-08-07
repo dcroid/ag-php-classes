@@ -4,7 +4,7 @@
 <g:plusone size="medium"></g:plusone>
 = Текст как изображение =
 Примеры как создать текст в виде изображения.
-==== Текст на фоне  ==== 
+==== Текст на фоне Пример 1  ==== 
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
@@ -26,6 +26,10 @@ if($image_text  = ImagesHelper::text($text,$font_size,$path_to_font,$text_color,
   // вывести изображение в броузер как png
   ImagesHelper::show($image_text,$format,100);
 }
+}}}
+==== Текст на фоне Пример 2  ==== 
+{{{
+
 }}}
 ==== [http://code.google.com/p/ag-php-classes/downloads/list Скачать класс]  [http://code.google.com/p/ag-php-classes/source/browse/#svn%2Ftrunk%2FImages Исходный код] ====
 ----
