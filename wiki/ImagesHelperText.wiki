@@ -1,5 +1,5 @@
 #summary Пример создания текста в виде изображения
-#labels PHPClass,Image,Text,GD
+#labels PHPClass,Image,Text,TextTo,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Текст как изображение =
