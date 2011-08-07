@@ -11,11 +11,14 @@ require_once 'class.images.helper.php';
 // Путь до файла картинки  
 $image_source = './images/test.jpg'; 
 
+$prefix = 'wref_'; // Приставка к имени файла от масштабированного 
+$format = 'png'; // формат для сохранения изображения
+
 // изображения с отражением 
 if($image_with_reflection  = ImagesHelper::reflection($image_source)) {    
     // сохранение полученного изображения в png формате 
     // Примечание: изображение с отражением следует сохранять только в png формате
-    ImagesHelper::saveimage($image_with_reflection, $image_source,'wref_','png');    
+    ImagesHelper::saveimage($image_with_reflection, $image_source,$prefix,$format);    
 }
 
 }}}
