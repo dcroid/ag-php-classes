@@ -1,6 +1,7 @@
 #summary Панель навигации для PHP класса ImagesHelper
 #labels PHPClass,Image,ImagesHelper
 ==== [ImagesHelper PHP Класс ImagesHelper] ====
+  * [ImagesHelperInfo Информация об изображении]
   * [ImagesHelperDownload Скачивание изображения]
   * [ImagesHelperSave Сохранение изображения]
   * [ImagesHelperShow Вывод изображения в броузер]
