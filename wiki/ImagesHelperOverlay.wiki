@@ -4,7 +4,7 @@
 = Наложение изображения =
 Пример быстрого наложения одного изображения на другое.
 {{{
-$watermark_img = './images/wtm.gif'; // накладываемое изображение
+$overlay_img = './images/wtm.gif'; // накладываемое изображение
 $alpha_level   = 30; // прозрачность накладываемого изображения
 $position = 'center'; // позиция
 /*
@@ -19,11 +19,11 @@ $position = 'center'; // позиция
  * 'left',8
  * 'right',9
  */
-if($watermarked_image = ImagesHelper::buildimagewatermark($image_source, $watermark_img,$position,$alpha_level)) {
+if($overlayed_image = ImagesHelper::buildimagewatermark($image_source, $overlay_img,$position,$alpha_level)) {
    // сохранение полученного изображения в gif формате
-   ImagesHelper::saveimage($watermarked_image, $image_source,'wtmi_','gif'); 
+   ImagesHelper::save($overlayed_image, $image_source,'wtmi_','gif'); 
    // или вывести изображение в броузер
-   ImagesHelper::showimage($watermarked_image);   
+   ImagesHelper::show($overlayed_image);   
 }
 }}}
 
