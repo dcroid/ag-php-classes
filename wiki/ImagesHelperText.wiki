@@ -11,7 +11,7 @@ require_once 'class.images.helper.php';
 // Путь до файла картинки  
 $image_source = './images/test.jpg'; 
 
-$text = "ImagesHelper\n     PHP\n    class";
+$text = "ImagesHelper\n     PHP\n    class"; // текст
 $path_to_font = './fonts/BeAggressive.ttf'; // путь к файлу с фонтом
 $text_color = '#ffffff'; // цвет текста
 /* если значение переменной $text_color = false текст будет прозрачным */
