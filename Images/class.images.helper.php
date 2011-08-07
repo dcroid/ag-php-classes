@@ -814,24 +814,34 @@ Class ImagesHelper
    public static function textto( $image_source, $text, $font_size, $path_to_font, $bg_color='#000000')
    {
       if(self::isgdloaded()) {
+         $transparent_color = false;
+         if(!$bg_color) {
+            $transparent_color = '#000000';
+         }
          $text_img     = self::text($text, $font_size, $path_to_font, false, $bg_color);
          $crp_width    = self::width($text_img);
          $crp_height   = self::height($text_img);
 
-         if($crp_width != self::width($image_source)) {
-            self::resizeto($image_source,$crp_width,"width");
+         if($crp_width > self::width($image_source)) {
+            $image_source = self::resizeto($image_source,$crp_width,"width");
          }
-         elseif($crp_height != self::height($image_source)) {
-            self::resizeto($image_source,$crp_height,"height");
+         if($crp_height > self::height($image_source)) {
+            $image_source = self::resizeto($image_source,$crp_height,"height");
          }
 
          $src_width    = self::width($image_source);
          $src_height   = self::height($image_source);
          $src_x        = ($src_width - $crp_width) / 2;
          $src_y        = ($src_height - $crp_height) / 2;
-         
+
          $image_dest = self::crop($image_source, $src_x, $src_y, $crp_width, $crp_height);
-         return self::overlay($image_dest, $text_img, 'center', 100);
+         $image_dest = self::overlay($image_dest, $text_img, 'center', 100);
+         if($transparent_color) {
+            $rgb_color      = self::hextorgb($transparent_color);
+            $allocated_color = imagecolorallocate($image_dest, $rgb_color[0], $rgb_color[1], $rgb_color[2]);
+            imagecolortransparent($image_dest, $allocated_color);
+         }
+         return $image_dest;
       }
       else {
          return false;
@@ -839,37 +849,43 @@ Class ImagesHelper
    }
 
    /**
-    * Build watermark text
+    * Build text watermark
     * @access public
     * @param  mixed    $image_source - path to image source or gd image resource
-    * @param  string   $text         - watemark text
-    * @param  string   $font         - path to watemark font file
-    * @param  string   $color        - watemark text color in hex format (default white #fff)
-    * @param  imt      $alpha_level  - watemark text alpha level (default = 100)
+    * @param  string   $text         - text
+    * @param  string   $font         - path to ttf font file
+    * @param  string   $color        - text color in hex format (default white #fff)
+    * @param  string   $position     - text overlay position
+    * @param  int      $alpha_level  - text alpha level (default = 30)
+    * @param  int      $font_size    - font size (default calculate from image source)
+    * @param  int      $angle        - text rotate angle
     * @return resource gd resource
     */
-   public static function buildtextwatermark( $image_source, $text, $font, $color = '#ffffff', $position = 'center', $alpha_level = 50, $angle = 0)
+   public static function overlaytext( $image_source, $text, $font, $color = '#ffffff', $position = 'center', $alpha_level = 40, $angle = 0, $font_size = false)
    {
       if(self::isgdloaded()) {
          $width_src    = self::width($image_source);
          $height_src   = self::height($image_source);
-         if(!$angle) {
-            $angle     =  -rad2deg(atan2((-$height_src),($width_src)));
-         }
-
+         /*
+          if(!$angle) {
+          $angle     =  -rad2deg(atan2((-$height_src),($width_src)));
+          }
+          */
          $rgb_color    = self::hextorgb($color);
          $image_source = self::create($image_source);
          $text = " ".$text." ";
-
+         $alpha_level = ($alpha_level > 127)?0:127 - $alpha_level;
          $allocated_bg_color = imagecolorallocatealpha($image_source, $rgb_color[0], $rgb_color[1], $rgb_color[2], $alpha_level);
-         $text_box_size = (($width_src+$height_src)/2)*2/strlen($text);
-         $text_box  = imagettfbbox($text_box_size, $angle, $font, $text );
+         $text_box_size = round((($width_src+$height_src) / 2 * 0.9)/strlen($text));
 
+        // $text_box_size = ($text_box_size < $font_size)?$text_box_size:(int)$font_size;
+         $text_box  = imagettfbbox($text_box_size, $angle, $font, $text );
          $x = $width_src/2 - abs($text_box[4] - $text_box[0])/2;
          $y = $height_src/2 + abs($text_box[5] - $text_box[1])/2;
          $sample = imagecreatetruecolor($y,$x);
          $coordinates = self::calculateposition($image_source, $sample, $position);
          imagettftext($image_source, $text_box_size, $angle, $x, $y, $allocated_bg_color, $font, $text);
+         
          return $image_source;
       }
       else {

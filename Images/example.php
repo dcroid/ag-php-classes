@@ -98,7 +98,7 @@ if($negative_image  = ImagesHelper::negative($image_source)) {
 }
 
 # Resize image example 1
-$new_width = 50; // new image width px
+$new_width = 920; // new image width px
 if($resized_image  = ImagesHelper::resizeto($image_source,$new_width)) {
    # save thumblain image in to file in jpg format
    ImagesHelper::save($resized_image, $image_source,'thumb_','jpg');
@@ -106,10 +106,10 @@ if($resized_image  = ImagesHelper::resizeto($image_source,$new_width)) {
 
 # Resize image example 2
 $resize_to = 'height';
-$new_value = 30; // new height value px
+$new_value = 730; // new height value px
 if($resized_image  = ImagesHelper::resizeto($image_source,$new_value,$resize_to)) {
    # save thumblain image in to file in gif format
-   ImagesHelper::save($resized_image, $image_source,'thumb_','gif');
+   ImagesHelper::save($resized_image, $image_source,'resizeto_','gif');
 }
 
 # Resize image example 3
@@ -180,41 +180,45 @@ if($rotated_image  = ImagesHelper::rotate($image_source,$degrees,$bg_color,$tran
 }
 
 # build text watemark
-$text = "ImagesHelper\n     PHP\n    class";
-$path_to_font = './fonts/Bleeding_Cowboys.ttf';
-$color = '#5E0B5F'; //#5E0B5F';
-$alpha_level = 40;
-$position    = 'center';
+$text = "OVERLEY TEXT";
+$path_to_font = './fonts/Yahoo.ttf';
+$color = '#ccc'; //#5E0B5F';
 
-if($watermarked_image  = ImagesHelper::buildtextwatermark( $image_source, $text, $path_to_font, $position, $alpha_level, 20)) {
+$alpha_level = 50;
+$position    = 'bottom-right';
+
+if($watermarked_image  = ImagesHelper::overlaytext( $image_source, $text, $path_to_font, $color, $position, $alpha_level,0)) {
    # save watermarked image in to file in png format
-   ImagesHelper::save($watermarked_image, $image_source,'wtmt_','png');
+  ImagesHelper::save($watermarked_image, $image_source,'wtmt_','png');
+
 }
 
-$text = "OVERLEY";
-$text_color = false;
-$bg_color = '#fff';
-$font_size = 120;
+$path_to_font = './fonts/Yahoo.ttf';
+$text = "ImagesHelper";
+$text_color = "#EBEFF9";
+$bg_color = '#C3D9FF';
+$font_size = 70;
 
 if($image_text  = ImagesHelper::text($text, $font_size, $path_to_font, $text_color, $bg_color)) {
-      $new_height  = ImagesHelper::height($image_source);
-      $image_text  = ImagesHelper::resizeto($image_text,$new_height,'height');
-      ImagesHelper::save($image_text, $image_source,'txt3_','gif');
+   $new_height  = ImagesHelper::height($image_source);
+   $image_text  = ImagesHelper::resizeto($image_text,$new_height,'height');
+   ImagesHelper::save($image_text, $image_source,'txt4_','gif');
 }
-$text = "TEXTTO";
-$image_bg = './images/flowers.jpg';
+$path_to_font = './fonts/Bleeding_Cowboys.ttf';
+$text = "ImagesHelper";
+$image_bg = './images/rainbow.jpg';
+$bg_color = false;
 if($watermarked2_image = ImagesHelper::textto( $image_bg, $text, $font_size, $path_to_font, $bg_color)) {
 
    # save watermarked image in to file in png format
-   ImagesHelper::save($watermarked2_image, $image_source,'txto_','png');
+   ImagesHelper::save($watermarked2_image, $image_source,'txto2_','gif');
    ImagesHelper::show($watermarked2_image,'png',100);
 }
-/* */
 // buildtextwatermark( $image_source, $text, $font, $color = '#fff', $alpha_level = 100, $position = 'center', $angle = 0)
 # build image watemark
 $watermark_img = './images/wtm.gif';
 $alpha_level   = 30;
-$position = 'left';
+$position = 'bottom';
 /*
  * 'top-right','right-top',1
  * 'top-left','left-top',2
