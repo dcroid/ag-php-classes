@@ -30,3 +30,5 @@ ImagesHelper::save($image, $new_filename);
   ImagesHelper::save($image, $image_source, $prefix, $format);
 */
 }}}
+
+= ImagesHelper = 
