@@ -31,4 +31,4 @@ ImagesHelper::save($image, $new_filename);
 */
 }}}
 
-= ImagesHelper = 
+= [ImagesHelper PHP Класс ImagesHelper] = 
