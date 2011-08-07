@@ -15,6 +15,7 @@ $image_source = './images/test.jpg';
 // Конвертация изображения в другой формат 
 $image_dest = ImagesHelper::convert($image_source,'png');
 }}}
+=== [http://code.google.com/p/ag-php-classes/downloads/list Скачать] ===
 ----
 <span style="width:100%;float:right;">
 [http://www.gordejev.lv/ http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png]
