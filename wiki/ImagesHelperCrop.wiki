@@ -38,7 +38,7 @@ if($croped_image  = ImagesHelper::crop($image_source, $src_x, $src_y, $crp_width
    ImagesHelper::save($croped_image, $image_source,'crp_','jpg');    
 }
 }}}
-=== [http://code.google.com/p/ag-php-classes/downloads/list Скачать] ===
+==== [http://code.google.com/p/ag-php-classes/downloads/list Скачать класс]  [http://code.google.com/p/ag-php-classes/source/browse/#svn%2Ftrunk%2FImages Исходный код] ====
 ----
 <span style="width:100%;float:right;">
 [http://www.gordejev.lv/ http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png]
