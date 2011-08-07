@@ -1,0 +1,3 @@
+#summary Метод для наложения одного изображения на другое
+#sidebar ImagesHelperSidebar
+<g:plusone size="medium"></g:plusone>
