@@ -144,13 +144,13 @@ if($croped_image  = ImagesHelper::crop($image_source, $src_x, $src_y, $crp_width
 
 # build reflection
 $reflection_height = 25; # %
-if($image_reflection  = ImagesHelper::reflection($image_source,$reflection_height)) {
+if($image_reflection  = ImagesHelper::onlyreflection($image_source,$reflection_height)) {
    # save reflection image in to file in gif format
    ImagesHelper::save($image_reflection, $image_source,'ref_','png');
 }
 
 # build image with reflection
-if($image_with_reflection  = ImagesHelper::buildimagewithreflection($image_source)) {
+if($image_with_reflection  = ImagesHelper::reflection($image_source)) {
    # save resulted image in to file in png format
    ImagesHelper::save($image_with_reflection, $image_source,'wref_','png');
 }
