@@ -23,7 +23,7 @@ if($image_reflection  = ImagesHelper::onlyreflection($image_source,$reflection_h
    ImagesHelper::save($image_reflection, $image_source,$prefix,$format);
 }
 }}}
-=== Изображения с отражением ===
+=== Изображение с отражением ===
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
