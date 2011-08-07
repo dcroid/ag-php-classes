@@ -21,7 +21,7 @@ $degrees = 55; // угол поворота в градусах
 if($rotated_image = ImagesHelper::rotate($image_source,$degrees))
 {
    // сохранение полученного изображения в png формате 
-   ImagesHelper::saveimage($rotated_image, $image_source,$prefix,$format);    
+   ImagesHelper::save($rotated_image, $image_source,$prefix,$format);    
 }
 }}}
 ==== Вращение изображения Пример 2 ====
@@ -44,7 +44,7 @@ $transparent = false;  // прозрачность
 if($rotated_image = ImagesHelper::rotate($image_source, $degrees, $bg_color, $transparent))
 {
    // сохранение полученного изображения в png формате 
-   ImagesHelper::saveimage($rotated_image, $image_source, $prefix, $format);    
+   ImagesHelper::save($rotated_image, $image_source, $prefix, $format);    
 }
 }}}
 
