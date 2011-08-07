@@ -1,4 +1,4 @@
-#summary Методы для создания черно-белого изображения или негатива
+#summary Примеры создания черно-белого изображения или негатива
 #labels PHPClass,Image,Grayscale,Negative,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
