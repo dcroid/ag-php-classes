@@ -1,11 +1,16 @@
 #summary Методы для создания черно-белого изображения или негатива
+#labels PHPClass,Image,Grayscale,Negative,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Из цветного изображения в черно-белое или негатив =
+==== Черно-белое изображение ====
 {{{
 
 }}}
+==== Негатив изображения ====
+{{{
 
+}}}
 ----
 <span style="width:100%;float:right;">
 [http://www.gordejev.lv/ http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png]
