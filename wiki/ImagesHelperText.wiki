@@ -3,7 +3,8 @@
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Текст как изображение =
-Пример как создать текст в виде изображения. 
+Примеры как создать текст в виде изображения.
+==== Текст на фоне  ==== 
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
