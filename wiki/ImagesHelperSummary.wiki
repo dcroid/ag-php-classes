@@ -1,5 +1,6 @@
 #summary One-sentence summary of this page.
-
+#sidebar ImagesHelperSummarySidebar
+<g:plusone size="medium"></g:plusone>
 = Method Summary =
 
 == Class ImagesHelper ==
