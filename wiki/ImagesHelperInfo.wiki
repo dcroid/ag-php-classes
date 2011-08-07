@@ -1,7 +1,8 @@
 #summary Пример получения информации об изображении
+#labels PHPClass,Image,Width,Height,Mime,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
-= Информации об изображении =
+= Информация об изображении =
 Примеры получения основной информации об изображении.
 {{{
 // Подключение класса 
