@@ -10,7 +10,7 @@
 require_once 'class.images.helper.php'; 
 
 // Путь до файла картинки  
-$image_source = './images/test.jpg'; 
+$image_source = './images/text.jpg'; 
 
 $text = "ImagesHelper\n     PHP\n    class"; // текст
 $path_to_font = './fonts/BeAggressive.ttf'; // путь к файлу с фонтом
@@ -31,6 +31,9 @@ if($image_text  = ImagesHelper::text($text,$font_size,$path_to_font,$text_color,
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/text_2.png'; 
 
 $path_to_font = './fonts/Bleeding_Cowboys.ttf';
 $text = "ImagesHelper"; // текст
