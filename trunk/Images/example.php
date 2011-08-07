@@ -5,7 +5,7 @@
  * @package       Images
  * @subpackage	  Helper
  * @category      Utillites
- * @version       1.0.2
+ * @version       1.0.4
  * @desc          Example using ImagesHelper class
  * @copyright     Copyright Alexey Gordeyev IK © 2009-2011 - All rights reserved.
  * @license       GPLv2
@@ -181,12 +181,12 @@ if($rotated_image  = ImagesHelper::rotate($image_source,$degrees,$bg_color,$tran
 
 # build text watemark
 $text = "ImagesHelper\n     PHP\n    class";
-$font = './fonts/BraesideOutline.ttf';
+$path_to_font = './fonts/Bleeding_Cowboys.ttf';
 $color = '#5E0B5F'; //#5E0B5F';
 $alpha_level = 40;
 $position    = 'center';
 
-if($watermarked_image  = ImagesHelper::buildtextwatermark( $image_source, $text, $font, $position, $alpha_level, 20)) {
+if($watermarked_image  = ImagesHelper::buildtextwatermark( $image_source, $text, $path_to_font, $position, $alpha_level, 20)) {
    # save watermarked image in to file in png format
    ImagesHelper::save($watermarked_image, $image_source,'wtmt_','png');
 }
@@ -194,25 +194,27 @@ if($watermarked_image  = ImagesHelper::buildtextwatermark( $image_source, $text,
 $text = "OVERLEY";
 $text_color = false;
 $bg_color = '#fff';
-if($image_text  = ImagesHelper::text($text,50,$font,$text_color,$bg_color)) {
+$font_size = 120;
+
+if($image_text  = ImagesHelper::text($text, $font_size, $path_to_font, $text_color, $bg_color)) {
       $new_height  = ImagesHelper::height($image_source);
       $image_text  = ImagesHelper::resizeto($image_text,$new_height,'height');
       ImagesHelper::save($image_text, $image_source,'txt3_','gif');
-      ImagesHelper::show($image_text,'png',100);
 }
-
-if($watermarked2_image = ImagesHelper::overlay($image_source,$image_text,'center',100)) {
+$text = "TEXTTO";
+$image_bg = './images/flowers.jpg';
+if($watermarked2_image = ImagesHelper::textto( $image_bg, $text, $font_size, $path_to_font, $bg_color)) {
 
    # save watermarked image in to file in png format
-   ImagesHelper::save($watermarked2_image, $image_source,'wtmt2_','png');
-
+   ImagesHelper::save($watermarked2_image, $image_source,'txto_','png');
+   ImagesHelper::show($watermarked2_image,'png',100);
 }
 /* */
 // buildtextwatermark( $image_source, $text, $font, $color = '#fff', $alpha_level = 100, $position = 'center', $angle = 0)
 # build image watemark
 $watermark_img = './images/wtm.gif';
-$alpha_level   = 50;
-$position = 'right-bottom';
+$alpha_level   = 30;
+$position = 'left';
 /*
  * 'top-right','right-top',1
  * 'top-left','left-top',2
@@ -224,7 +226,7 @@ $position = 'right-bottom';
  * 'left',8
  * 'right',9
  */
-if($watermarked_image = ImagesHelper::watermark($image_source,$watermark_img,$position,$alpha_level)) {
+if($watermarked_image = ImagesHelper::overlay($image_source,$watermark_img,$position,$alpha_level)) {
    # save watermarked image in to file in gif format
    ImagesHelper::save($watermarked_image, $image_source,'wtmi2_','gif');
 }

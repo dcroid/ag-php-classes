@@ -5,7 +5,7 @@
  * @package       Images
  * @subpackage	  Helpers
  * @category      Auxiliary
- * @version       1.0.3
+ * @version       1.0.4
  * @desc          Basic manipulation with image
  * @copyright     Copyright Alexey Gordeyev IK © 2009-2011 - All rights reserved.
  * @license       GPLv2
@@ -720,7 +720,7 @@ Class ImagesHelper
     * @param  string   $bg_color      - background color if false transparent
     * @return resource gd resource
     */
-   public static function text($text,$font_size,$path_to_font,$font_color='#ffffff',$bg_color='#000000',$shadow=false,$shadow_color='#cccccc')
+   public static function text($text, $font_size, $path_to_font, $font_color='#ffffff', $bg_color='#000000', $shadow=false, $shadow_color='#cccccc')
    {
       if(self::isgdloaded()) {
          $bbox = imagettfbbox($font_size, 0,$path_to_font, $text);
@@ -799,6 +799,46 @@ Class ImagesHelper
    }
 
    /**
+    * Enter description here ... textto
+    * @access public
+    * @param  mixed  $image_source
+    * @param  string $text
+    * @param  int    $font_size
+    * @param  string $path_to_font
+    * @param  string $font_color
+    * @param  string $bg_color
+    * @param  bool   $shadow
+    * @param  string $shadow_color
+    * @return resource gd resource
+    */
+   public static function textto( $image_source, $text, $font_size, $path_to_font, $bg_color='#000000')
+   {
+      if(self::isgdloaded()) {
+         $text_img     = self::text($text, $font_size, $path_to_font, false, $bg_color);
+         $crp_width    = self::width($text_img);
+         $crp_height   = self::height($text_img);
+
+         if($crp_width != self::width($image_source)) {
+            self::resizeto($image_source,$crp_width,"width");
+         }
+         elseif($crp_height != self::height($image_source)) {
+            self::resizeto($image_source,$crp_height,"height");
+         }
+
+         $src_width    = self::width($image_source);
+         $src_height   = self::height($image_source);
+         $src_x        = ($src_width - $crp_width) / 2;
+         $src_y        = ($src_height - $crp_height) / 2;
+         
+         $image_dest = self::crop($image_source, $src_x, $src_y, $crp_width, $crp_height);
+         return self::overlay($image_dest, $text_img, 'center', 100);
+      }
+      else {
+         return false;
+      }
+   }
+
+   /**
     * Build watermark text
     * @access public
     * @param  mixed    $image_source - path to image source or gd image resource
@@ -838,7 +878,7 @@ Class ImagesHelper
    }
 
    /**
-    * Build overlayed image from another image
+    * Build overlay image from another image
     * @access public
     * @param  mixed    $image_source  - path to image source or gd image resource
     * @param  string   $watermark_img - path to watemark image source
@@ -849,7 +889,6 @@ Class ImagesHelper
    {
       if(self::isgdloaded()) {
          $watermark_img    = self::create($watermark_img);
-
          $width_src        = self::width($image_source);
          $height_src       = self::height($image_source);
          $image_source     = self::create($image_source);
@@ -912,7 +951,7 @@ Class ImagesHelper
             case 'bottom-right':
             case 'right-bottom':
             case 3:
-               $coordinates['dst_x'] = $dst_x-$wtm_w;
+               $coordinates['dst_x'] = $src_w-$wtm_w;
                $coordinates['dst_y'] = $src_h-$wtm_h;
                break;
             case 'bottom-left':
@@ -927,11 +966,11 @@ Class ImagesHelper
                break;
             case 'top':
             case 6:
-               $coordinates['dst_x'] = ($dst_x/2)-($wtm_w/2);
+               $coordinates['dst_x'] = ($src_w/2)-($wtm_w/2);
                break;
             case 'bottom':
             case 7:
-               $coordinates['dst_x'] = ($dst_x/2)-($wtm_w/2);
+               $coordinates['dst_x'] = ($src_w/2)-($wtm_w/2);
                $coordinates['dst_y'] = $src_h-$wtm_h;
                break;
             case 'left':
@@ -940,7 +979,7 @@ Class ImagesHelper
                break;
             case 'right':
             case 9:
-               $coordinates['dst_x'] = $dst_x-$wtm_w;
+               $coordinates['dst_x'] = $src_w-$wtm_w;
                $coordinates['dst_y'] = ($src_h/2)-($wtm_h/2);
                break;
          }
@@ -965,8 +1004,8 @@ Class ImagesHelper
    {
       if(self::isgdloaded()) {
          $r = $g = $b = null;
-         list($r1,$g1,$b1) = self::hextorgb($end);
-         list($r2,$g2,$b2) = self::hextorgb($start);
+         list($r1,$g1,$b1) = self::hextorgb($end_color);
+         list($r2,$g2,$b2) = self::hextorgb($start_color);
          $gradiened        = imagecreatetruecolor($image_width,$image_height);
          $center_x         = $image_width/2;
          $center_y         = $image_height/2;
@@ -976,8 +1015,8 @@ Class ImagesHelper
             case 'vertical':
                $line_numbers = ($direction == 'vertical')?imagesy($gradiened):imagesx($gradiened);
                $line_width = ($direction == 'vertical')?imagesx($gradiened):imagesy($gradiened);
-               list($r1,$g1,$b1) = self::hextorgb($start);
-               list($r2,$g2,$b2) = self::hextorgb($end);
+               list($r1,$g1,$b1) = self::hextorgb($start_color);
+               list($r2,$g2,$b2) = self::hextorgb($end_color);
                break;
             case 'ellipse':
                $rh=$image_height>$image_width?1:$image_width/$image_height;
@@ -1137,7 +1176,6 @@ Class ImagesHelper
             $path_to_temp = $path_to_temp.$filename;
          }
          if($filename && !file_exists($path_to_temp)) {
-
             # cURL initialization
             $ch = curl_init();
             curl_setopt($ch,CURLOPT_URL,$path_to_source);
