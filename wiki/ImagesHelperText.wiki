@@ -1,4 +1,19 @@
 #summary Метод для создания текста в виде изображения
+#labels PHPClass,Image,Text,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Текст как изображение =
+
+{{{
+// текст как картинка
+$text = "ImagesHelper\n     PHP\n    class";
+$path_to_font = './fonts/BeAggressive.ttf'; // путь к файлу с фонтом
+$text_color = '#ffffff'; // цвет текста
+$bg_color = '#5E0B5F'; // цвет фона 
+/* если значение переменной $bg_color = false фон будет прозрачным */
+$font_size = 30; // размер шрифта
+if($image_text  = ImagesHelper::text($text,$font_size,$path_to_font,$text_color,$bg_color)) {
+  // вывести изображение в броузер как png
+  ImagesHelper::showimage($image_text,'png',100);
+}
+}}}
