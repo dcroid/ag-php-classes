@@ -1,4 +1,4 @@
-#summary Методы для вырезания и сложного масштабирования
+#summary Примеры вырезания и сложного масштабирования
 #labels PHPClass,Image,Quadrate,Crop,GD,ImagesHelper
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
