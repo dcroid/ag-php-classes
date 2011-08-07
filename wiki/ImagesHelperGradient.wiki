@@ -40,6 +40,12 @@ if($gradient_image = ImagesHelper::gradientfill($width, $height, $direction, $st
 }
 
 }}}
+https://lh4.googleusercontent.com/-Z0w7eE6Dd6U/Tj8RpiNuLXI/AAAAAAAALG0/EzyJp_cEKbE/gr1_source.png
+
+https://lh6.googleusercontent.com/-ejQeM_iG3Rw/Tj8Rp3OLJTI/AAAAAAAALG4/U-UfdkiWSrw/gr2_source.png
+
+https://lh3.googleusercontent.com/-qtxEg_IUY1c/Tj8Rp-4wYqI/AAAAAAAALG8/rmRQ-rYNI48/gr3_source.png
+
 ==== [http://code.google.com/p/ag-php-classes/downloads/list Скачать класс]  [http://code.google.com/p/ag-php-classes/source/browse/#svn%2Ftrunk%2FImages Исходный код] ====
 ----
 <span style="width:100%;float:right;">
