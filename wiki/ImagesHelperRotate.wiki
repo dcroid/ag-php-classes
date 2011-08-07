@@ -1,4 +1,4 @@
-#summary Метод для вращения изображения
+#summary Примеры вращения изображения
 #labels PHPClass,Image,Rotate,GD
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
