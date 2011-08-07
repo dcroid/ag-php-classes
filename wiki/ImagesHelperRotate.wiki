@@ -4,6 +4,7 @@
 <g:plusone size="medium"></g:plusone>
 = Вращение изображения =
 ==== Вращение изображения Пример 1 ====
+Вращение изображения оставляя фон прозрачным.
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
@@ -24,6 +25,7 @@ if($rotated_image = ImagesHelper::rotate($image_source,$degrees))
 }
 }}}
 ==== Вращение изображения Пример 2 ====
+Вращение изображения делая заливку фона определенным цветом
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
