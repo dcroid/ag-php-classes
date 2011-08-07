@@ -3,6 +3,7 @@
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Градиентная заливка =
+Пример создания изображения с градиентной заливкой.
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
