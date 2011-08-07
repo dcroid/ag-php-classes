@@ -26,3 +26,8 @@ if($image_text  = ImagesHelper::text($text,$font_size,$path_to_font,$text_color,
   ImagesHelper::show($image_text,$format,100);
 }
 }}}
+----
+<span style="width:100%;float:right;">
+[http://www.gordejev.lv/ http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png]
+<br />
+</span>
