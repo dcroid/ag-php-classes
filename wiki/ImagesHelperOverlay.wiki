@@ -1,10 +1,30 @@
-#summary Метод для наложения одного изображения на другое
+#summary Пример наложения одного изображения на другое
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Наложение изображения =
-
+Пример быстрого наложения одного изображения на другое.
 {{{
-
+$watermark_img = './images/wtm.gif'; // накладываемое изображение
+$alpha_level   = 30; // прозрачность накладываемого изображения
+$position = 'center'; // позиция
+/*
+ *  доступные позиции
+ * 'top-right','right-top',1
+ * 'top-left','left-top',2
+ * 'bottom-right','right-bottom',3
+ * 'bottom-left','left-bottom',4
+ * 'center',5
+ * 'top',6
+ * 'bottom',7
+ * 'left',8
+ * 'right',9
+ */
+if($watermarked_image = ImagesHelper::buildimagewatermark($image_source, $watermark_img,$position,$alpha_level)) {
+   // сохранение полученного изображения в gif формате
+   ImagesHelper::saveimage($watermarked_image, $image_source,'wtmi_','gif'); 
+   // или вывести изображение в броузер
+   ImagesHelper::showimage($watermarked_image);   
+}
 }}}
 
 ----
