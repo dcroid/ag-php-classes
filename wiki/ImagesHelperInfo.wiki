@@ -2,3 +2,18 @@
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Информации об изображении =
+Примеры получения основной информации об изображении.
+{{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+  
+// получение размера изображения  
+$width      = ImagesHelper::width($image_source); 
+$height     = ImagesHelper::height($image_source);  
+
+// Получение типа изображения 
+$mime       = ImagesHelper::mime($image_source);
+}}}
