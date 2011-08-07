@@ -42,3 +42,8 @@ if($image_with_reflection  = ImagesHelper::reflection($image_source)) {
 }
 
 }}}
+----
+<span style="width:100%;float:right;">
+[http://www.gordejev.lv/ http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png]
+<br />
+</span>
