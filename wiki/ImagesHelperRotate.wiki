@@ -11,7 +11,7 @@ require_once 'class.images.helper.php';
 // Путь до файла картинки  
 $image_source = './images/test.jpg'; 
 
-$prefix = 'rtdt_'; // Приставка к имени файла отражения 
+$prefix = 'rtdt_'; // Приставка к имени файла 
 $format = 'png'; // формат для сохранения изображения
 
 $degrees = 55; // угол поворота в градусах
@@ -31,7 +31,7 @@ require_once 'class.images.helper.php';
 // Путь до файла картинки  
 $image_source = './images/test.jpg'; 
 
-$prefix = 'rtdс_'; // Приставка к имени файла отражения 
+$prefix = 'rtdс_'; // Приставка к имени файла
 $format = 'png'; // формат для сохранения изображения
 
 $degrees = 75; // угол поворота в градусах
