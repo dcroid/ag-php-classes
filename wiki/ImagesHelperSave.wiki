@@ -1,4 +1,4 @@
-#summary Метод для сохранения изображения
+#summary Пример сохранения изображения
 #labels PHPClass,Image,Save,GD,ImagesHelper
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
