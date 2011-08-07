@@ -29,7 +29,19 @@ if($image_text  = ImagesHelper::text($text,$font_size,$path_to_font,$text_color,
 }}}
 ==== Текст на фоне Пример 2  ==== 
 {{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
 
+$path_to_font = './fonts/Bleeding_Cowboys.ttf';
+$text = "ImagesHelper"; // текст
+$image_bg = './images/rainbow.jpg'; // изображение для заливки надписи
+$bg_color = false; // цвет фона (прозрачный)
+$format = 'png'; // формат для сохранения изображения
+
+if($watermarked2_image = ImagesHelper::textto( $image_bg, $text, $font_size, $path_to_font, $bg_color)) {
+   // вывести изображение в броузер как png
+   ImagesHelper::save($watermarked2_image, $image_source, 'txto2_', 'gif');
+}
 }}}
 ==== [http://code.google.com/p/ag-php-classes/downloads/list Скачать класс]  [http://code.google.com/p/ag-php-classes/source/browse/#svn%2Ftrunk%2FImages Исходный код] ====
 ----
