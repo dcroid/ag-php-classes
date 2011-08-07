@@ -1,9 +1,9 @@
-#summary Методы для изменения размеров изображения
+#summary Пример накладывания цвета на изображение
 #labels PHPClass,Image,Fade,GD,ImagesHelper
 #sidebar ImagesHelperSidebar
 <g:plusone size="medium"></g:plusone>
 = Затемнение изображения =
-Метод позволяет затемнять и накладывать цвет на изображение 
+Пример показывает как затемнять и накладывать цвет на изображение.
 {{{
 // Подключение класса 
 require_once 'class.images.helper.php'; 
