@@ -16,6 +16,7 @@ $image_url = 'http://agjoomla.com/media/k2/categories/1.png';
 // загрузка изображения с удаленного сервера
 $image_source = ImagesHelper::download($image_url,$destination_path);
 }}}
+=== [http://code.google.com/p/ag-php-classes/downloads/list Скачать] ===
 ----
 <span style="width:100%;float:right;">
 [http://www.gordejev.lv/ http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png]
