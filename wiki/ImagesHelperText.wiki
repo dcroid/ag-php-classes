@@ -35,15 +35,15 @@ require_once 'class.images.helper.php';
 // Путь до файла картинки  
 $image_source = './images/text_2.png'; 
 
-$path_to_font = './fonts/Bleeding_Cowboys.ttf';
+$path_to_font = './fonts/Bleeding_Cowboys.ttf'; // путь к файлу с фонтом
 $text = "ImagesHelper"; // текст
 $image_bg = './images/rainbow.jpg'; // изображение для заливки надписи
 $bg_color = false; // цвет фона (прозрачный)
 $format = 'png'; // формат для сохранения изображения
 
-if($watermarked2_image = ImagesHelper::textto( $image_bg, $text, $font_size, $path_to_font, $bg_color)) {
+if($image_text = ImagesHelper::textto( $image_bg, $text, $font_size, $path_to_font, $bg_color)) {
    // вывести изображение в броузер как png
-   ImagesHelper::save($watermarked2_image, $image_source, 'txto2_', 'gif');
+   ImagesHelper::save($image_text, $image_source, 'txto2_', 'gif');
 }
 }}}
 ==== [http://code.google.com/p/ag-php-classes/downloads/list Скачать класс]  [http://code.google.com/p/ag-php-classes/source/browse/#svn%2Ftrunk%2FImages Исходный код] ====
