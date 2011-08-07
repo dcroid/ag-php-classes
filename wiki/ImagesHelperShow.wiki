@@ -23,6 +23,6 @@ ImagesHelper::show($image);
 */
 
 }}}
-[url=http://www.gordejev.lv]
-<img src=http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png align=right/>[/url]
+[http://www.gordejev.lv 
+<img src=http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png align=right/>]
 <br />
