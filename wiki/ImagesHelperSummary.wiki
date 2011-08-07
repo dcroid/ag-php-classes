@@ -1,8 +1,0 @@
-#summary One-sentence summary of this page.
-#sidebar ImagesHelperSummarySidebar
-<g:plusone size="medium"></g:plusone>
-= Method Summary =
-
-== Class ImagesHelper ==
-
-'''Внеочередные [[выборы]] [[президент Казахстана|президента]] [[Казахстан|Республики Казахстан]]''' ({{lang-kk|Қазақстан Республикасы Президентінің кезектен тыс сайлауы}})
