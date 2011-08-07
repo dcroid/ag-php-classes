@@ -1,0 +1,25 @@
+#summary Метод для вывода изображения в броузер
+#labels PHPClass,Image,Show,GD,ImagesHelper
+#sidebar ImagesHelperSidebar
+<g:plusone size="medium"></g:plusone>
+= Вывод изображения в броузер =
+Данный метод выполняет вывод изображения в броузер, допускается вывод в различных графических форматах.
+{{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+
+// Создать изображение из файла
+$image = ImagesHelper::create($image_source);
+
+// Вывести изображение в броузер
+ImagesHelper::show($image);
+
+/*
+  Вывод изображения в броузер в определенном формате
+  ImagesHelper::show($image,'png');
+*/
+
+}}}

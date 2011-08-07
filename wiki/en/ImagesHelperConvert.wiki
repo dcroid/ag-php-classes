@@ -1,0 +1,17 @@
+#summary Метод для конвертации изображения
+#labels PHPClass,Image,Convert,GD,ImagesHelper
+#sidebar ImagesHelperSidebar
+<g:plusone size="medium"></g:plusone>
+
+= Конвертация изображения =
+Метод позволяет конвертировать изображение из одного графического формата в другой.
+{{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+ 
+// Конвертация изображения в другой формат 
+$image_dest = ImagesHelper::convert($image_source,'png');
+}}}

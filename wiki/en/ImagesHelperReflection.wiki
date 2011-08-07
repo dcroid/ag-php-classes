@@ -1,0 +1,4 @@
+#summary Метод для создания изображения с отражением
+#sidebar ImagesHelperSidebar
+<g:plusone size="medium"></g:plusone>
+= Изображение с отражением =
