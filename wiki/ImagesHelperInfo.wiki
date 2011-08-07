@@ -1,0 +1,4 @@
+#summary Пример получения информации об изображении
+#sidebar ImagesHelperSidebar
+<g:plusone size="medium"></g:plusone>
+= Информации об изображении =
