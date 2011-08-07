@@ -5,6 +5,11 @@
 = Текст как изображение =
 
 {{{
+// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
 
 $text = "ImagesHelper\n     PHP\n    class";
 $path_to_font = './fonts/BeAggressive.ttf'; // путь к файлу с фонтом
