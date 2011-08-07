@@ -18,7 +18,7 @@ $format = 'png'; // формат для сохранения изображен�
 if($image_with_reflection  = ImagesHelper::reflection($image_source)) {    
     // сохранение полученного изображения в png формате 
     // Примечание: изображение с отражением следует сохранять только в png формате
-    ImagesHelper::save($image_with_reflection, $image_source,$prefix,$format);    
+    ImagesHelper::save($image_with_reflection, $image_source, $prefix, $format);    
 }
 
 }}}
