@@ -40,7 +40,7 @@ if($gradient_image = ImagesHelper::gradientfill($width, $height, $direction, $st
 }
 
 }}}
-=== [http://code.google.com/p/ag-php-classes/downloads/list Скачать] ===
+==== [http://code.google.com/p/ag-php-classes/downloads/list Скачать класс]  [http://code.google.com/p/ag-php-classes/source/browse/#svn%2Ftrunk%2FImages Исходный код] ====
 ----
 <span style="width:100%;float:right;">
 [http://www.gordejev.lv/ http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png]
