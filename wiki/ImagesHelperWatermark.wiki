@@ -11,7 +11,15 @@
 ==== Водяные знаки Пример 2 ====
 Пример создания водяного знака с помощью текста. 
 {{{
-# build text watemark
+// Подключение класса 
+require_once 'class.images.helper.php'; 
+
+// Путь до файла картинки  
+$image_source = './images/test.jpg'; 
+
+$prefix = 'fad_'; // Приставка к имени файла с отражением 
+$format = 'png'; // формат для сохранения изображения
+
 $text = "OVERLEY TEXT";
 $path_to_font = './fonts/Yahoo.ttf';
 $color = '#ccc'; //#5E0B5F';
