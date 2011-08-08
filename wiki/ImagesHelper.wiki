@@ -3,7 +3,7 @@
 #sidebar AGPHPClasses
 <g:plusone size="medium"></g:plusone>
 <img src=http://4.bp.blogspot.com/-C5AyzYXuuso/Tjqz9QaSxEI/AAAAAAAALGU/WcDtQUMcWs0/s200/imageshelper.png align=right/>
-= ImagesHelper - PHP Class =
+= {ImagesHelper ImagesHelper - PHP Class] =
 Небольшой PHP класс для работы с изображениями: создание отражения, изменение размеров, поворот, конвертирование в другой формат, обрезка и т.д.. Класс использует GD библиотеку, и поддерживает самые распространённые графические форматы: GIF, PNG, JPEG. Можно выполнять несколько операций, без необходимости сохранять и повторной инициализации изображения.
 
 = Примеры манипуляций с изображениями =
