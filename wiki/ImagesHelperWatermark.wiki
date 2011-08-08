@@ -28,7 +28,7 @@ $alpha_level = 50; // уровень прозрачности
 $position    = 'bottom-right';
 $angle       = 0; // угол поворота текста в градусах
 
-if($watermarked_image  = ImagesHelper::overlaytext( $image_source, $text, $path_to_font, $color, $position, $alpha_level, $angle)) {
+if($watermarked_image = ImagesHelper::overlaytext( $image_source, $text, $path_to_font, $color, $position, $alpha_level, $angle)) {
    // сохранение полученного изображения в png формате 
   ImagesHelper::save($watermarked_image, $image_source, $prefix, $format);
 
