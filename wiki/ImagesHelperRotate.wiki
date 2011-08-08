@@ -24,6 +24,7 @@ if($rotated_image = ImagesHelper::rotate($image_source,$degrees))
    ImagesHelper::save($rotated_image, $image_source,$prefix,$format);    
 }
 }}}
+https://lh6.googleusercontent.com/-lOCc8X9-aT8/Tj9-ZeqF_bI/AAAAAAAALHs/2r-hSxCMcRo/source.jpg
 ==== Вращение изображения Пример 2 ====
 Вращение изображения делая заливку фона определенным цветом
 {{{
@@ -47,6 +48,8 @@ if($rotated_image = ImagesHelper::rotate($image_source, $degrees, $bg_color, $tr
    ImagesHelper::save($rotated_image, $image_source, $prefix, $format);    
 }
 }}}
+https://lh6.googleusercontent.com/-lOCc8X9-aT8/Tj9-ZeqF_bI/AAAAAAAALHs/2r-hSxCMcRo/source.jpg
+https://lh3.googleusercontent.com/-yD9Fo5QIjYk/Tj8Rq2EszYI/AAAAAAAALHM/jSs-TihCamA/rtdt_source.png
 ==== [http://code.google.com/p/ag-php-classes/downloads/list Скачать класс]  [http://code.google.com/p/ag-php-classes/source/browse/#svn%2Ftrunk%2FImages Исходный код] ====
 ----
 <span style="width:100%;float:right;">
