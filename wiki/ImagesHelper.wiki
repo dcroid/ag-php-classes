@@ -20,8 +20,9 @@
   * [ImagesHelperRotate Вращение изображения]
   * [ImagesHelperGrayscale Из цветного изображения в черно-белое или негатив]
   * [ImagesHelperGradient Градиентная заливка]
-  * [ImagesHelperOverlay Наложение изображения, водяные знаки]
+  * [ImagesHelperOverlay Наложение изображения]
   * [ImagesHelperText Текст как изображение]
+  * [ImagesHelperWatermark Водяные знаки]
 
 ==== [http://code.google.com/p/ag-php-classes/downloads/list Скачать класс]  [http://code.google.com/p/ag-php-classes/source/browse/#svn%2Ftrunk%2FImages Исходный код] ====
 ----
