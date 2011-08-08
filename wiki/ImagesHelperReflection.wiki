@@ -23,6 +23,8 @@ if($image_reflection  = ImagesHelper::onlyreflection($image_source,$reflection_h
    ImagesHelper::save($image_reflection, $image_source,$prefix,$format);
 }
 }}}
+https://lh6.googleusercontent.com/-lOCc8X9-aT8/Tj9-ZeqF_bI/AAAAAAAALHs/2r-hSxCMcRo/source.jpg
+https://lh5.googleusercontent.com/-7n_IJmMgjUI/Tj8RrRBQTHI/AAAAAAAALHQ/Rxc-H7Vpl3c/wref_source.png
 === Изображение с отражением ===
 {{{
 // Подключение класса 
