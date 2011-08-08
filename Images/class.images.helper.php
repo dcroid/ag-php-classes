@@ -54,7 +54,7 @@ Class ImagesHelper
     * @access public
     * @return bool
     */
-   function iscurlloaded()
+   static public function iscurlloaded()
    {
       if (!extension_loaded('curl')) {
          trigger_error("cURL is not loaded", E_USER_WARNING);
@@ -471,6 +471,11 @@ Class ImagesHelper
          $height_src   = self::height($image_source);
          $image_source = self::create($image_source);
          $new_image = imagecreatetruecolor($width, $height);
+
+         // Make the background transparent
+         $transparent_bg = imagecolorallocate($new_image, 0, 0, 0);
+         imagecolortransparent($new_image, $transparent_bg);
+
          imagecopyresampled($new_image, $image_source, 0, 0, 0, 0, $width, $height, $width_src, $height_src);
          return $new_image;
       }
@@ -878,14 +883,14 @@ Class ImagesHelper
          $allocated_bg_color = imagecolorallocatealpha($image_source, $rgb_color[0], $rgb_color[1], $rgb_color[2], $alpha_level);
          $text_box_size = round((($width_src+$height_src) / 2 * 0.9)/strlen($text));
 
-        // $text_box_size = ($text_box_size < $font_size)?$text_box_size:(int)$font_size;
+         // $text_box_size = ($text_box_size < $font_size)?$text_box_size:(int)$font_size;
          $text_box  = imagettfbbox($text_box_size, $angle, $font, $text );
          $x = $width_src/2 - abs($text_box[4] - $text_box[0])/2;
          $y = $height_src/2 + abs($text_box[5] - $text_box[1])/2;
          $sample = imagecreatetruecolor($y,$x);
          $coordinates = self::calculateposition($image_source, $sample, $position);
          imagettftext($image_source, $text_box_size, $angle, $x, $y, $allocated_bg_color, $font, $text);
-         
+          
          return $image_source;
       }
       else {
@@ -901,19 +906,20 @@ Class ImagesHelper
     * @param  int      $alpha_level   - watemark image aplha level (default = 100)
     * @return resource gd resource
     */
-   public static function overlay($image_source, $watermark_img, $position = 'random', $alpha_level = 50)
+   public static function overlay($image_source, $watermark_img, $position = 'random', $alpha_level = 50, $ratio = 0)
    {
       if(self::isgdloaded()) {
          $watermark_img    = self::create($watermark_img);
          $width_src        = self::width($image_source);
          $height_src       = self::height($image_source);
          $image_source     = self::create($image_source);
+         $cnt              = ($ratio > 0)?$ratio / 100:1;
 
          if($width_src < self::width($watermark_img)) {
-            $watermark_img  = ImagesHelper::resizeto($image_source,round($width_src*0.75),'width');
+            $watermark_img  = ImagesHelper::resizeto($watermark_img,round($width_src * $cnt),'width');
          }
          elseif($height_src < self::height($watermark_img)) {
-            $watermark_img  = ImagesHelper::resizeto($image_source,round($height_src*0.75),'height');
+            $watermark_img  = ImagesHelper::resizeto($watermark_img,round($height_src * $cnt),'height');
          }
 
          $watermark_width  = self::width($watermark_img);
