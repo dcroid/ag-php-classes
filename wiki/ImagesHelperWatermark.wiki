@@ -24,10 +24,11 @@ $text = "OVERLEY TEXT";
 $path_to_font = './fonts/Yahoo.ttf';
 $color = '#ccc'; //#5E0B5F';
 
-$alpha_level = 50;
+$alpha_level = 50; // уровень прозрачности
 $position    = 'bottom-right';
+$angle       = 0; // угол поворота текста в градусах
 
-if($watermarked_image  = ImagesHelper::overlaytext( $image_source, $text, $path_to_font, $color, $position, $alpha_level,0)) {
+if($watermarked_image  = ImagesHelper::overlaytext( $image_source, $text, $path_to_font, $color, $position, $alpha_level, $angle)) {
    # save watermarked image in to file in png format
   ImagesHelper::save($watermarked_image, $image_source, $prefix, $format);
 
