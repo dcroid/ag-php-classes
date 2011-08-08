@@ -25,6 +25,7 @@ if($rotated_image = ImagesHelper::rotate($image_source,$degrees))
 }
 }}}
 https://lh6.googleusercontent.com/-lOCc8X9-aT8/Tj9-ZeqF_bI/AAAAAAAALHs/2r-hSxCMcRo/source.jpg
+https://lh5.googleusercontent.com/-9LR_Y60QrgE/Tj9_MumziDI/AAAAAAAALH8/doC4vntX4VI/rtdf_source.png
 ==== Вращение изображения Пример 2 ====
 Вращение изображения делая заливку фона определенным цветом
 {{{
