@@ -13,6 +13,6 @@
   * [ImagesHelperRotate Вращение изображения]
   * [ImagesHelperGrayscale Из цветного изображения в черно-белое или негатив]
   * [ImagesHelperGradient Градиентная заливка]
-  * [ImagesHelperOverlay Наложение изображения, водяные знаки]
+  * [ImagesHelperOverlay Наложение изображения]
   * [ImagesHelperText Текст как изображение]
   * [ImagesHelperWatermark Водяные знаки]
