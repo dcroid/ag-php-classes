@@ -24,7 +24,7 @@ if($image_reflection  = ImagesHelper::onlyreflection($image_source,$reflection_h
 }
 }}}
 https://lh6.googleusercontent.com/-lOCc8X9-aT8/Tj9-ZeqF_bI/AAAAAAAALHs/2r-hSxCMcRo/source.jpg
-https://lh5.googleusercontent.com/-7n_IJmMgjUI/Tj8RrRBQTHI/AAAAAAAALHQ/Rxc-H7Vpl3c/wref_source.png
+
 === Изображение с отражением ===
 {{{
 // Подключение класса 
@@ -44,6 +44,8 @@ if($image_with_reflection  = ImagesHelper::reflection($image_source)) {
 }
 
 }}}
+https://lh6.googleusercontent.com/-lOCc8X9-aT8/Tj9-ZeqF_bI/AAAAAAAALHs/2r-hSxCMcRo/source.jpg
+https://lh5.googleusercontent.com/-7n_IJmMgjUI/Tj8RrRBQTHI/AAAAAAAALHQ/Rxc-H7Vpl3c/wref_source.png
 ==== [http://code.google.com/p/ag-php-classes/downloads/list Скачать класс]  [http://code.google.com/p/ag-php-classes/source/browse/#svn%2Ftrunk%2FImages Исходный код] ====
 ----
 <span style="width:100%;float:right;">
