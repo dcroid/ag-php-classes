@@ -21,6 +21,7 @@ if($grayscale_image = ImagesHelper::grayscale($image_source)) {
    ImagesHelper::save($grayscale_image, $image_source,$prefix, $format);
 }
 }}}
+https://lh4.googleusercontent.com/-31LrzcmE__Q/Tj8RppAKYeI/AAAAAAAALGw/s5-9jASpqSo/bw_source.gif
 ==== Негатив изображения ====
 Пример преобразования изображения в негатив.
 {{{
@@ -39,6 +40,7 @@ if($negative_image  = ImagesHelper::negative($image_source)) {
    ImagesHelper::save($negative_image, $image_source, $prefix, $format);
 }
 }}}
+https://lh6.googleusercontent.com/-hDxmBuBBPvM/Tj8RqRyRfTI/AAAAAAAALHE/gTCKKK3Ok-A/ng_source.png
 ==== [http://code.google.com/p/ag-php-classes/downloads/list Скачать класс]  [http://code.google.com/p/ag-php-classes/source/browse/#svn%2Ftrunk%2FImages Исходный код] ====
 ----
 <span style="width:100%;float:right;">
