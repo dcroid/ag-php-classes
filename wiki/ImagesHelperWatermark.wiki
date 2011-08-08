@@ -15,9 +15,9 @@
 require_once 'class.images.helper.php'; 
 
 // Путь до файла картинки  
-$image_source = './images/test.jpg'; 
+$image_source = './images/source.jpg'; 
 
-$prefix = 'fad_'; // Приставка к имени файла с отражением 
+$prefix = 'wtmt_'; // Приставка к имени файла с отражением 
 $format = 'png'; // формат для сохранения изображения
 
 $text = "OVERLEY TEXT";
@@ -29,7 +29,7 @@ $position    = 'bottom-right';
 
 if($watermarked_image  = ImagesHelper::overlaytext( $image_source, $text, $path_to_font, $color, $position, $alpha_level,0)) {
    # save watermarked image in to file in png format
-  ImagesHelper::save($watermarked_image, $image_source,'ovrt_','png');
+  ImagesHelper::save($watermarked_image, $image_source, $prefix, $format);
 
 }
 }}}
