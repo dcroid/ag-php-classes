@@ -1,0 +1,5 @@
+#summary Пример скачивания изображения
+#labels PHPClass,Image,Watermark,GD
+#sidebar ImagesHelperSidebar
+<g:plusone size="medium"></g:plusone>
+= Водяные знаки =
