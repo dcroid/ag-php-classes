@@ -1,11 +1,11 @@
 <?php
 /**
- * @revision      $Id: class.images.helper.php 335 2011-08-08 10:49:11Z agbiggora@gmail.com $
+ * @revision      $Id$
  * @created       Jul 2, 2010
  * @package       DataBase
  * @subpackage	  MySQL
  * @category      Tools
- * @version       1.0.4
+ * @version       1.1.2
  * @desc          Basic manipulation with image
  * @copyright     Copyright Alexey Gordeyev IK © 2009-2011 - All rights reserved.
  * @license       GPLv2
@@ -15,8 +15,12 @@
  * @source        http://code.google.com/p/ag-php-classes/wiki/ImagesHelper
  */
 
-Class DataBase
+Class MySQL
 {
+   var $db_host    = null;
+   var $db_base    = null;
+   var $db_user    = null;
+   var $db_pass    = null;
    var $_sql	   = null;
    var $_limit	   = null;
    var $_offset	   = null;
@@ -31,7 +35,23 @@ Class DataBase
     * Class Constructor
     * @return  void
     */
-   function __construct()
+   function __construct($db_user=false,$db_pass=false,$db_base=false,$db_host='localhost')
+   {
+      $this->SetDBHost($db_host);
+      if($db_user && $db_pass && $db_base) {
+         $this->SetDBUser($db_user);
+         $this->SetDBPass($db_pass);
+         $this->SetDBBase($db_base);
+         $this->Connect();
+      }
+   }
+
+   /**
+    * Create MySQL database connection 
+    * @access public
+    * @return void
+    */
+   function Connect() 
    {
       $this->_resource = mysql_connect($this->db_host, $this->db_user, $this->db_pass);
       if (!$this->_resource) {
@@ -39,8 +59,7 @@ Class DataBase
          $this->_errorMsg = mysql_error( $this->_resource );
       }
       else{
-         $db_selected = mysql_select_db($this->db_base, $this->_resource);
-         if (!$db_selected) {
+         if (!$this->SelectBase()) {
             $this->_errorNum = mysql_errno( $this->_resource );
             $this->_errorMsg = mysql_error( $this->_resource );
          }
@@ -49,11 +68,11 @@ Class DataBase
          }
       }
    }
-
+    
    /**
-    *  @method      setUtf
-    *  @return      bool
-    *  @description set UTF-8 encoding for mysql connection
+    * Set UTF-8 encoding for MySQL connection
+    * @access public
+    * @return bool
     */
    function setUTF()
    {
@@ -63,10 +82,10 @@ Class DataBase
    }
 
    /**
-    *  @method      SetDBUser
-    *  @params      string
-    *  @return      bool
-    *
+    * Set database user
+    * @access public
+    * @param  string
+    * @return bool
     */
    function SetDBUser($user)
    {
@@ -75,10 +94,10 @@ Class DataBase
    }
 
    /**
-    *  @method      SetDBBase
-    *  @params      string
-    *  @return      bool
-    *
+    * Set database
+    * @access public
+    * @param  string
+    * @return bool
     */
    function SetDBBase($base)
    {
@@ -87,36 +106,38 @@ Class DataBase
    }
 
    /**
-    *  @method      SetDBHost
-    *  @params      string
-    *  @return      bool
-    *
+    * Set database password
+    * @access public
+    * @param  string
+    * @return bool
+    */
+   function SetDBPass($pass)
+   {
+      $this->db_pass = $pass;
+      return true;
+   }   
+   
+   /**
+    * Set database host
+    * @access public
+    * @param  string
+    * @return bool
     */
    function SetDBHost($host)
    {
       $this->db_host = $host;
       return true;
    }
-   
+
    /**
-    *  @method      SelectBase
-    *  @return      bool
-    *
+    * Select database
+    * @access public
+    * @return bool
     */
    function SelectBase()
    {
       if(mysql_select_db($this->db_base)) { return true;  }
       else { return false; }
-   }
-
-   /**
-    *  @method      GetInfo
-    *  @return      bool
-    *
-    */
-   function GetInfo()
-   {
-
    }
 
    /**
@@ -140,7 +161,6 @@ Class DataBase
 
    /**
     * Get the active query
-    *
     * @access public
     * @return string The current value of the internal SQL vairable
     */
@@ -151,8 +171,7 @@ Class DataBase
 
    /**
     * Execute the query
-    *
-    * @access	public
+    * @access public
     * @return mixed A database resource if successful, FALSE if not.
     */
    function query()
@@ -189,7 +208,6 @@ Class DataBase
 
    /**
     * Get a database escaped string
-    *
     * @param	string	The string to be escaped
     * @param	boolean	Optional parameter to provide extra escaping
     * @return	string
@@ -206,11 +224,9 @@ Class DataBase
    }
 
    /**
-    * Description
-    *
+    * Get affected rows
     * @access public
     * @return int The number of affected rows in the previous operation
-    * @since  1.0.5
     */
    function getAffectedRows()
    {
@@ -218,8 +234,7 @@ Class DataBase
    }
 
    /**
-    * Description
-    *
+    * Get number of rows
     * @access public
     * @return int The number of rows returned from the most recent query.
     */
@@ -233,10 +248,8 @@ Class DataBase
       return mysql_num_rows( $cur ? $cur : $this->_cursor );
    }
 
-
    /**
     * This method loads the first field of the first row returned by the query.
-    *
     * @access public
     * @return The value returned in the query or null if the query failed.
     */
@@ -252,10 +265,12 @@ Class DataBase
       mysql_free_result( $cur );
       return $ret;
    }
+   
    /**
     * Load an array of single field results into an array
-    *
-    * @access	public
+    * @access public
+    * @param  int
+    * @return mixed
     */
    function loadResultArray($numinarray = 0)
    {
@@ -270,10 +285,8 @@ Class DataBase
       return $array;
    }
 
-
    /**
     * Fetch a result row as an associative array
-    *
     * @access public
     * @return array
     */
@@ -292,7 +305,6 @@ Class DataBase
 
    /**
     * Load a assoc list of database rows
-    *
     * @access public
     * @param  string The field name of a primary key
     * @return array If <var>key</var> is empty as sequential list of returned records.
@@ -316,7 +328,6 @@ Class DataBase
 
    /**
     * This global function loads the first row of a query into an object
-    *
     * @access	public
     * @return 	object
     */
@@ -361,10 +372,9 @@ Class DataBase
    }
 
    /**
-    * Load row
-    *
-    * @access	public
-    * @return The first row of the query.
+    * Load first row of the query
+    * @access public
+    * @return array
     */
    function loadRow()
    {
@@ -381,7 +391,6 @@ Class DataBase
 
    /**
     * Load a list of database rows (numeric column indexing)
-    *
     * @access public
     * @param  string The field name of a primary key
     * @return array If <var>key</var> is empty as sequential list of returned records.
@@ -407,7 +416,6 @@ Class DataBase
 
    /**
     * Inserts a row into a table based on an objects properties
-    *
     * @access	public
     * @param	string	The name of the table
     * @param	object	An object whose properties match table fields
@@ -440,13 +448,11 @@ Class DataBase
 
    /**
     * Update object in to table
-    *
     * @access public
     * @param  string The name of table
     * @param  object The object to by updated
     * @param  string Primary key name
     * @param  bool $updateNulls
-    *
     */
    function updateObject( $table, &$object, $keyName, $updateNulls=true )
    {
@@ -479,7 +485,6 @@ Class DataBase
 
    /**
     * Retun last inserted id
-    *
     * @access public
     * @return mixed
     */
@@ -487,9 +492,9 @@ Class DataBase
    {
       return mysql_insert_id( $this->_resource );
    }
+   
    /**
     * Show a list of the tables in to database
-    *
     * @access  public
     * @return  array A list of all the tables in the database
     */
@@ -498,9 +503,9 @@ Class DataBase
       $this->setQuery( 'SHOW TABLES' );
       return $this->loadResultArray();
    }
+   
    /**
     * Shows the CREATE TABLE statement that creates the given tables
-    *
     * @access	public
     * @param 	mixed A table name or a list of table names
     * @return 	array A list the create SQL for the tables
@@ -523,7 +528,6 @@ Class DataBase
 
    /**
     * Retrieves information about the given tables
-    *
     * @access	public
     * @param 	array|string 	A table name or a list of table names
     * @param	boolean			Only return field types, default true
@@ -558,10 +562,8 @@ Class DataBase
 
    /**
     * Adds a field or array of field names to the list that are to be quoted
-    *
     * @access public
     * @param  mixed Field name or array of names
-    * @since n1.5
     */
    function addQuoted( $quoted )
    {
@@ -575,7 +577,6 @@ Class DataBase
 
    /**
     * Checks if field name needs to be quoted
-    *
     * @access public
     * @param string The field name
     * @return bool
@@ -591,7 +592,6 @@ Class DataBase
 
    /**
     * Quote an identifier name (field, table, etc)
-    *
     * @access	public
     * @param	string	The name
     * @return	string	The quoted name
@@ -615,10 +615,9 @@ Class DataBase
 
    /**
     * Get a quoted database escaped string
-    *
-    * @param	string	A string
-    * @param	boolean	Default true to escape string, false to leave the string unchanged
-    * @return	string
+    * @param  string	A string
+    * @param  boolean	Default true to escape string, false to leave the string unchanged
+    * @return string
     * @access public
     */
    function Quote( $text, $escaped = true )
@@ -627,69 +626,11 @@ Class DataBase
    }
 
    /**
-    * ADODB compatability function
-    *
-    * @access	public
-    * @param	string SQL
-    * @since	1.5
+    * Class destructor
+    * @return void
     */
-   function GetCol( $query )
-   {
-      $this->setQuery( $query );
-      return $this->loadResultArray();
-   }
-   /**
-    * ADODB compatability function
-    *
-    * @access public
-    * @param string SQL
-    * @return array
-    * @since 1.5
-    */
-   function GetRow( $query )
-   {
-      $this->setQuery( $query );
-      $result = $this->loadRowList();
-      return $result[0];
-   }
-   /**
-    * ADODB compatability function
-    *
-    * @access public
-    * @param string SQL
-    * @return mixed
-    * @since 1.5
-    */
-   function GetOne( $query )
-   {
-      $this->setQuery( $query );
-      $result = $this->loadResult();
-      return $result;
-   }
-   /**
-    * ADODB compatability function
-    *
-    * @since 1.5
-    */
-   function ErrorMsg()
-   {
-      return $this->getErrorMsg();
-   }
-
-   /**
-    * ADODB compatability function
-    *
-    * @since 1.5
-    */
-   function ErrorNo()
-   {
-      return $this->getErrorNum();
-   }
-
-
    function __destruct()
    {
-
 
    }
 
