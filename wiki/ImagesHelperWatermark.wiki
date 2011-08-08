@@ -8,6 +8,7 @@
 {{{
 
 }}}
+https://lh6.googleusercontent.com/-lOCc8X9-aT8/Tj9-ZeqF_bI/AAAAAAAALHs/2r-hSxCMcRo/source.jpg
 ==== Водяные знаки Пример 2 ====
 Пример создания водяного знака с помощью текста. 
 {{{
