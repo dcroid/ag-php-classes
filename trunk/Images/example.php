@@ -121,7 +121,7 @@ if($fix_resized_image  = ImagesHelper::resize($image_source,$width,$height)) {
 }
 
 # Scale image
-$ratio = 70; # %
+$ratio = 150; # %
 if($scaled_image  = ImagesHelper::scale($image_source,$ratio)) {
    # save scaled image in to file in gif format
    ImagesHelper::save($scaled_image, $image_source,'sca_','gif');
@@ -189,7 +189,7 @@ $position    = 'bottom-right';
 
 if($watermarked_image  = ImagesHelper::overlaytext( $image_source, $text, $path_to_font, $color, $position, $alpha_level,0)) {
    # save watermarked image in to file in png format
-  ImagesHelper::save($watermarked_image, $image_source,'wtmt_','png');
+  ImagesHelper::save($watermarked_image, $image_source,'ovrt_','png');
 
 }
 
@@ -209,16 +209,14 @@ $text = "ImagesHelper";
 $image_bg = './images/rainbow.jpg';
 $bg_color = false;
 if($watermarked2_image = ImagesHelper::textto( $image_bg, $text, $font_size, $path_to_font, $bg_color)) {
-
    # save watermarked image in to file in png format
    ImagesHelper::save($watermarked2_image, $image_source,'txto2_','gif');
-   ImagesHelper::show($watermarked2_image,'png',100);
 }
 // buildtextwatermark( $image_source, $text, $font, $color = '#fff', $alpha_level = 100, $position = 'center', $angle = 0)
 # build image watemark
-$watermark_img = './images/wtm.gif';
-$alpha_level   = 30;
-$position = 'bottom';
+$watermark_img = './images/txto_source.png';
+$alpha_level   = 100;
+$position = 'center';
 /*
  * 'top-right','right-top',1
  * 'top-left','left-top',2
@@ -230,9 +228,11 @@ $position = 'bottom';
  * 'left',8
  * 'right',9
  */
-if($watermarked_image = ImagesHelper::overlay($image_source,$watermark_img,$position,$alpha_level)) {
+$ratio = 90;
+if($watermarked_image = ImagesHelper::overlay($image_source,$watermark_img,$position,$alpha_level,$ratio)) {
    # save watermarked image in to file in gif format
-   ImagesHelper::save($watermarked_image, $image_source,'wtmi2_','gif');
+   ImagesHelper::save($watermarked_image, $image_source,'wtmi3_','gif');
+   ImagesHelper::show($watermarked_image,'png',100);
 }
 
 
