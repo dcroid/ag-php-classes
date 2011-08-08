@@ -35,6 +35,8 @@ if($watermarked_image = ImagesHelper::overlaytext( $image_source, $text, $path_t
 
 }
 }}}
+https://lh6.googleusercontent.com/-lOCc8X9-aT8/Tj9-ZeqF_bI/AAAAAAAALHs/2r-hSxCMcRo/source.jpg
+https://lh3.googleusercontent.com/-3nc2krGWAa4/Tj8RrjaFt8I/AAAAAAAALHU/joWpEO4-UmM/wtmt_source.png
 ----
 <span style="width:100%;float:right;">
 [http://www.gordejev.lv/ http://www.gordejev.lv/templates/gordejev/images/gora_88x31.png]
