@@ -45,7 +45,7 @@ $bg_color = false; // цвет фона (прозрачный)
 $format = 'png'; // формат для сохранения изображения
 
 if($image_text = ImagesHelper::textto( $image_bg, $text, $font_size, $path_to_font, $bg_color)) {
-   // вывести изображение в броузер как png
+   // вывести изображение в броузер как gif
    ImagesHelper::save($image_text, $image_source, 'txto2_', 'gif');
 }
 }}}
