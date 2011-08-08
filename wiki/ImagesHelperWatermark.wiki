@@ -37,6 +37,7 @@ if($overlayed_image = ImagesHelper::overlay($image_source, $overlay_img,$positio
 }
 }}}
 https://lh6.googleusercontent.com/-lOCc8X9-aT8/Tj9-ZeqF_bI/AAAAAAAALHs/2r-hSxCMcRo/source.jpg
+https://lh5.googleusercontent.com/-jJITTU-GXFo/Tj--f-OCh0I/AAAAAAAALJA/yFOdIa7GnU4/wtmi3_source.gif
 ==== Водяные знаки Пример 2 ====
 Пример создания водяного знака с помощью текста. 
 {{{
