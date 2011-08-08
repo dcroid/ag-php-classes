@@ -24,7 +24,7 @@ if($image_reflection  = ImagesHelper::onlyreflection($image_source,$reflection_h
 }
 }}}
 https://lh6.googleusercontent.com/-lOCc8X9-aT8/Tj9-ZeqF_bI/AAAAAAAALHs/2r-hSxCMcRo/source.jpg
-
+https://lh4.googleusercontent.com/-C0bixbDTMwE/Tj-AF4LJByI/AAAAAAAALIQ/lsHlsdLk80Q/ref_source.png
 === Изображение с отражением ===
 {{{
 // Подключение класса 
